@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="230" height="300">
+<mx:Script>
+	<![CDATA[
+		import net.isurvey.event.*;
+		import net.isurvey.model.*;
+		import com.adobe.cairngorm.control.CairngormEventDispatcher;
+		import com.adobe.cairngorm.control.CairngormEvent;
+		private var curState:int = SurveyModelLocator.getInstance().controlpanel_status;
+		
+		private function onManageSurvey( evt:Event):void{
+			if ( curState == ControlPanelEvent.MANAGE_SURVEY ) return;
+			var event:ControlPanelEvent = 
+					new ControlPanelEvent( ControlPanelEvent.MANAGE_SURVEY);	
+			CairngormEventDispatcher.getInstance().dispatchEvent( event );
+		}
+		
+		private function onViewSurvey( evt:Event):void{
+			if ( curState == ControlPanelEvent.VIEW_SURVEY ) return;
+			var event:ControlPanelEvent = 
+					new ControlPanelEvent( ControlPanelEvent.VIEW_SURVEY);	
+			CairngormEventDispatcher.getInstance().dispatchEvent( event );			
+		}
+		
+		
+	]]>
+</mx:Script>
+	<mx:states>
+		<mx:State name="admin">
+			<mx:AddChild position="lastChild">
+				<mx:LinkButton id="managesurveybtn" label="添加主题" horizontalCenter="0" top="70"
+					  click="onManageSurvey(event)"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:LinkButton label="管理主题" horizontalCenter="0" top="110"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:LinkButton id="viewsurveybtn" label="查看主题" horizontalCenter="0" top="150"
+					click="onViewSurvey(event)"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:LinkButton label="管理用户" horizontalCenter="0" top="190"/>
+			</mx:AddChild>
+			
+		</mx:State>
+		<mx:State name="user">
+			<mx:AddChild position="lastChild">
+				<mx:LinkButton label="个人资料" horizontalCenter="0" top="70"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:LinkButton label="历史记录" horizontalCenter="0" top="120"/>
+			</mx:AddChild>
+		</mx:State>
+	   
+	</mx:states>
+	
+	
+	<mx:ApplicationControlBar top="0" width="230" horizontalCenter="0" height="50">
+		<mx:Spacer width="10"/>
+		<mx:Image source="@Embed(source='images/1.gif')" />
+		<mx:Spacer width="10"/>
+		<mx:Label text="操作" fontSize="20" fontWeight="bold" 
+			textAlign="center" width="100" color="#FFFFFF"/>
+	</mx:ApplicationControlBar>
+	
+	
+	
+</mx:Canvas>

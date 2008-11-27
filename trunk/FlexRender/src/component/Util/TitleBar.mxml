@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="1000" height="50"
+	 creationComplete="setWelcomeTitle()">
+
+	<mx:Script>
+		<![CDATA[
+			import net.isurvey.model.*;
+			import net.isurvey.event.*;
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import com.adobe.cairngorm.control.CairngormEvent;
+			
+			private var modelLocator:SurveyModelLocator = SurveyModelLocator.getInstance();
+			
+			public function setWelcomeTitle():void{
+				var currentUser:UserData = modelLocator.user;
+				var welcometitle:String = "欢迎你 "+currentUser.type +" "
+							+ currentUser.name;
+				wtitle.text = welcometitle;
+
+	 			}
+	 			
+	 		private function onLogout(event:Event):void{
+				var evt:LogOutEvent = 
+					new LogOutEvent( );	
+				CairngormEventDispatcher.getInstance().dispatchEvent( evt );
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:ApplicationControlBar width="1000" height="50" horizontalCenter="0" verticalCenter="0">
+		<mx:Spacer width="45"/>
+		<mx:Text id="wtitle" text="欢迎，用户名" fontSize="12" 
+			fontWeight="bold" color="#FFFFFF" width="150" textAlign="center"/>
+		<mx:Spacer width="45"/>
+		<mx:VRule width="1" height="50"/>
+		<mx:Spacer width="250"/>
+		<mx:LinkButton label="home" width="80" textAlign="center"/>
+		<mx:LinkButton label="LogOut" width="80" textAlign="center"
+			 click="onLogout(event)"/>
+		<mx:LinkButton label="help" width="80" textAlign="center"/>
+	</mx:ApplicationControlBar>
+	
+</mx:Canvas>

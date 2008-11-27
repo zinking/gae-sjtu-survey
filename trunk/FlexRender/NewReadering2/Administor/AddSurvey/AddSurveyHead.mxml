@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="348" height="240">
+	<mx:Form width="98%" height="95%" left="3" top="3">
+		<mx:FormItem label="主题名" width="100%" fontSize="14">
+			<mx:TextInput width="100%" height="100%" textAlign="right"/>
+		</mx:FormItem>
+		<mx:FormItem label="主题背景描述" width="100%" fontSize="14">
+			<mx:TextArea width="100%" height="100%"/>
+		</mx:FormItem>
+		<mx:FormItem label="主题发布时间" width="100%" fontSize="14">
+			<mx:DateField width="100%" height="100%"/>
+		</mx:FormItem>
+		<mx:FormItem label="主题截止时间" fontSize="14" width="100%">
+			<mx:DateField width="100%" height="100%"/>
+		</mx:FormItem>
+		<mx:FormItem label="是否默认主题" width="100%" fontSize="14">
+			<mx:HBox width="100%" height="100%">
+				<mx:Spacer width="20%"/>
+				<mx:RadioButton x="0" y="-2" label="是"/>
+				<mx:RadioButton x="70" y="-2" label="否" selected="true"/>
+			</mx:HBox>
+		</mx:FormItem>
+	</mx:Form>
+	
+</mx:Canvas>

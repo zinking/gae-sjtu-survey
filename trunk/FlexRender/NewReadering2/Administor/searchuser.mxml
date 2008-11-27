@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300">
+	<mx:Label x="31" y="37" text="请输入您要查找的用户名："/>
+	<mx:TextInput x="151" y="33"/>
+	<mx:Button x="319" y="33" label="查找"/>
+	<mx:List width="360" y="89" left="20" height="149">
+	<mx:RadioButtonGroup id="radiogroup1"/>
+	<mx:RadioButton label="用户1" groupName="radiogroup1" left="28" top="89"/>
+	<mx:RadioButton label="用户2" groupName="radiogroup1" left="28" top="115"/>
+	<mx:RadioButton label="用户3" groupName="radiogroup1" left="28" top="141"/>
+	<mx:RadioButton label="用户4" groupName="radiogroup1" left="28" top="167"/>
+
+	<mx:VSlider x="368" y="89" width="12" height="149"/></mx:List>
+		<mx:Button x="108" y="259.7" label="修改"/>
+	<mx:Button x="225.35" y="259.65" label="取消"/>
+	
+	
+</mx:Canvas>

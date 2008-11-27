@@ -1,0 +1,11 @@
+<query>
+	<question></question>
+	 	 <option>
+	 	 	<display>yes</display>
+	 	 	<pollcount>50</pollcount>
+		</option>
+		<option>
+	 	 	<display>yes</display>
+	 	 	<pollcount>50</pollcount>
+		</option>
+</query>

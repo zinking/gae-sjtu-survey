@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="190">
+	<mx:VBox height="100%" width="100%" horizontalCenter="0" verticalCenter="0">
+		<mx:TextArea width="100%" height="25%" text="问题"/>
+		
+		<mx:HBox width="100%" height="75%" horizontalCenter="0" verticalCenter="-50">
+		    <mx:VBox height="100%" width="75%" left="0" verticalCenter="0">
+		        <mx:RadioButtonGroup id="答案"/>
+		        <mx:RadioButton label="答案1" groupName="答案"/>
+		        <mx:RadioButton label="答案2" groupName="答案"/>
+		        <mx:RadioButton label="答案3" groupName="答案"/>
+		    </mx:VBox>
+		    <mx:VBox height="100%" width="25%" right="0" verticalCenter="0">
+		        <mx:PieChart id="piechart1" width="100%" height="100%"/>
+		    </mx:VBox>
+		</mx:HBox>
+	</mx:VBox>
+	
+</mx:Canvas>

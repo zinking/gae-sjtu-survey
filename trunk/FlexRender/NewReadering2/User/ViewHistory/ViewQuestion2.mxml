@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300">
+	<mx:TextArea text="问题描述：" left="10" top="10" width="95%"/>
+	<mx:HDividedBox x="10" y="62" width="95%" height="200">
+	<mx:Canvas label="Canvas 1" width="100%" height="100%" >
+		<mx:VBox x="10" y="10" width="100%" height="100%">
+			<mx:RadioButtonGroup id="radiogroup1"/>
+			<mx:RadioButton label="答案 1" groupName="radiogroup1"/>
+			<mx:RadioButton label="答案 2" groupName="radiogroup1"/>
+			<mx:RadioButton label="答案3" groupName="radiogroup1"/>
+			<mx:RadioButton label="答案4" groupName="radiogroup1"/>
+		</mx:VBox>
+               
+            </mx:Canvas>
+
+            <mx:Canvas label="Canvas 2" width="100%" height="100%" >
+            	<mx:PieChart x="42.5" y="10" id="piechart1" width="100" height="100">
+            		<mx:series>
+            			<mx:PieSeries displayName="Series 1" field=""/>
+            		</mx:series>
+            	</mx:PieChart>
+            	<mx:Legend dataProvider="{piechart1}" x="52.5" y="130" height="60" width="80"/>
+                
+            </mx:Canvas>
+	</mx:HDividedBox>
+	
+</mx:Canvas>

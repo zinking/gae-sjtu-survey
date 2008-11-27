@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="190"
+	initialize="init()">
+<mx:Script>
+	<![CDATA[
+		import mx.controls.RadioButton;
+		
+		import  net.isurvey.model.*;
+		public var QuestionData:ProblemData;
+		
+		
+		private function init():void{
+	 		if ( QuestionData == null ){
+	 			return;
+	 		} 
+	 		updateData( QuestionData );	 		
+	 	}
+		
+		public function updateData( qd:ProblemData):void{
+			optionbox.removeAllChildren();
+			for each ( var item:* in qd.optionlist ){
+				var radio:RadioButton = new RadioButton();
+				radio.label = item.optionname;
+				optionbox.addChild( radio );
+			}
+			problemtxt.text = qd.description;
+			piechart.dataProvider = qd.optionlist;
+		}
+	]]>
+</mx:Script>
+
+
+	<mx:VBox height="100%" width="100%" horizontalCenter="0" verticalCenter="0">
+		<mx:TextArea id="problemtxt" width="100%" height="25%" text="问题"/>
+		<mx:HBox width="100%" height="75%" horizontalCenter="0" verticalCenter="-50">
+		    <mx:VBox id="optionbox" height="100%" width="75%" left="0" verticalCenter="0">
+		        <mx:RadioButton label="答案1" groupName="答案"/>
+		    </mx:VBox>
+		    <mx:VBox height="100%" width="25%" right="0" verticalCenter="0">
+		        <mx:PieChart id="piechart" width="100%" height="100%"/>
+		    </mx:VBox>
+		</mx:HBox>
+	</mx:VBox>
+	
+</mx:Canvas>

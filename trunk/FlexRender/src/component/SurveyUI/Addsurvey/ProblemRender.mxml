@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="450" height="132"
+	 initialize="init()" cornerRadius="10" borderStyle="solid">
+	 
+	 
+	 <mx:states>
+	 	 <mx:State name="collapse">
+	 	 	 <mx:RemoveChild target="{stBarChart}"/>
+	 	 	 <mx:RemoveChild target="{stPieChart}"/>
+	 	 	 <mx:SetProperty name="height" value="42"/>
+	 	 	 <mx:SetStyle target="{pbText}" name="top" value="7"/>
+	 	 	 <mx:SetProperty name="width" value="326"/>
+	 	 </mx:State>
+	 	 
+	 	 <mx:State name="edit" >
+	 	 	 <mx:RemoveChild target="{stPieChart}"/>
+	 	 	 <mx:RemoveChild target="{stBarChart}"/>
+	 	 	 <mx:SetProperty target="{pbText}" name="editable" value="true"/>
+	 	 	 <mx:SetProperty name="height" value="300"/>
+	 	 	 <mx:SetProperty target="{optionbox}" name="y" value="111"/>
+	 	 	 <mx:SetProperty target="{optionbox}" name="x" value="10"/>
+	 	 	 
+	 	 	 <mx:SetStyle target="{pbText}" name="left" value="8"/>
+	 	 	 <mx:SetStyle target="{pbText}" name="right" value="12"/>
+	 	 	 <mx:SetStyle target="{pbText}" name="top" value="39"/>
+	 	 	 
+	 	 	 <mx:AddChild position="lastChild">
+	 	 	 	 <mx:Button x="132" y="257" label="添加选项" id="addoptButton" 
+	 	 	 	 	click="onAddOptionClick(event)" enabled="true"/>
+	 	 	 </mx:AddChild>
+	 	 	 <mx:AddChild position="lastChild">
+	 	 	 	 <mx:Button x="210" y="257" label="确认问题" width="70" id="confirmButton"
+	 	 	 	 	 click="onConfirmAdd(event)" enabled="false"/>
+	 	 	 </mx:AddChild>
+	 	 	 <mx:AddChild position="lastChild">
+	 	 	 	 <mx:TextArea id="optionEdit" 
+	 	 	 	 	x="10" y="77" text="默认问题" width="270" height="26" 
+	 	 	 	 	 change="validate(event)" editable="true"/>
+	 	 	 </mx:AddChild>
+	 	 	 <mx:AddChild position="lastChild">
+	 	 	 	 <mx:Label x="56" y="10" text="问题编辑" width="178" height="26" 
+	 	 	 	 	textAlign="center" fontWeight="bold" fontSize="15" fontFamily="Georgia" 
+	 	 	 	 	enabled="true" color="#18A9C8"/>
+	 	 	 </mx:AddChild>
+	 	 	 <mx:SetProperty name="width" value="292"/>
+	 	 	 <mx:SetProperty target="{optionbox}" name="width" value="270"/>
+	 	 	 <mx:SetProperty target="{optionbox}" name="height" value="128"/>
+	 	 	 	 	 	     	 	
+	 	 </mx:State>
+	 </mx:states>
+	 
+	 <mx:Script>
+	 	<![CDATA[
+	 	import mx.events.ValidationResultEvent;
+	 	import net.isurvey.model.*;
+	 		
+	 	import mx.controls.RadioButton;	 	
+	 	import mx.controls.ComboBox;
+	 	
+	 	public	var renderData:ProblemData;
+	 		 	
+	 	private function init():void{
+	 		if ( renderData == null ){
+	 			renderData = new ProblemData();
+	 			return;
+	 		} 
+	 		render( renderData );	 		
+	 	}
+	 	public function render( rData:ProblemData = null ):void{
+	 		if ( rData == null && renderData == null ) return;
+			if ( rData == null ) rData = renderData;
+	 		renderData = rData;
+	 		for each( var item:* in renderData.optionlist ){
+	 			AddOption(item.optionname);
+	 		}
+	 		pbText.text = rData.description;
+	 		stPieChart.dataProvider = renderData.optionlist;
+	 		
+	 	} 
+	 	
+	 	//UI层面的添加选项
+	 	private function AddOption( option_name:String ):void{
+	 			var radio:RadioButton = new RadioButton();
+	 			radio.label = option_name;
+	 			optionbox.addChild(radio);	
+	 	}
+	 	///TODO：如果要对选项进行编辑的话，那么可能要对RadioBox做HASH索引反过来索引他在
+	 	///模型数组里面的下标 这样在删除的时候就可以方便的更新模型的数据了
+	 	
+	 	///////////////////////////////////////////////////我是华丽的分割线//////////////////////////
+	 	public function onAddOptionClick( event:MouseEvent ):void{
+	 		if ( renderData == null ) renderData = new ProblemData();
+	 		var item:Object = new Object;
+	 		item.optionname = optionEdit.text;
+	 		item.pollcount  = 0;
+	 		renderData.optionlist.addItem( item );//更新模型
+	 		AddOption( optionEdit.text )//更新视图
+	 		
+	 		this.validate( null );
+	 	}
+	 	
+	 	public function onConfirmAdd( event:MouseEvent ):void{
+	 		if ( renderData == null ) renderData = new ProblemData();
+	 		renderData.description = pbText.text;
+	 		currentState = '';//初始状态
+	 		stPieChart.dataProvider = renderData.optionlist;	 		
+	 	}
+	 	
+	 	
+	 	//对输入内容的校验部分
+	 	public function validate(event:Event):void{
+	 		if ( currentState != 'edit') return ;
+	 		var opVR:ValidationResultEvent = opV.validate();
+			var pbVR:ValidationResultEvent = pbV.validate();
+			if ( opVR.type == ValidationResultEvent.VALID ) addoptButton.enabled = true;
+			else addoptButton.enabled = false; 
+			
+			if ( opVR.type == ValidationResultEvent.VALID 
+			&& pbVR.type == ValidationResultEvent.VALID 
+			&& renderData.optionlist.length >= 2 ){ 
+				confirmButton.enabled = true;
+			}
+			else{
+				confirmButton.enabled = false;
+			}
+	 	}
+	 	]]>
+	 </mx:Script>
+	
+	 	
+	
+	 
+	<mx:TextArea id="pbText" 
+		text="Would you like to use our query system?" 
+		left="10" right="10" top="15" maxHeight="60" height="30" 
+		editable="false" cornerRadius="9" borderStyle="solid" alpha="0.0"
+		change=" validate(event)"/>
+	<mx:PieChart id="stPieChart" right="10" top="15" bottom="10" left="314" 
+		showDataTips="true" visible="true">
+        <mx:series>
+           <mx:PieSeries 
+                field="pollcount" 
+                nameField="optionname" 
+           />
+        </mx:series>
+	</mx:PieChart>
+	
+	<mx:BarChart id="stBarChart" right="10" top="15" bottom="10" left="314" 
+		showDataTips="true" visible="false">
+        <mx:series>
+           <mx:BarSeries 
+                yField="pollcount" 
+                displayName="optionname" 
+           />
+        </mx:series>
+	</mx:BarChart>
+	<mx:VBox id ="optionbox"
+		x="20" y="38" height="82" width="229">
+	</mx:VBox>
+	
+	<mx:StringValidator id="opV" source="{optionEdit}" property="text" 
+        
+        tooLongError="输入内容太长。" 
+         maxLength="20"  
+       />
+    <mx:StringValidator id="pbV" source="{pbText}" property="text" 
+        tooShortError="输入内容太短。" 
+        tooLongError="输入内容太长。" 
+        minLength="4" maxLength="50" 
+       />
+	
+</mx:Canvas>

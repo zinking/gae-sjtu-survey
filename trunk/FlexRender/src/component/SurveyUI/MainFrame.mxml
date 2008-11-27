@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" height="100%"
+	 xmlns:Util="component.Util.*" xmlns:Survey="component.SurveyUI.*" xmlns:User="component.UserUI.*"
+	  creationComplete="init()" xmlns:ns1="*">
+	 <mx:Script>
+	 	<![CDATA[
+
+	 		import net.isurvey.model.*;
+	 		import net.isurvey.event.*;
+	 		import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import com.adobe.cairngorm.control.CairngormEvent;
+	 		
+	 		private var modelLocator:SurveyModelLocator = SurveyModelLocator.getInstance();
+	 		
+	 		
+	 		private function init():void{
+	 			modelLocator.bodyloader = mdLoader;
+	 			modelLocator.controlpanel = cpanel;
+	 			loadSettings();	 			
+	 		}
+	 		private function loadModule( moduleurl:String):void{
+				mdLoader.unloadModule();
+				mdLoader.url = moduleurl;
+	 			mdLoader.loadModule();
+			} 
+	 			 		
+	 		public function loadSettings():void{
+	 			//topBar.setWelcomeTitle( currentUser );
+	 			var currentUser:UserData = modelLocator.user;
+	 			
+	 			if ( currentUser.type == UserData.ADMIN ){
+	 				leftbox.removeChild( anonymousLogin );
+	 				modelLocator.controlpanel_status = ControlPanelEvent.MANAGE_SURVEY;
+	 				loadModule( SurveyModelLocator.ADDSURVEY_MODULE );
+	 				cpanel.currentState = 'admin';
+	 				
+	 			}
+	 			else if ( currentUser.type == UserData.USER ){
+	 				leftbox.removeChild(anonymousLogin);
+	 				modelLocator.controlpanel_status = ControlPanelEvent.VIEW_SURVEY;
+	 				loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
+	 				cpanel.currentState = 'user';
+	 				
+	 			}
+	 			else if ( currentUser.type == UserData.ANONYMOUS ){
+	 				leftbox.removeChild(cpanel);
+	 				modelLocator.controlpanel_status = ControlPanelEvent.VIEW_SURVEY;
+	 				loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
+	 				
+	 			}
+	 			var evt:ControlPanelEvent;
+	 			evt = new ControlPanelEvent( modelLocator.controlpanel_status);
+/* 	 			if ( currentUser.type == UserData.ANONYMOUS ){
+	 				 evt = new ControlPanelEvent( modelLocator.controlpanel_status);
+	 			}
+	 			else{
+	 				 evt = new ControlPanelEvent( modelLocator.controlpanel_status);
+	 			} */
+	 			
+				CairngormEventDispatcher.getInstance().dispatchEvent( evt );
+	 		}
+	 		
+	 		
+	 		
+	 	]]>
+	 </mx:Script>
+
+	<mx:Style source="styles/style1.css"/>
+	<mx:Image  source="@Embed(source='images/2.1.JPG')" 
+		left="0" top="0" width="100%" scaleContent="true"  
+		useHandCursor="true" maintainAspectRatio="false"/>
+	<mx:Image  source="@Embed(source='images/2.jpg')" 
+		scaleContent="true"  top="0" horizontalCenter="0" width="954" maintainAspectRatio="false"
+		useHandCursor="true" />
+	<mx:Label text="Online Survey" fontSize="36" fontWeight="bold" color="#FFFFFF" top="122" left="181"/>
+
+	<mx:VBox id="leftbox" left="150" top="255">
+		<User:AccountRender id="anonymousLogin" left="150" top="255"/>
+		<User:ControlPanel  id="cpanel" left="150" top="505"/>
+	</mx:VBox>
+
+	
+	<Util:TitleBar id="topBar" horizontalCenter="0" top="183"/>
+	<Util:Calendar right="150" top="255"/>
+	<Util:Update right="150" top="560"/>
+	
+	<!--<Survey:SurveyRenderComp horizontalCenter="0" top="255"/>-->
+	<mx:ModuleLoader id="mdLoader"   horizontalCenter="0" top="255" width="500" height="600"/>
+		
+	<mx:Label text="Design by WangZhen ChenYao ZhangYanLei LinQinQin and ZhangZhiYong " 
+		horizontalCenter="0" color="#00FFFF" bottom="40"/>
+	
+	
+	
+</mx:Module>

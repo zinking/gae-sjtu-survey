@@ -1,0 +1,85 @@
+Application {
+   backgroundColor: #999999;
+   backgroundGradientColors: #cc0066, #666666;
+   backgroundGradientAlphas: 0.8, 0.8;
+   themeColor: #ffff00;
+   color: #000000;
+}
+
+Accordion {
+   borderStyle: solid;
+   borderThickness: 1;
+   headerHeight: 25;
+   selectedFillColors: #cc0066, #000000;
+   themeColor: #ffff00;
+   borderColor: #ccff99;
+   textRollOverColor: #9999ff;
+   textSelectedColor: #ff0000;
+   dropShadowEnabled: true;
+   headerStyleName: "myaccordionHeader";
+}
+
+.myaccordionHeader {
+   color: #000000;
+}
+
+Button {
+   cornerRadius: 8;
+   fillColors: #ccffff, #ccff99, #ffffff, #eeeeee;
+   color: #000000;
+   textRollOverColor: #9966ff;
+   textSelectedColor: #ff0000;
+   borderColor: #ccffff;
+   themeColor: #ffff00;
+}
+
+CheckBox {
+   color: #000000;
+   textSelectedColor: #ff0000;
+   textRollOverColor: #9999ff;
+   themeColor: #ffff00;
+}
+
+DateChooser {
+   todayColor: #ccff00;
+}
+
+HScrollBar {
+   trackColors: #94999b, #e7e7e7;
+   themeColor: #ffff00;
+}
+
+Panel {
+   roundedBottomCorners: true;
+   cornerRadius: 8;
+   headerHeight: 30;
+   backgroundAlpha: 0.95;
+   shadowDirection: center;
+   titleStyleName: "mypanelTitle";
+}
+
+.mypanelTitle {
+   letterSpacing: 0;
+   color: #000000;
+}
+
+RadioButton {
+   color: #000000;
+   textSelectedColor: #ff0000;
+   textRollOverColor: #9999ff;
+   themeColor: #ffff00;
+}
+
+TextArea {
+   color: #000000;
+}
+
+TextInput {
+   borderStyle: inset;
+   color: #000000;
+}
+
+VScrollBar {
+   themeColor: #ffff00;
+}
+

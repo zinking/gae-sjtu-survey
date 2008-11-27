@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="404">
+	<mx:Text x="10" y="21" text="问题1:你喜欢我们的在线调查系统吗？" width="204" fontSize="10"/>
+	<mx:Form width="370" height="35%" left="10" top="47">
+		<mx:FormItem label="问题描述：">
+			<mx:TextInput width="248"/>
+		</mx:FormItem>
+		<mx:FormItem label="设置问题类型：">
+			<mx:HBox width="248">
+				<mx:RadioButton label="单选"/>
+				<mx:Spacer height="100%" width="30%"/>
+				<mx:RadioButton label="多选"/>
+			</mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:HBox width="251">
+				<mx:Button label="确定"/>
+				<mx:Spacer width="25%"/>
+				<mx:Button label="取消"/>
+			</mx:HBox>
+		</mx:FormItem>
+		
+	</mx:Form>
+	
+	<mx:Button x="234" y="19" label="修改"/>
+	<mx:Button x="307" y="19" label="删除"/>
+	<mx:Tile width="370" height="40%" top="196" left="10">
+	        <mx:Text text="答案1" height="50" width="75"/>
+            <mx:Text text="答案2" height="50" width="75"/>
+            <mx:Text text="答案3" height="50" width="75"/>
+            <mx:Text text="答案4" height="50" width="75"/>
+            <mx:Text text="答案5" height="50" width="75"/>
+            <mx:Text text="答案6" height="50" width="75"/>
+            <mx:Text text="答案7" height="50" width="75"/>
+            <mx:Text text="答案8" height="50" width="75"/>
+           
+           
+
+	</mx:Tile>
+	<mx:Button x="98.65" y="365" label="确定"/>
+	<mx:Button x="251" y="365" label="取消"/>
+	
+	</mx:Canvas>

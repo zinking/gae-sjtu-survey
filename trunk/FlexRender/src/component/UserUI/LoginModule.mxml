@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" width="100%" height="100%" >
+	
+	<mx:Script>
+		<![CDATA[
+			import com.adobe.cairngorm.control.CairngormEventDispatcher;
+			import com.adobe.cairngorm.control.CairngormEvent;
+			import net.isurvey.event.LoginEvent;
+			import net.isurvey.model.*;
+			import mx.rpc.*;
+			import mx.rpc.events.*;
+			import mx.controls.*;
+			import mx.events.ValidationResultEvent;
+			
+			//public var user:UserData = new UserData();
+	
+		private function getUser():UserData{
+			var user:UserData = new UserData();
+			user.name = username.text;
+			user.password = password.text;
+			
+			if ( adminRadio.selected == true ) user.type = UserData.ADMIN;
+			else if ( userRadio.selected == true ) user.type = UserData.USER;
+			
+			return user;
+			
+		}
+			
+			
+		private function login(event:Event):void
+		{
+			var usr:UserData = getUser();
+			
+			var evt:LoginEvent = new LoginEvent(usr);
+			CairngormEventDispatcher.getInstance().dispatchEvent( evt );
+					
+		}
+		
+		private function anonymouslogin(event:Event):void
+		{
+			var usr:UserData = new UserData();
+			usr.name = "";
+			usr.type = UserData.ANONYMOUS;
+			var evt:LoginEvent = new LoginEvent(usr);
+			CairngormEventDispatcher.getInstance().dispatchEvent( evt );
+					
+		}
+		
+		
+		
+				
+		private function validate(event:Event):void
+		{
+			var vru:ValidationResultEvent = vu.validate();
+			var vrp:ValidationResultEvent = vp.validate();
+			
+			if ( vru.type == ValidationResultEvent.VALID 
+					&& vrp.type == ValidationResultEvent.VALID ){ 
+				submit.enabled = true;
+			}
+			else{
+				submit.enabled = false;
+			}
+		}
+			
+			
+		]]>
+	</mx:Script>
+
+	<mx:Style source="styles/style5.css"/>
+	
+	<!-- 客户端校验器部分-->
+	<mx:StringValidator id="vu" source="{username}"
+		property="text" minLength="2" maxLength="12"/>					
+    <mx:StringValidator id="vp" source="{password}"	
+    	property="text" minLength="4" maxLength="12"/>
+    	
+	<mx:Canvas width="580" height="488" horizontalCenter="0" top="60">
+		<mx:Image source="@Embed(source='images/5.JPG')" scaleContent="true" 
+			horizontalCenter="0" top="0" width="560" height="401"/>
+			
+			
+		<mx:Label horizontalCenter="-234" verticalCenter="180" text="用户名" width="50" height="20" 
+			textAlign="center" fontSize="12" fontWeight="bold"/>
+			
+		<mx:TextInput id="username" horizontalCenter="-132" verticalCenter="180" width="120" height="20"
+			change="validate(event)"/>
+		<mx:TextInput id="password" horizontalCenter="71" verticalCenter="180" width="120" height="20" 
+			change="validate(event)" displayAsPassword="true"/>
+		
+		<mx:Label horizontalCenter="-22" verticalCenter="180" text="密码" width="50" height="20" 
+			textAlign="center" fontSize="12" fontWeight="bold"/>
+		<mx:RadioButton id="adminRadio" horizontalCenter="202" verticalCenter="180" label="管理员"/>
+		<mx:RadioButton id="userRadio" horizontalCenter="196" verticalCenter="212" label="用户"  selected="true"/>
+		
+		
+		<mx:Button verticalCenter="223" horizontalCenter="-183" label="登录进站" 
+			id="submit" enabled="false"
+			click="login(event)"/>
+		<mx:Button horizontalCenter="85" verticalCenter="223" label="新用户注册"/>
+		<mx:Button horizontalCenter="-55" verticalCenter="223" label="匿名登录"
+			click="anonymouslogin(event)"/>
+		
+		
+		<mx:Label horizontalCenter="-136" verticalCenter="-71" text="Online Survey"  
+			fontFamily="Verdana" fontSize="36" fontWeight="bold" fontStyle="normal" color="#FFFFFF"/>
+		<mx:Label horizontalCenter="244" verticalCenter="124" text="Team 8" color="#FFFFFF" fontSize="15" fontWeight="bold"/>
+	</mx:Canvas>
+
+</mx:Module>

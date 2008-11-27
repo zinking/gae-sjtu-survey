@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:ns1="NewReadering2.Administor.AddSurvey.*"
+	width="438" height="464" >
+	<mx:ViewStack id="viewstack1" width="95%" height="80%" left="10" top="35">
+		<mx:Canvas label="添加主题头" width="100%" height="100%">
+			<ns1:AddSurveyHead x="10" y="10">
+			</ns1:AddSurveyHead>
+		</mx:Canvas>
+		<mx:Canvas label="添加问题" width="100%" height="100%">
+			<ns1:AddQestion1 x="0" y="10" width="100%">
+			</ns1:AddQestion1>
+		</mx:Canvas>
+	</mx:ViewStack>
+	<mx:ButtonBar dataProvider="viewstack1" left="19" top="10">
+	</mx:ButtonBar>
+          
+  </mx:Canvas>

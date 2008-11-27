@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" width="514" height="602"
+	xmlns:SurveyUI="component.SurveyUI.Addsurvey.*">
+	
+	
+	<SurveyUI:QueryRender currentState="edit" x="10"/>
+	
+
+	
+</mx:Module>
