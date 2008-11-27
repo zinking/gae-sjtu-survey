@@ -3,7 +3,6 @@ from pyamf.remoting.gateway.django import DjangoGateway
 #from pyamf.remoting.gateway.google import WebAppGateway
 
 from google.appengine.ext import db
-
 from model.QueryModel import *;
 
 try:
@@ -12,7 +11,7 @@ try:
 except ValueError:
     print "Classes already registered"
 
-def AddQuery(request,qdata):
+def addQuery(request,qdata):
     QueryPaper.submitQuery(qdata );
     
     return {
@@ -22,13 +21,21 @@ def AddQuery(request,qdata):
 def getAllSurveyHead(request,offset,pagesize):
     
     headlist = QueryPaper.retrieveAllSurveyHead(pagesize,offset);
-    querycount = db.Query( QueryPaper ).count()/pagesize;
+    querycount = db.Query( QueryPaper ).count()/pagesize + 1;
     
     return {
             "HeadList":headlist,
             "Count":querycount
             }
     
+def getQuery(request,querydescription):
+    
+    survey = QueryPaper.retrieveQuery( querydescription );  
+    return{
+           "Survey":survey
+           }
+
+
     
 def getAllQuery(request,username): 
     userkey = User.getUser(username).key();
@@ -50,9 +57,10 @@ def getAllQuery(request,username):
     
 
 surveyGateway = DjangoGateway({
-    'qSurvey.AddQuery': AddQuery,
+    'qSurvey.addQuery': addQuery,
     'qSurvey.getAllQuery':getAllQuery,
-    'qSurvey.getAllSurveyHead':getAllSurveyHead
+    'qSurvey.getAllSurveyHead':getAllSurveyHead,
+    'qSurvey.getQuery':getQuery
     #'getAllDepartments':getAllDepartments,
     #'updateUser':updateUser
 })
