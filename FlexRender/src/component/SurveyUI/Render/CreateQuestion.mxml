@@ -7,22 +7,25 @@
 		import mx.controls.RadioButton;
 		import net.isurvey.model.*;
 		
-		public var  problemdata:ProblemData = new ProblemData();
+		public var  questiondata:QuestionData = new QuestionData();
 		public function init():void{
 			rdBox.removeAllChildren();
 		}
 		
-		public function getQuestionData():ProblemData{
-			problemdata.description = txtProblemDescription.text;
+		public function getQuestionData():QuestionData{
+			questiondata.description = txtQuestionDescription.text;
+			questiondata.optionlist.removeAll();
 			for each ( var item:RadioButton in rdBox.getChildren() ){
 				var optionitem:Object = new Object();
-				optionitem.optiondescription = txtOptionDescription.text;
-				problemdata.optionlist.addItem( optionitem );
+				optionitem.optionname = item.label;
+				optionitem.pollcount = 0;
+				questiondata.optionlist.addItem( optionitem );
 			}						
-			return problemdata;
+			return questiondata;
 		}
 		
 		private function validate( event:Event ):void{
+			this.label = txtQuestionDescription.text;
 			var pdvr:ValidationResultEvent = vdProblemDescription.validate();
 			var odvr:ValidationResultEvent = vdOptionDescription.validate();
 			if ( pdvr.type == ValidationResultEvent.VALID &&
@@ -41,7 +44,7 @@
 </mx:Script>
 
 
-	<mx:StringValidator id="vdProblemDescription"  source="{txtProblemDescription}" property="text"
+	<mx:StringValidator id="vdProblemDescription"  source="{txtQuestionDescription}" property="text"
 		minLength="5"  maxLength="50"/>
 	<mx:StringValidator id="vdOptionDescription"  source="{txtOptionDescription}" property="text"
 		minLength="3"  maxLength="10"/>
@@ -51,7 +54,7 @@
    			<mx:FormHeading label="问题描述" 
    				width="100%" textAlign="left" height="22" fontWeight="normal" textDecoration="normal"/>
 			<mx:Canvas width="100%" height="68">
-				<mx:TextArea   id="txtProblemDescription" width="100%" height="100%"
+				<mx:TextArea   id="txtQuestionDescription" width="100%" height="100%"
 					 change="validate(event)"/>
 			</mx:Canvas>
 		

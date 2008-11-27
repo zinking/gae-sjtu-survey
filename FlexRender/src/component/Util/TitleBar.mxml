@@ -13,7 +13,7 @@
 			
 			public function setWelcomeTitle():void{
 				var currentUser:UserData = modelLocator.user;
-				var welcometitle:String = "欢迎你 "+currentUser.type +" "
+				var welcometitle:String = "欢迎你 "+UserData.getType(currentUser.type) +" "
 							+ currentUser.name;
 				wtitle.text = welcometitle;
 

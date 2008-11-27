@@ -85,9 +85,9 @@
 			textAlign="center" fontSize="12" fontWeight="bold"/>
 			
 		<mx:TextInput id="username" horizontalCenter="-132" verticalCenter="180" width="120" height="20"
-			change="validate(event)"/>
+			change="validate(event)" text="wang"/>
 		<mx:TextInput id="password" horizontalCenter="71" verticalCenter="180" width="120" height="20" 
-			change="validate(event)" displayAsPassword="true"/>
+			change="validate(event)" displayAsPassword="true" text="123456"/>
 		
 		<mx:Label horizontalCenter="-22" verticalCenter="180" text="密码" width="50" height="20" 
 			textAlign="center" fontSize="12" fontWeight="bold"/>
@@ -96,7 +96,7 @@
 		
 		
 		<mx:Button verticalCenter="223" horizontalCenter="-183" label="登录进站" 
-			id="submit" enabled="false"
+			id="submit" enabled="true"
 			click="login(event)"/>
 		<mx:Button horizontalCenter="85" verticalCenter="223" label="新用户注册"/>
 		<mx:Button horizontalCenter="-55" verticalCenter="223" label="匿名登录"

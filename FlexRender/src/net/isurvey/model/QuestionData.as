@@ -1,15 +1,16 @@
 package net.isurvey.model{
 	import flash.utils.ByteArray;
+	
 	import mx.collections.ArrayCollection;
 	
-	public class ProblemData
+	public class QuestionData
 	{
 		public var description:String;
 		//option 包括optionname & pollcount
 		public var optionlist:ArrayCollection;
 		
 		
-		public function ProblemData( /* des:String, list:ArrayCollection */){
+		public function QuestionData( /* des:String, list:ArrayCollection */){
 /* 			description = des;
 			optionlist = list; */
 			optionlist = new ArrayCollection;
@@ -18,7 +19,7 @@ package net.isurvey.model{
 		public function parseData( result:*):void{
 			description = result.description as String;
 			//这其实是个Option的List
-			optionlist  = result.optionlist as ArrayCollection;
+			optionlist  = new ArrayCollection(result.optionlist) ;
 		}
 		
 		public static function clone(obj:Object):* {

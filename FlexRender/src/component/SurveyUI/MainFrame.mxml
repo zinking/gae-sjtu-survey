@@ -23,40 +23,39 @@
 				mdLoader.url = moduleurl;
 	 			mdLoader.loadModule();
 			} 
-	 			 		
-	 		public function loadSettings():void{
-	 			//topBar.setWelcomeTitle( currentUser );
-	 			var currentUser:UserData = modelLocator.user;
-	 			
-	 			if ( currentUser.type == UserData.ADMIN ){
-	 				leftbox.removeChild( anonymousLogin );
+			private function arrangeUserUI( type:int ):void{
+				switch( type ){
+					case UserData.ADMIN:
+					leftbox.removeChild( anonymousLogin );
 	 				modelLocator.controlpanel_status = ControlPanelEvent.MANAGE_SURVEY;
-	 				loadModule( SurveyModelLocator.ADDSURVEY_MODULE );
+	 				loadModule( SurveyModelLocator.MANAGESURVEY_MODULE );
 	 				cpanel.currentState = 'admin';
-	 				
-	 			}
-	 			else if ( currentUser.type == UserData.USER ){
+	 				break;
+	 				case UserData.USER:
 	 				leftbox.removeChild(anonymousLogin);
 	 				modelLocator.controlpanel_status = ControlPanelEvent.VIEW_SURVEY;
 	 				loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
 	 				cpanel.currentState = 'user';
-	 				
-	 			}
-	 			else if ( currentUser.type == UserData.ANONYMOUS ){
+	 				break;
+	 				case UserData.ANONYMOUS:
 	 				leftbox.removeChild(cpanel);
 	 				modelLocator.controlpanel_status = ControlPanelEvent.VIEW_SURVEY;
 	 				loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
+	 				break;
+	 				default:
+	 				trace("MAIN FRAME ARRANGE UI FAILED");
 	 				
-	 			}
+				}
+			}
+			
+	 			 		
+	 		public function loadSettings():void{
+	 			//topBar.setWelcomeTitle( currentUser );
+	 			var currentUser:UserData = modelLocator.user;
+	 			arrangeUserUI( currentUser.type);
+
 	 			var evt:ControlPanelEvent;
-	 			evt = new ControlPanelEvent( modelLocator.controlpanel_status);
-/* 	 			if ( currentUser.type == UserData.ANONYMOUS ){
-	 				 evt = new ControlPanelEvent( modelLocator.controlpanel_status);
-	 			}
-	 			else{
-	 				 evt = new ControlPanelEvent( modelLocator.controlpanel_status);
-	 			} */
-	 			
+	 			evt = new ControlPanelEvent( modelLocator.controlpanel_status);	 			
 				CairngormEventDispatcher.getInstance().dispatchEvent( evt );
 	 		}
 	 		
@@ -85,7 +84,7 @@
 	<Util:Update right="150" top="560"/>
 	
 	<!--<Survey:SurveyRenderComp horizontalCenter="0" top="255"/>-->
-	<mx:ModuleLoader id="mdLoader"   horizontalCenter="0" top="255" width="500" height="600"/>
+	<mx:ModuleLoader id="mdLoader"   horizontalCenter="0" top="255" width="600" height="800"/>
 		
 	<mx:Label text="Design by WangZhen ChenYao ZhangYanLei LinQinQin and ZhangZhiYong " 
 		horizontalCenter="0" color="#00FFFF" bottom="40"/>

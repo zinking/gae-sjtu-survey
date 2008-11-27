@@ -33,6 +33,8 @@ package net.isurvey.model
       	public var currentpagenumber:int = 1;
       	public var totalpagenumber:int 	 = 0;
       	
+      	public var surveyheadlist:Array;
+      	
       	
 
       	      	
@@ -44,7 +46,7 @@ package net.isurvey.model
       	     	
       	public static const LOGIN_MODULE:String 		= "component/UserUI/LoginModule.swf";
       	public static const MAINFRAME_MODULE:String 	= "component/SurveyUI/MainFrame.swf";
-      	public static const ADDSURVEY_MODULE:String 	= "component/SurveyUI/Addsurvey/AddSurveyUIModule.swf";
+      	//public static const ADDSURVEY_MODULE:String 	= "component/SurveyUI/Addsurvey/AddSurveyUIModule.swf";
       	public static const VIEWSURVEY_MODULE:String 	= "component/SurveyUI/Module/SurveyRenderModule.swf";
       	public static const MANAGESURVEY_MODULE:String	= "component/SurveyUI/Module/ManageSurveyModule.swf"
 		

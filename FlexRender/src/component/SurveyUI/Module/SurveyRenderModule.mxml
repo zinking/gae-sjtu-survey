@@ -16,44 +16,75 @@
 		import com.adobe.cairngorm.control.CairngormEvent;
 		
 		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
+		
+		public var surveyheadlist:*;
 			
 		private function init():void{
-			pageinfo.text = "Page:"+md.currentpagenumber +"/"+md.totalpagenumber;
+			setPageNumber();
+			//displayAllSurveyHeads( md.surveyheadlist );
 		}
 		
-		public function displayAllSurveyHeads( headlist:* ):void{
-			//对应的所有SURVEY的RENDER都在这里创建			
+		public function displayAllSurveyHeads(  ):void{
+			//对应的所有SURVEY的RENDER都在这里创建
+			var headlist:Array = md.surveyheadlist;			
 			acSurveyList.removeAllChildren();
-			
+			if ( headlist.length == 0 ){
+				lblTip.text = "目前没有任何调查";
+				return;
+			}
 			for each ( var surveyhead:* in headlist ){
-				var surveyRender:Canvas = new Canvas();//TODO:改进为SURVEYRENDER
-				surveyRender.label = surveyhead.description;
+				var surveyRender:SurveyRender = new SurveyRender();//TODO:改进为SURVEYRENDER
+				surveyRender.renderSurveyHead( surveyhead );
 				acSurveyList.addChild(surveyRender); 
-			} 			
+			} 	
+			
+			var sr:SurveyRender = acSurveyList.selectedChild as SurveyRender;
+			sr.retrieveSurveyBody();
+					
+		}
+		
+		public function setPageNumber():void{
+			var total:int = md.totalpagenumber;
+			var curr:int = md.currentpagenumber;
+			pageinfo.text = "Page:"+ curr +"/"+ total;
+				
+			var currentPageNumber:int = md.currentpagenumber;
+			if ( currentPageNumber <= 1 ){
+				currentPageNumber = 1;
+				ppage.enabled = false;
+			}
+			if ( currentPageNumber >= md.totalpagenumber ){
+				currentPageNumber = md.totalpagenumber;
+				npage.enabled = false;
+			}
 		}
 		
 
 		public function updatePageNumber(  offset:int ):void{
+
 			var currentPageNumber:int = md.currentpagenumber + offset;
 			ppage.enabled = true;
 			npage.enabled = true;
+			trace(currentPageNumber);
+			
 			if ( currentPageNumber <= 1 ){
-				currentPageNumber = 0;
+				currentPageNumber = 1;
 				ppage.enabled = false;
 			}
-			else if ( currentPageNumber >= md.totalpagenumber ){
-				currentPageNumber = 0;
-				npage.enabled = true;
+			if ( currentPageNumber >= md.totalpagenumber ){
+				currentPageNumber = md.totalpagenumber;
+				npage.enabled = false;
 			}		
 			md.currentpagenumber = currentPageNumber;
-			var event:ControlPanelEvent = new ControlPanelEvent(ControlPanelEvent.PAGE_UPDATE);
-			pageinfo.text = "Page:"+md.currentpagenumber +"/"+md.totalpagenumber;	
-					
+			setPageNumber();
+			var event:ControlPanelEvent = new ControlPanelEvent(ControlPanelEvent.PAGE_UPDATE);		
 			CairngormEventDispatcher.getInstance().dispatchEvent( event );
 		}
 		
 		public function onSurveyFocusChange( event:IndexChangedEvent ):void{
-			trace( event.newIndex );
+			//trace( "AccordionChanged"+event.newIndex );
+			var sr:SurveyRender = acSurveyList.selectedChild as SurveyRender;
+			sr.retrieveSurveyBody();
 		}
 			
 		]]>
@@ -65,8 +96,8 @@
 	<mx:ApplicationControlBar top="0" width="100%" horizontalCenter="0" height="50">
 		<mx:Spacer width="10"/>
 		<mx:Image source="@Embed(source='images/1.gif')" />
-		<mx:Spacer width="120"/>
-		<mx:Label text="调查" fontSize="20" fontWeight="bold" textAlign="center" width="100" color="#FFFFFF"/>
+		<mx:Spacer width="10%"/>
+		<mx:Label id="lblTip" text="调查" fontSize="20" fontWeight="bold" textAlign="center" width="60%" color="#FFFFFF"/>
 	</mx:ApplicationControlBar>
 	<mx:Accordion id = "acSurveyList"
 		 change="onSurveyFocusChange( event)"
@@ -74,18 +105,10 @@
 		<Render:QuestionRender label="Theme1"/>
 		<Render:QuestionRender label="Theme2"/>
 		<Render:QuestionRender label="Theme3"/>
-<!--		<mx:Canvas label="主题1" width="100%" height="100%">
-		</mx:Canvas>
-		<mx:Canvas label="主题2" width="100%" height="100%">
-		</mx:Canvas>
-		<mx:Canvas label="主题3" width="100%" height="100%">
-		</mx:Canvas>
-		<mx:Canvas label="主题4" width="100%" height="100%">
-		</mx:Canvas>-->
 	</mx:Accordion>
 	
 	<mx:LinkButton id="ppage" label="上一页" horizontalCenter="0" 
-		click="updatePageNumber(-1)" bottom="20"/>
+		click="updatePageNumber(-1)" bottom="20" enabled="false"/>
 	<mx:LinkButton id="npage" label="下一页" right="60"
 		click="updatePageNumber(1)" bottom="20"/>	
 	<mx:Label id="pageinfo" x="286" y="560" text="Page" width="84"/>

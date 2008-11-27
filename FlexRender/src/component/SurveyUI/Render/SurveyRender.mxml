@@ -1,21 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="490">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:Render="component.SurveyUI.Render.*"
+	 creationComplete="init()" 
+	width="400" height="300"
+	>
+	<mx:states>
+		<mx:State name="Collapse">
+			<mx:RemoveChild target="{txtSurvey}"/>
+			<mx:RemoveChild target="{label1}"/>
+			<mx:RemoveChild target="{dtExpire}"/>
+			<mx:RemoveChild target="{acQuestionList}"/>
+			<mx:RemoveChild target="{dtCreate}"/>
+			<mx:RemoveChild target="{label2}"/>
+			<mx:RemoveChild target="{lblUser}"/>
+			<mx:SetProperty name="height"/>
+		</mx:State>
+	</mx:states>
 
 <mx:Script>
 	<![CDATA[
 		
-		import net.isurvey.model.*;
 		import component.SurveyUI.Render.*;
+		import net.isurvey.event.*;
+		import net.isurvey.model.*;
+		import com.adobe.cairngorm.control.CairngormEventDispatcher;
+		import com.adobe.cairngorm.control.CairngormEvent;
 		
-		public function UpdateData( sdata:SurveyData):void{
+		public function init():void{
+			acQuestionList.removeAllChildren();
+		}
+		
+		public function renderSurveyHead( surveyhead:Object ):void{
+			this.currentState = "Collapse";
+			label = surveyhead.description;
+			//dtCreate.selectedDate = surveyhead.createdate;
+			//dtExpire .selectedDate = surveyhead.expiredate;
+		}
+		
+		public function retrieveSurveyBody():void{
+			var evt:ManageSurveyEvent = new ManageSurveyEvent( ManageSurveyEvent.GET_SURVEY );
+			evt.surveyrender = this;						
+			CairngormEventDispatcher.getInstance().dispatchEvent( evt );
+		}
+		
+		public function renderSurvey( sdata:SurveyData):void{
+			this.currentState = "";
 			dtCreate.selectedDate = sdata.createdate;
 			dtExpire.selectedDate = sdata.expiredate;
 			txtSurvey.text = sdata.description;
+			lblUser.text = "发起人:"+sdata.username;
 			
-			for each( var item:* in sdata.problemlist ){
+			for each( var item:* in sdata.questionlist ){
 	 			var qr:QuestionRender = new QuestionRender();
-	 			qr.QuestionData = item;
-	 			bxProblem.addChild( qr );
+	 			qr.questiondata = new QuestionData();
+	 			qr.questiondata.parseData(item);
+	 			acQuestionList.addChild( qr );
 	 		}
 		}
 
@@ -23,14 +62,15 @@
 	]]>
 </mx:Script>
 
-	<mx:Label   text="创建日期："  x="26.5" y="460"/>
-	<mx:DateField id="dtCreate"  editable="false"  enabled="false" x="79" y="458"/>
-	<mx:Label   text="截止日期："  x="207.5" y="49"/>
+	<mx:Label   text="创建日期："  x="26.5" bottom="10" id="label2"/>
+	<mx:DateField id="dtCreate"  editable="false"  enabled="true" x="79" bottom="10"/>
+	<mx:Label   text="截止日期："  x="207.5" y="49" id="label1"/>
 	<mx:DateField id="dtExpire"  editable="false" 
-		enabled="false" x="270.5" y="47"/>
-	<mx:Label id="lbluser" x="257" y="462" text="发起人:"/>
+		enabled="true" x="270.5" y="47"/>
+	<mx:Label id="lblUser" x="257" text="发起人:" bottom="10"/>
 	
-	<mx:VBox id="bxProblem" x="40.5" y="77" width="80%" height="364">
-	</mx:VBox>
+	<mx:Accordion id="acQuestionList" x="36.5" y="78" width="80%" height="50%">
+	<Render:QuestionRender/>
+	</mx:Accordion>
 	<mx:Label x="40.5" y="12" text="QueryDescritpion" width="320" height="29" id="txtSurvey"/>
 </mx:Canvas>
