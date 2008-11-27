@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="384" height="412" xmlns:ns1="Readering2.User.ViewHistory.*">
+	<mx:ViewStack x="10" y="53" id="viewstack1" width="364" height="351">
+		
+		<mx:Canvas label="历史调查列表" width="100%" height="100%">
+		 <mx:Grid>
+            <mx:GridRow>
+                <mx:GridItem width="100%" height="20">
+                     <mx:Text x="130" y="123" text="主题1" />
+                </mx:GridItem>
+                <mx:GridItem>
+                     <mx:Text x="130" y="123" text="主题2" />
+                </mx:GridItem>
+                <mx:GridItem>
+                     <mx:Text x="130" y="123" text="主题3" />
+                </mx:GridItem>
+            </mx:GridRow>
+
+            <mx:GridRow>
+                <mx:GridItem>
+                    <mx:Text x="130" y="123" text="主题4" />
+                </mx:GridItem>
+                <mx:GridItem>
+                     <mx:Text x="130" y="123" text="主题5" />
+                </mx:GridItem>
+                <mx:GridItem>
+                     <mx:Text x="130" y="123" text="主题6" />
+                </mx:GridItem>
+            </mx:GridRow>
+
+            <mx:GridRow>
+                <mx:GridItem>
+                     <mx:Text x="130" y="123" text="主题7" />
+                </mx:GridItem>
+                <mx:GridItem>
+                     <mx:Text x="130" y="123" text="主题8" />
+                </mx:GridItem>
+                <mx:GridItem>
+                     <mx:Text x="130" y="123" text="主题9" />
+                </mx:GridItem>
+            </mx:GridRow>
+        </mx:Grid>
+		
+		</mx:Canvas>
+		<mx:Canvas label="当前调查历史" width="100%" height="100%">
+			<mx:VBox x="10" y="10" width="95%" height="100%">
+				<mx:TextArea text="主题名、主题描述&#xa;" width="100%"/>
+				<mx:Accordion width="100%" height="70%">
+					<mx:Canvas label="问题1" width="100%" height="100%">
+						<ns1:ViewQuestion2 x="10" y="10" height="100%" width="100%">
+						</ns1:ViewQuestion2>
+					</mx:Canvas>
+					<mx:Canvas label="问题2" width="100%" height="100%">
+					</mx:Canvas>
+					<mx:Canvas label="问题3" width="100%" height="100%">
+					</mx:Canvas>
+					<mx:Canvas label="问题N" width="100%" height="100%">
+					</mx:Canvas>
+				</mx:Accordion>
+			</mx:VBox>
+		</mx:Canvas>
+		
+	</mx:ViewStack>
+	<mx:LinkBar x="10" y="10" dataProvider="viewstack1">
+	</mx:LinkBar>
+	
+</mx:Canvas>

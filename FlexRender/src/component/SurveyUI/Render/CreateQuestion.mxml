@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="350" height="400"
+	 initialize="init()">
+<mx:Script>
+	<![CDATA[
+		import mx.events.ValidationResultEvent;
+		import mx.controls.RadioButton;
+		import net.isurvey.model.*;
+		
+		public var  problemdata:ProblemData = new ProblemData();
+		public function init():void{
+			rdBox.removeAllChildren();
+		}
+		
+		public function getQuestionData():ProblemData{
+			problemdata.description = txtProblemDescription.text;
+			for each ( var item:RadioButton in rdBox.getChildren() ){
+				var optionitem:Object = new Object();
+				optionitem.optiondescription = txtOptionDescription.text;
+				problemdata.optionlist.addItem( optionitem );
+			}						
+			return problemdata;
+		}
+		
+		private function validate( event:Event ):void{
+			var pdvr:ValidationResultEvent = vdProblemDescription.validate();
+			var odvr:ValidationResultEvent = vdOptionDescription.validate();
+			if ( pdvr.type == ValidationResultEvent.VALID &&
+				 odvr.type == ValidationResultEvent.VALID ) btnAddOption.enabled = true;
+			else btnAddOption.enabled = false;
+		}
+		private function onAddOption( event:Event):void{
+			var rdOption:RadioButton = new RadioButton();
+			rdOption.label = txtOptionDescription.text;
+			rdBox.addChild( rdOption );
+			txtOptionDescription.text = "";
+		}
+		
+		
+	]]>
+</mx:Script>
+
+
+	<mx:StringValidator id="vdProblemDescription"  source="{txtProblemDescription}" property="text"
+		minLength="5"  maxLength="50"/>
+	<mx:StringValidator id="vdOptionDescription"  source="{txtOptionDescription}" property="text"
+		minLength="3"  maxLength="10"/>
+	<mx:StringValidator />
+	<mx:VDividedBox width="95%" height="95%" left="10" top="10" verticalGap="10" liveDragging="false">
+   		<mx:Form height="194" width="100%" >
+   			<mx:FormHeading label="问题描述" 
+   				width="100%" textAlign="left" height="22" fontWeight="normal" textDecoration="normal"/>
+			<mx:Canvas width="100%" height="68">
+				<mx:TextArea   id="txtProblemDescription" width="100%" height="100%"
+					 change="validate(event)"/>
+			</mx:Canvas>
+		
+			<mx:FormItem label="问题类型" width="100%" fontSize="14" horizontalAlign="left" required="true">
+				<mx:HBox height="100%" width="100%">
+					<mx:Spacer width="10%"/>
+					<mx:RadioButton  label="单选" selected="true"/>
+					<mx:RadioButton  label="多选" enabled="false"/>
+				</mx:HBox>
+			</mx:FormItem>
+		
+			<mx:FormItem label="选项描述" width="100%" fontSize="14" horizontalAlign="left" required="true">
+				<mx:TextInput id="txtOptionDescription" width="100%"
+					change="validate(event)"/>
+			</mx:FormItem>
+		</mx:Form>
+	
+		<mx:Canvas label="Label" height="171" width="100%">			
+			<mx:Button id="btnAddOption" label="添加问题选项" right="230" y="10" enabled="false"
+				click="onAddOption(event)"/>
+			<mx:VBox id="rdBox" width="100%" height="100%" horizontalAlign="center" 
+				verticalAlign="middle" enabled="true" visible="true">
+				<mx:RadioButton label="Radio1"/>
+				<mx:RadioButton label="Radio2"/>	
+			</mx:VBox>
+			<mx:Button label="确认问题" x="262" y="127" enabled="false"/>
+		</mx:Canvas>
+	</mx:VDividedBox>
+	
+	
+</mx:Canvas>

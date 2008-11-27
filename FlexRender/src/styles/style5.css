@@ -1,0 +1,130 @@
+Module {
+   backgroundColor: #ffffff;
+   backgroundGradientColors: #0099ff, #ffffff;
+}
+
+Accordion {
+   backgroundAlpha: 0.7;
+   selectedFillColors: #ffff00, #ffff99;
+   borderColor: #ffff00;
+   textRollOverColor: #00ffff;
+   textSelectedColor: #ff0066;
+   headerStyleName: "myaccordionHeader";
+}
+
+.myaccordionHeader {
+   fontSize: 12;
+}
+
+Button {
+   cornerRadius: 10;
+   textRollOverColor: #00ffff;
+   textSelectedColor: #ff0033;
+   borderColor: #ffff00;
+   fontSize: 12;
+   fontWeight: bold;
+}
+
+ButtonBar {
+   buttonStyleName: "mybuttonBarButtonStyle";
+   firstButtonStyleName: "mybuttonBarFirstButtonStyle";
+   lastButtonStyleName: "mybuttonBarLastButtonStyle";
+}
+
+.mybuttonBarButtonStyle {
+   textRollOverColor: #00ffff;
+   textSelectedColor: #ff0033;
+   borderColor: #ffff00;
+   fontSize: 12;
+}
+
+.mybuttonBarFirstButtonStyle {
+   cornerRadius: 10;
+}
+
+.mybuttonBarLastButtonStyle {
+   cornerRadius: 10;
+}
+
+CheckBox {
+   borderColor: #ffff00;
+   textSelectedColor: #ff0033;
+   textRollOverColor: #00ffff;
+   fontSize: 12;
+}
+
+DateChooser {
+   todayColor: #ff00ff;
+   borderColor: #ffff00;
+   fontSize: 12;
+}
+
+HScrollBar {
+   cornerRadius: 0;
+   trackColors: #ffffff, #e7e7e7;
+   themeColor: #0099ff;
+   borderColor: #ffff00;
+}
+
+Panel {
+   borderColor: #ffffff;
+   borderAlpha: 0.3;
+   cornerRadius: 10;
+   backgroundAlpha: 0.7;
+   highlightAlphas: 0, 0;
+   headerColors: #0066ff, #ffffff;
+   footerColors: #0066ff, #ffffff;
+   titleStyleName: "mypanelTitle";
+}
+
+.mypanelTitle {
+   fontSize: 12;
+}
+
+RadioButton {
+   borderColor: #ffff00;
+   textSelectedColor: #ff0033;
+   textRollOverColor: #00ffff;
+   fontSize: 12;
+}
+
+TabNavigator {
+   cornerRadius: 0;
+   backgroundAlpha: 0.7;
+   borderColor: #ffff00;
+   tabStyleName: "myTabs";
+   firstTabStyleName: "myTabs";
+   lastTabStyleName: "myTabs";
+   selectedTabTextStyleName: "mySelectedTabs";
+}
+
+.myTabs {
+   cornerRadius: 10;
+   backgroundAlpha: 0.7;
+   borderColor: #ffff00;
+   textRollOverColor: #00ffff;
+   fontSize: 12;
+
+}
+
+.mySelectedTabs {
+   textRollOverColor: #ff0033;
+}
+
+TextArea {
+   fontSize: 12;
+   backgroundAlpha: 0.7;
+   borderColor: #ffff00;
+   cornerRadius: 10;
+}
+
+TextInput {
+   borderColor: #ffff00;
+}
+
+VScrollBar {
+   cornerRadius: 0;
+   trackColors: #ffffff, #e7e7e7;
+   borderColor: #ffff00;
+}
+

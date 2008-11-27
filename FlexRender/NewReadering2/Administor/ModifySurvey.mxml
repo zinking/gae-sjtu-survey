@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="420" height="478" xmlns:ns1="Readering2.Administor.*" xmlns:ns2="NewReadering.Manager.ManagerSurvey.ModifySurvey.*">
+	<mx:TabNavigator width="95%" height="459" left="11" top="11">
+		<mx:Canvas label="管理主题" width="100%" height="100%">
+	<mx:Label text="请输入要查询的主题：" fontSize="14" top="50" left="10"/>
+	<mx:TextInput x="163" y="52"/>
+	<mx:Button x="331" y="50" label="查询" fontSize="12"/>
+	<mx:List left="10" top="90" width="90%"></mx:List>
+	<mx:RadioButtonGroup id="radiogroup1"/>
+	<mx:RadioButton x="27" y="105" label="调查1" groupName="radiogroup1"/>
+	<mx:RadioButton x="27" y="131" label="调查 2" groupName="radiogroup1"/>
+	<mx:RadioButton x="27" y="157" label="调查3" groupName="radiogroup1"/>
+	<mx:RadioButton x="27" y="183" label="调查4" groupName="radiogroup1"/>
+	<mx:Button x="107" y="267" label="修改"/>
+	<mx:Button x="205" y="267" label="删除"/>
+	<mx:Button x="306" y="267" label="取消"/>
+		</mx:Canvas>
+		<mx:Canvas label="修改主题头" width="100%" height="100%">
+		<mx:FormHeading x="10" y="10" label="修改主题头：" width="100%" fontSize="14"/>
+	<mx:Form width="370" height="210" left="10" top="35">
+		<mx:FormItem label="主题名：" fontSize="14">
+			<mx:TextInput width="209"/>
+		</mx:FormItem>
+		<mx:FormItem label="主题背景描述：" fontSize="14">
+			<mx:TextArea width="208"/>
+		</mx:FormItem>
+		<mx:FormItem label="调查发布时间：" fontSize="14">
+			<mx:DateField width="205"/>
+		</mx:FormItem>
+		<mx:FormItem label="调查截止时间：" fontSize="14">
+			<mx:DateField width="210"/>
+		</mx:FormItem>
+		<mx:FormItem label="是否设为默认主题？" fontSize="14">
+			<mx:HBox width="207" height="22">
+				<mx:RadioButton label="是" height="100%"/>
+				<mx:Spacer width="40%" height="10"/>
+				<mx:RadioButton label="否"/>
+			</mx:HBox>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:Button x="83" y="268" label="确定" fontSize="12"/>
+	<mx:Button x="299" y="266" label="取消" fontSize="12"/>
+	
+		</mx:Canvas>
+		<mx:Canvas label="修改问题" width="100%" height="90%">
+		<mx:Accordion width="98%" height="374" left="10" top="10">
+		<mx:Canvas label="修改问题1" width="100%" height="100%">
+		</mx:Canvas>
+		<mx:Canvas label="修改问题2" width="100%" height="100%">
+		</mx:Canvas>
+		<mx:Canvas label="修改问题3" width="100%" height="100%">
+		</mx:Canvas>
+		<mx:Canvas label="修改问题N" width="100%" height="85%">
+		</mx:Canvas>
+	</mx:Accordion>
+		<mx:Button x="109" y="394" label="提交 "/>
+		<mx:Button x="247" y="399" label="取消"/>
+		</mx:Canvas>
+	</mx:TabNavigator>
+</mx:Canvas>

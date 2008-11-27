@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="340" height="322">
+	<mx:Form x="0" y="0" width="100%" height="272">
+		<mx:FormItem label="用户名：">
+			<mx:Text width="161"/>
+		</mx:FormItem>
+		<mx:FormItem label="真实姓名(可选)：">
+			<mx:TextInput/>
+		</mx:FormItem>
+		<mx:FormItem label="性别：">
+			<mx:TextInput/>
+		</mx:FormItem>
+		<mx:FormItem label="邮箱：">
+			<mx:TextInput/>
+		
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Spacer height="20" width="80"/>
+		
+		</mx:FormItem>
+		<mx:FormItem label="请输入原来密码：">
+			<mx:TextInput/>
+		</mx:FormItem>
+		<mx:FormItem label="请输入新密码：">
+			<mx:TextInput/>
+		</mx:FormItem>
+		<mx:FormItem label="请再次输入新密码：">
+			<mx:TextInput/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:Button x="58" y="290" label="确定"/>
+	<mx:Button x="213" y="290" label="取消"/>
+	
+</mx:Module>

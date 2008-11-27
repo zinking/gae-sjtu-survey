@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300">
+	<mx:Form x="0" y="0" width="400" height="300">
+		<mx:FormItem label="问题描述：" fontSize="14">
+			<mx:TextInput/>
+		</mx:FormItem>
+		<mx:FormItem label="问题类型：" width="352" height="20" fontSize="14">
+			<mx:Canvas width="164" height="20">
+				<mx:RadioButton x="10" y="0" label="单选" height="20"/>
+				<mx:RadioButton x="86" y="0" label="多选" height="20"/>
+			</mx:Canvas>
+		</mx:FormItem>
+		<mx:FormItem label="是否设置为默认问题：" width="300" height="20" fontSize="14">
+			<mx:Canvas width="200" height="20">
+				<mx:RadioButton x="10" y="-2" label="是"/>
+				<mx:RadioButton x="81" y="0" label="否" height="20"/>
+			</mx:Canvas>
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button label="添加答案" fontSize="14"/>
+		</mx:FormItem>
+	</mx:Form>
+	
+</mx:Canvas>

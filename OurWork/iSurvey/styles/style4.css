@@ -1,0 +1,188 @@
+Application {
+   backgroundColor: #ffffff;
+   backgroundGradientColors: #0099ff, #ffff66;
+   backgroundGradientAlphas: 0.9, 0.8;
+   themeColor: #009dff;
+   color: #0b333c;
+}
+
+Accordion {
+   selectedFillColors: #0099ff, #ffffff;
+   borderColor: #ffff66;
+   textRollOverColor: #ffff00;
+   textSelectedColor: #ff0033;
+   headerStyleName: "myaccordionHeader";
+}
+
+.myaccordionHeader {
+   fontSize: 12;
+}
+
+ApplicationControlBar {
+   cornerRadius: 10;
+}
+
+Button {
+   cornerRadius: 10;
+   textRollOverColor: #ffff00;
+   textSelectedColor: #ff0033;
+   borderColor: #ffff66;
+   fontSize: 12;
+}
+
+ButtonBar {
+   buttonStyleName: "mybuttonBarButtonStyle";
+   firstButtonStyleName: "mybuttonBarFirstButtonStyle";
+   lastButtonStyleName: "mybuttonBarLastButtonStyle";
+}
+
+.mybuttonBarButtonStyle {
+   textRollOverColor: #ffff00;
+   textSelectedColor: #ff0033;
+   borderColor: #ffff66;
+   fontSize: 12;
+}
+
+.mybuttonBarFirstButtonStyle {
+   cornerRadius: 10;
+}
+
+.mybuttonBarLastButtonStyle {
+   cornerRadius: 10;
+}
+
+CheckBox {
+   borderColor: #ffff66;
+   textSelectedColor: #ff0033;
+   textRollOverColor: #ffff00;
+   fontSize: 12;
+}
+
+DateChooser {
+   todayColor: #ff0066;
+   borderColor: #ffff66;
+   fontSize: 12;
+}
+
+HScrollBar {
+   cornerRadius: 0;
+   trackColors: #0099ff, #e7e7e7;
+   borderColor: #ffff66;
+}
+
+LinkBar {
+   borderStyle: solid;
+   borderColor: #ffff66;
+   cornerRadius: 10;
+   separatorColor: #ffff66;
+   selectionColor: #ffff66;
+   textRollOverColor: #ffff00;
+   textSelectedColor: #ff0033;
+   disabledColor: #666666;
+   fontSize: 12;
+}
+
+LinkButton {
+   cornerRadius: 10;
+   selectionColor: #ffff66;
+   textRollOverColor: #ffff00;
+   textSelectedColor: #ff0033;
+   fontSize: 12;
+}
+
+List {
+   borderThickness: 0;
+   borderColor: #ffff66;
+   textSelectedColor: #ff0033;
+   cornerRadius: 10;
+}
+
+Panel {
+   borderStyle: solid;
+   borderColor: #ffff66;
+   borderAlpha: 0.8;
+   roundedBottomCorners: true;
+   cornerRadius: 10;
+   backgroundAlpha: 0.8;
+   highlightAlphas: 0.5, 0;
+   headerColors: #ffff66, #ffffff;
+   titleStyleName: "mypanelTitle";
+}
+
+.mypanelTitle {
+   fontSize: 12;
+}
+
+RadioButton {
+   borderColor: #ffff66;
+   textSelectedColor: #ff0033;
+   textRollOverColor: #ffff00;
+   fontSize: 12;
+}
+
+TabNavigator {
+   cornerRadius: 0;
+   borderColor: #ffff66;
+   tabStyleName: "myTabs";
+   firstTabStyleName: "myTabs";
+   lastTabStyleName: "myTabs";
+   selectedTabTextStyleName: "mySelectedTabs";
+}
+
+.myTabs {
+   cornerRadius: 10;
+   fillAlphas: 0.33, 0.4;
+   borderColor: #ffff66;
+   textRollOverColor: #ffff00;
+   fontSize: 12;
+
+}
+
+.mySelectedTabs {
+   textRollOverColor: #ff0033;
+   fontSize: 12;
+}
+
+TextArea {
+   backgroundAlpha: 0.8;
+   borderColor: #ffff66;
+   cornerRadius: 10;
+}
+
+TextInput {
+   borderColor: #ffff66;
+}
+
+ToggleButtonBar {
+   buttonStyleName: "mytoggleButtonBarButtonStyle";
+   firstButtonStyleName: "mytoggleButtonBarFirstButtonStyle";
+   lastButtonStyleName: "mytoggleButtonBarLastButtonStyle";
+   selectedButtonTextStyleName: "mytoggleButtonBarSelectedButtonStyle";
+}
+
+.mytoggleButtonBarButtonStyle {
+   textRollOverColor: #ffff00;
+   textSelectedColor: #ff0033;
+   borderColor: #ffff66;
+   fontSize: 12;
+}
+
+.mytoggleButtonBarFirstButtonStyle {
+   cornerRadius: 10;
+}
+
+.mytoggleButtonBarLastButtonStyle {
+   cornerRadius: 10;
+}
+
+.mytoggleButtonBarSelectedButtonStyle {
+   color: #666666;
+   fontSize: 12;
+}
+
+VScrollBar {
+   cornerRadius: 0;
+   trackColors: #0099ff, #e7e7e7;
+   borderColor: #ffff66;
+}
+

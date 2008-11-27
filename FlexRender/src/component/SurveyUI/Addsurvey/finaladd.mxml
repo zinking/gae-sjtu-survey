@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="804" xmlns:ns1="RenderNew.addsurvey.*" xmlns:ns2="RenderNew.*">
+	<ns1:addsurvey x="0" y="0" height="265">
+	</ns1:addsurvey>
+	<ns2:identifyandremove x="0" y="219">
+	</ns2:identifyandremove>
+	<ns1:addquestion x="0" y="273" height="206">
+	</ns1:addquestion>
+	<ns2:identifyandremove x="0" y="433">
+	</ns2:identifyandremove>
+	<ns1:addanswer x="0" y="505" height="148">
+	</ns1:addanswer>
+	<ns2:identifyandremove x="0" y="611">
+	</ns2:identifyandremove>
+	
+</mx:Canvas>

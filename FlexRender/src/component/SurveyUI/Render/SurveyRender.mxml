@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="490">
+
+<mx:Script>
+	<![CDATA[
+		
+		import net.isurvey.model.*;
+		import component.SurveyUI.Render.*;
+		
+		public function UpdateData( sdata:SurveyData):void{
+			dtCreate.selectedDate = sdata.createdate;
+			dtExpire.selectedDate = sdata.expiredate;
+			txtSurvey.text = sdata.description;
+			
+			for each( var item:* in sdata.problemlist ){
+	 			var qr:QuestionRender = new QuestionRender();
+	 			qr.QuestionData = item;
+	 			bxProblem.addChild( qr );
+	 		}
+		}
+
+		
+	]]>
+</mx:Script>
+
+	<mx:Label   text="创建日期："  x="26.5" y="460"/>
+	<mx:DateField id="dtCreate"  editable="false"  enabled="false" x="79" y="458"/>
+	<mx:Label   text="截止日期："  x="207.5" y="49"/>
+	<mx:DateField id="dtExpire"  editable="false" 
+		enabled="false" x="270.5" y="47"/>
+	<mx:Label id="lbluser" x="257" y="462" text="发起人:"/>
+	
+	<mx:VBox id="bxProblem" x="40.5" y="77" width="80%" height="364">
+	</mx:VBox>
+	<mx:Label x="40.5" y="12" text="QueryDescritpion" width="320" height="29" id="txtSurvey"/>
+</mx:Canvas>

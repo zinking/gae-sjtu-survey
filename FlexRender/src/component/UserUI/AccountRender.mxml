@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="230" height="250">
+	<mx:ApplicationControlBar top="0" width="100%" horizontalCenter="0" height="50">
+		<mx:Spacer width="10"/>
+		<mx:Image source="@Embed(source='images/1.gif')" />
+		<mx:Spacer width="10"/>
+		<mx:Label text="账户" fontSize="20" fontWeight="bold" textAlign="center" width="100" color="#FFFFFF"/>
+	</mx:ApplicationControlBar>
+	<mx:Label text="用户名" width="50" height="20" textAlign="center" fontSize="12" fontWeight="bold" top="80" left="25"/>
+	<mx:TextInput width="120" height="20" top="80" right="15"/>
+	<mx:TextInput width="120" height="20" top="110" right="15"/>
+	<mx:Label text="密码" width="50" height="20" textAlign="center" fontSize="12" fontWeight="bold" top="110" left="25"/>
+	<mx:RadioButton label="管理员" left="50" top="150"/>
+	<mx:RadioButton label="用户" top="150" right="55"/>
+	<mx:Button label="登录进站" left="25" bottom="30"/>
+	<mx:Button label="新用户注册" bottom="30" right="25"/>
+	
+</mx:Canvas>
