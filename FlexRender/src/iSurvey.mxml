@@ -20,8 +20,8 @@
 	 		private function init():void{
 				modelLocator.mainloader = mdLoader;
 				
-				//mdLoader.url = SurveyModelLocator.LOGIN_MODULE;
-				mdLoader.url = SurveyModelLocator.MANAGESURVEY_MODULE;
+				mdLoader.url = SurveyModelLocator.LOGIN_MODULE;
+				//mdLoader.url = SurveyModelLocator.MANAGESURVEY_MODULE;
 				mdLoader.loadModule();
 	 		}
 		
