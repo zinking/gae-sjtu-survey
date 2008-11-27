@@ -7,7 +7,11 @@ package net.isurvey.command
 	import component.SurveyUI.Module.*;
 	import component.UserUI.ControlPanel;
 	
+	import flash.events.Event;
+	
 	import mx.controls.*;
+	import mx.events.FlexEvent;
+	import mx.events.ModuleEvent;
 	import mx.modules.ModuleLoader;
 	import mx.rpc.*;
 	import mx.rpc.events.*;
@@ -23,6 +27,9 @@ package net.isurvey.command
 		private var currentEvent:ControlPanelEvent;
 		private var mdLocator:SurveyModelLocator = SurveyModelLocator.getInstance();
 		private var cpl:ControlPanel = mdLocator.controlpanel;
+		
+		
+		private var headloaded:Boolean = false;
 		
 		public function ControlPanelCommand(){
 			//初始化MODULE体装载函数
@@ -44,7 +51,7 @@ package net.isurvey.command
 					break;
 					
 					case ControlPanelEvent.MANAGE_SURVEY:
-						loadModule( SurveyModelLocator.ADDSURVEY_MODULE );
+						loadModule( SurveyModelLocator.MANAGESURVEY_MODULE );
 					break;
 					
 					case ControlPanelEvent.PAGE_UPDATE:
@@ -54,41 +61,68 @@ package net.isurvey.command
 					break;
 			}
 			SurveyModelLocator.getInstance().controlpanel_status = evt.operation_type;
+			
 					
+		}
+		private function onModuleLoadReady(event:Event):void{
+			var srm:SurveyRenderModule; 
+			srm = bodyLoader.child as SurveyRenderModule;
+			srm.addEventListener(FlexEvent.CREATION_COMPLETE,onModuleLoadComplete);
+		}
+		private function onModuleLoadComplete( event:Event ):void{
+			var srm:SurveyRenderModule; 
+			srm = bodyLoader.child as SurveyRenderModule;
+			srm.displayAllSurveyHeads(  );	
 		}
 		
 		private function loadModule( moduleurl:String):void{
+			
 			bodyLoader.unloadModule();
 			bodyLoader.url = moduleurl;
 	 		bodyLoader.loadModule();
+	 		this.headloaded = true;
 	 		
 		}
 		
 		public function result( event : Object ) : void{
 			var evt:ResultEvent = event as ResultEvent;
 			var headlist:*;
-			var srm:SurveyRenderModule; 
+			bodyLoader.addEventListener( ModuleEvent.READY,onModuleLoadReady );
 			//根据控制面板不同的子类事件对BODY模块进行处理
 			switch( currentEvent.operation_type ){
 					case ControlPanelEvent.VIEW_SURVEY:
 						headlist = evt.result.HeadList;
 						//设置总的页数
 						mdLocator.totalpagenumber = evt.result.Count;
+						mdLocator.surveyheadlist = headlist;
 						//装载所有的SURVEY HEAD
-						srm = bodyLoader.child as SurveyRenderModule;
-						srm.displayAllSurveyHeads( headlist );
+						//srm = bodyLoader.child as SurveyRenderModule;
+						//srm.surveyheadlist = headlist;
+						//srm.displayAllSurveyHeads( headlist );
+						
 					break;
 					
 					case ControlPanelEvent.PAGE_UPDATE:
 						headlist = evt.result.HeadList;
 						//设置总的页数
 						mdLocator.totalpagenumber = evt.result.Count;
+						mdLocator.surveyheadlist = headlist;
 						//装载所有的SURVEY HEAD
-						srm = bodyLoader.child as SurveyRenderModule;
-						srm.displayAllSurveyHeads( headlist );
+						//srm = bodyLoader.child as SurveyRenderModule;
+						////srm.displayAllSurveyHeads( headlist );
+						//srm.surveyheadlist = headlist;
 					break;
 					
-			}			
+			}	
+			//这只能算是个TRICK来解决MODULE异步加载的问题
+			if ( !this.headloaded ) {
+				var srm:SurveyRenderModule;
+				srm = bodyLoader.child as SurveyRenderModule;
+				srm.surveyheadlist = headlist;
+				srm.displayAllSurveyHeads(  );
+			}
+	
+				
 			cpl.enabled = true;
 	   
 		}

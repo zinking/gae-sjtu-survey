@@ -57,16 +57,16 @@
 	 	import mx.controls.RadioButton;	 	
 	 	import mx.controls.ComboBox;
 	 	
-	 	public	var renderData:ProblemData;
+	 	public	var renderData:QuestionData;
 	 		 	
 	 	private function init():void{
 	 		if ( renderData == null ){
-	 			renderData = new ProblemData();
+	 			renderData = new QuestionData();
 	 			return;
 	 		} 
 	 		render( renderData );	 		
 	 	}
-	 	public function render( rData:ProblemData = null ):void{
+	 	public function render( rData:QuestionData = null ):void{
 	 		if ( rData == null && renderData == null ) return;
 			if ( rData == null ) rData = renderData;
 	 		renderData = rData;
@@ -89,7 +89,7 @@
 	 	
 	 	///////////////////////////////////////////////////我是华丽的分割线//////////////////////////
 	 	public function onAddOptionClick( event:MouseEvent ):void{
-	 		if ( renderData == null ) renderData = new ProblemData();
+	 		if ( renderData == null ) renderData = new QuestionData();
 	 		var item:Object = new Object;
 	 		item.optionname = optionEdit.text;
 	 		item.pollcount  = 0;
@@ -100,7 +100,7 @@
 	 	}
 	 	
 	 	public function onConfirmAdd( event:MouseEvent ):void{
-	 		if ( renderData == null ) renderData = new ProblemData();
+	 		if ( renderData == null ) renderData = new QuestionData();
 	 		renderData.description = pbText.text;
 	 		currentState = '';//初始状态
 	 		stPieChart.dataProvider = renderData.optionlist;	 		

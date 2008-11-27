@@ -15,6 +15,20 @@ package net.isurvey.model
 			password = "world"; */
 		}
 		
+		public static function getType( type:int ):String{
+			switch( type ){
+				case ANONYMOUS:
+				return "Anonymous:";
+				case ADMIN:
+				return "Admin:";
+				case USER:
+				return "User:";
+				default:
+				trace("INVALID USER TYPE");
+			}
+			return "";
+		}
+		
 		public function parseData( result:*):void{
 			name = result.name as String;
 			password = result.password as String;

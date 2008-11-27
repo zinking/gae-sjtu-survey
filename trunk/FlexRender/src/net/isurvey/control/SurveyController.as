@@ -13,7 +13,8 @@ package net.isurvey.control
 		public function initialiseCommands():void{
 			addCommand( LogOutEvent.LOGOUT , LogOutCommand );
 			addCommand( LoginEvent.LOGIN , LoginCommand );
-			addCommand( ControlPanelEvent.CONTROL_PANEL , ControlPanelCommand);	  
+			addCommand( ControlPanelEvent.CONTROL_PANEL , ControlPanelCommand);	
+			addCommand( ManageSurveyEvent.MANAGESURVEY_EVENT , ManageSurveyCommand);	  
 		}	
 	}
 }

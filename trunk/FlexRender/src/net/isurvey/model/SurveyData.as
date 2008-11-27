@@ -10,14 +10,14 @@ package net.isurvey.model
 		public var username:String;
 		public var description:String;
 		
-		public var problemlist:ArrayCollection;
+		public var questionlist:ArrayCollection;
 		
+		public var questioncount:int;
 		public var pollcount:int;
-		public var problemcount:int;
 		
 		
 		public function SurveyData(){
-			problemlist = new ArrayCollection();
+			questionlist = new ArrayCollection();
 		}
 		
 		public function parseData( result:*):void{
@@ -25,12 +25,11 @@ package net.isurvey.model
 			createdate	= result.createdate;
 			expiredate  = result.expiredate;
 			username	= result.username;
-			problemlist = result.problemlist;
-			pollcount 	= result.pollcount;
+			questionlist = new ArrayCollection( result.problemlist);
+			questioncount 	= result.problemcount;
 			description	= result.description;
-			problemcount = result.problemcount;
+			pollcount = result.pollcount;
 			
-			problemlist = result.problemlist;
 			
 			/* var problemHash:* = result.problemlist as ArrayCollection;
 			

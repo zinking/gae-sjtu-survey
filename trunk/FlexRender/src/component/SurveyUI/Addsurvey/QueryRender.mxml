@@ -80,9 +80,9 @@
 			//TODO:poll count
 			
 			var i:int = 0;
-			for each( var item:* in renderData.problemlist ){
+			for each( var item:* in renderData.questionlist ){
 	 			var pbr:ProblemRender = new ProblemRender();
-	 			pbr.renderData = item as ProblemData;
+	 			pbr.renderData = item as QuestionData;
 	 			pbBox.addChild(pbr);
 	 			problemRendersHash[i] = pbr;
 	 			i++;	
@@ -102,8 +102,8 @@
 			if ( renderData == null ) renderData = new SurveyData();
 			var pbr:ProblemRender = new ProblemRender();
 			pbr.currentState = "edit";
-			this.problemRendersHash[ renderData.problemcount ] = pbr;
-			renderData.problemcount++;
+			this.problemRendersHash[ renderData.questioncount ] = pbr;
+			renderData.questioncount++;
 			
 			pbBox.addChild( pbr );
 			//Alert.show("添加成功");		
@@ -119,7 +119,7 @@
 			
 			if ( edate.selectedDate >= currentDate &&
 				 qtVR.type == ValidationResultEvent.VALID 
-				 && renderData.problemcount >= 1 )
+				 && renderData.questioncount >= 1 )
 				 ConfirmButton.enabled = true;
 			else
 				ConfirmButton.enabled = false;
@@ -130,14 +130,13 @@
 			renderData.createdate = new Date();
 			renderData.description= queryText.text;
 			renderData.expiredate = edate.selectedDate;
-			renderData.pollcount = 0;
+			renderData.questioncount = 0;
 			renderData.username = "wang";
 			//清空ArrayCollection
-			renderData.problemlist.removeAll();
+			renderData.questionlist.removeAll();
 			for each ( var item:ProblemRender in this.problemRendersHash ){
-				renderData.problemlist.addItem( item.renderData );
-			}
-			
+				renderData.questionlist.addItem( item.renderData );
+			}			
 		}
 		
 		public function onConfirmQueryClick( event:MouseEvent ):void{

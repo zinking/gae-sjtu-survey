@@ -53,7 +53,7 @@ package net.isurvey.command
 		
 		private function loadMainFrame():void{
 			mainLoader.unloadModule();
-			mainLoader.url = SurveyModelLocator.MANAGESURVEY_MODULE;
+			mainLoader.url = SurveyModelLocator.MAINFRAME_MODULE;
 			mainLoader.loadModule();
 		}
 	

@@ -23,6 +23,16 @@ package net.isurvey.business
 			call.addResponder( responder );
 		}
 		
+		public function addSurvey( surveydata:SurveyData):void{
+			var call:Object = service.addQuery( surveydata );
+			call.addResponder( responder );
+		}
+		
+		public function getSurvey( des:String ):void{
+			var call:Object = service.getQuery( des );
+			call.addResponder( responder );
+		}
+		
 		
 		
 	    private var responder : IResponder;
