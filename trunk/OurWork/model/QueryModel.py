@@ -21,9 +21,13 @@ class User(db.Model):
              return True;
         else:
             return False;
+        
+#--------------------------------------------------------------------------------------------    
+#-------------------------------------------------------------------------------------------- 
+#--------------------------------------------------------------------------------------------          
 
 class QueryPaper(db.Model):
-    description  = db.TextProperty( required = True);
+    description  = db.StringProperty( required = True);
     problemcount = db.IntegerProperty ( required = True );
     pollcount    = db.IntegerProperty ( required = True );
     creator = db.ReferenceProperty(User, required = True );
@@ -34,15 +38,15 @@ class QueryPaper(db.Model):
     @staticmethod
     def submitQuery( queryData ):
         newquery = QueryPaper( description = queryData.description,
-                               problemcount = queryData.problemcount,
+                               problemcount = queryData.questioncount,
                                pollcount = queryData.pollcount ,
                                creator = User.getUser(queryData.username),
                                createtime = queryData.createdate,
                                expiretime = queryData.expiredate);
         newquery.put();
         
-        for i in range(len( queryData.problemlist )) :
-            problemData = queryData.problemlist[i];
+        for i in range(len( queryData.questionlist )) :
+            problemData = queryData.questionlist[i];
             QueryProblem.submitProblem(problemData, newquery.key());
             
     @staticmethod
@@ -74,11 +78,28 @@ class QueryPaper(db.Model):
         
         #return querylist;
         return query_model_list;
+
+    @staticmethod
+    def retrieveQuery( des ):
+        #q = db.GqlQuery("SELECT * FROM QueryPaper WHERE description = :1 ",
+        #            des );  
+        p = QueryPaper.all().fetch(5);
+        q = QueryPaper.gql("WHERE description = :1", des );
+        results = q.fetch(1);
+        query = results[0];
+        query.problemlist = QueryProblem.retrieveProblem( query.key());
+        query.username = query.creator.name;
         
-    
-    
+        query_model = QueryModelMap.AssignDBQuery(query);
+        
+        return query_model;      
+#--------------------------------------------------------------------------------------------    
+#-------------------------------------------------------------------------------------------- 
+#--------------------------------------------------------------------------------------------  
+
+     
 class QueryProblem(db.Model):
-    description = db.TextProperty( required = True );
+    description = db.StringProperty( required = True );
     querypaper = db.ReferenceProperty(QueryPaper, required = True);
     
     
@@ -114,7 +135,10 @@ class QueryProblem(db.Model):
        # return problemlist;
         return problem_model_list;
             
-        
+   
+#--------------------------------------------------------------------------------------------    
+#-------------------------------------------------------------------------------------------- 
+#--------------------------------------------------------------------------------------------          
     
 class ProblemOption(db.Model):
     description = db.StringProperty(required = True );
@@ -135,6 +159,11 @@ class ProblemOption(db.Model):
                     problemkey );
         optionlist = options.fetch(options.count());
         return optionlist;
+
+#--------------------------------------------------------------------------------------------    
+#-------------------------------------------------------------------------------------------- 
+#--------------------------------------------------------------------------------------------  
+
     
 class UserPollHistory( db.Model):
     user = db.ReferenceProperty( User, required = True );
