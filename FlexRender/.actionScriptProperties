@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actionScriptProperties mainApplicationPath="iSurvey.mxml" version="3">
-<compiler additionalCompilerArguments="-locale en_US -services services-config-local.xml" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
+<compiler additionalCompilerArguments="-locale en_US -services services-config_gae.xml" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
 <compilerSourcePath/>
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="4" path=""/>
@@ -11,6 +11,7 @@
 </compiler>
 <applications>
 <application path="iSurvey.mxml"/>
+<application path="Test.mxml"/>
 </applications>
 <modules>
 <module application="src/iSurvey.mxml" destPath="component/SurveyUI/MainFrame.swf" optimize="true" sourcePath="src/component/SurveyUI/MainFrame.mxml"/>
