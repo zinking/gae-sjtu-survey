@@ -35,7 +35,12 @@ def getQuery(request,querydescription):
            "Survey":survey
            }
 
-
+def updateQuery( request, qdata):
+    QueryPaper.updateQuery( qdata );
+    
+    return{
+           "UpdateResult":True
+           }
     
 def getAllQuery(request,username): 
     userkey = User.getUser(username).key();
@@ -60,7 +65,8 @@ surveyGateway = DjangoGateway({
     'qSurvey.addQuery': addQuery,
     'qSurvey.getAllQuery':getAllQuery,
     'qSurvey.getAllSurveyHead':getAllSurveyHead,
-    'qSurvey.getQuery':getQuery
+    'qSurvey.getQuery':getQuery,
+    'qSurvey.updateQuery':updateQuery
     #'getAllDepartments':getAllDepartments,
     #'updateUser':updateUser
 })
