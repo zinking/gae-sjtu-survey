@@ -27,7 +27,7 @@ class User(db.Model):
 #--------------------------------------------------------------------------------------------          
 
 class QueryPaper(db.Model):
-    description  = db.StringProperty( required = True);
+    description  = db.StringProperty( required = True);#Primary Key Unique
     problemcount = db.IntegerProperty ( required = True );
     pollcount    = db.IntegerProperty ( required = True );
     creator = db.ReferenceProperty(User, required = True );
@@ -48,6 +48,18 @@ class QueryPaper(db.Model):
         for i in range(len( queryData.questionlist )) :
             problemData = queryData.questionlist[i];
             QueryProblem.submitProblem(problemData, newquery.key());
+
+    @staticmethod
+    def updateQuery( queryData):
+        q = QueryPaper.gql("WHERE description = :1", queryData.description );
+        results = q.fetch(1);
+        updatequery = results[0];
+        updatequery.pollcount = updatequery.pollcount + 1;
+        updatequery.put();#UPDATE SURVEY POLLCOUNT
+        for i in range(len( queryData.questionlist )) :
+            problemData = queryData.questionlist[i];
+            QueryProblem.updateProblem(problemData, updatequery.key());
+        
             
     @staticmethod
     def retrieveAllSurveyHead(pagesize,offset):
@@ -62,10 +74,7 @@ class QueryPaper(db.Model):
         #page system in need
         querylist = AllQuerys.fetch( 5 ,4 );#TODO:pagesystem
         
-        # test--------------------
-        query_model_list = [];
-        # test--------------------
-                    
+        query_model_list = [];                   
         for i in range( len( querylist )):
             item = querylist[i];
             item.problemlist = QueryProblem.retrieveProblem( item.key());
@@ -81,9 +90,6 @@ class QueryPaper(db.Model):
 
     @staticmethod
     def retrieveQuery( des ):
-        #q = db.GqlQuery("SELECT * FROM QueryPaper WHERE description = :1 ",
-        #            des );  
-        p = QueryPaper.all().fetch(5);
         q = QueryPaper.gql("WHERE description = :1", des );
         results = q.fetch(1);
         query = results[0];
@@ -97,10 +103,11 @@ class QueryPaper(db.Model):
 #-------------------------------------------------------------------------------------------- 
 #--------------------------------------------------------------------------------------------  
 
+
      
 class QueryProblem(db.Model):
-    description = db.StringProperty( required = True );
-    querypaper = db.ReferenceProperty(QueryPaper, required = True);
+    description = db.StringProperty( required = True );#
+    querypaper = db.ReferenceProperty(QueryPaper, required = True);#The two make up primary key
     
     
     @staticmethod
@@ -112,6 +119,17 @@ class QueryProblem(db.Model):
         for i in  iterlist:
             optionData = problemData.optionlist[i];
             ProblemOption.submitOption(optionData, newproblem.key());
+            
+    @staticmethod
+    def updateProblem( problemData, querykey):
+        q = QueryProblem.gql("WHERE description = :1 AND querypaper = :2 "
+                             ,problemData.description ,querykey );
+        results = q.fetch(1);
+        updateproblem = results[0];#GET THE PROBLEM KEY TO UPDATE THE PROBLEM
+        iterlist = range( len(problemData.optionlist))
+        for i in  iterlist:
+            optionData = problemData.optionlist[i];
+            ProblemOption.updateOption(optionData, updateproblem.key());
             
     @staticmethod       
     def retrieveProblem( querykey ):
@@ -152,7 +170,16 @@ class ProblemOption(db.Model):
                                    queryproblem = problemkey
                                   );
         newoption.put();
-    
+        
+    @staticmethod#UPDATE ALL THE OPTION ITERATELY
+    def updateOption( optionData, problemkey ):
+        q = ProblemOption.gql("WHERE description = :1 AND queryproblem = :2 "
+                             ,optionData.description ,problemkey );
+        results = q.fetch(1);
+        updateoption = results[0];
+        updateoption.pollcount = updateoption.pollcount + optionData.pollcount;
+        updateoption.put();
+        
     @staticmethod
     def retrieveOption( problemkey ):
         options = db.GqlQuery("SELECT * FROM ProblemOption WHERE queryproblem = :1 ",
