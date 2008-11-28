@@ -6,8 +6,8 @@ from model.QueryModel import User;
 
 def userAuthenticate(request,user ):
 
-    u = User(name="wang",password="123456");
-    u.put();
+    #u = User(name="wang",password="123456");
+    #u.put();
     
     username = user.name;
     password = user.password; 
