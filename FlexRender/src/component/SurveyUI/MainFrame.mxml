@@ -28,19 +28,16 @@
 					case UserData.ADMIN:
 					leftbox.removeChild( anonymousLogin );
 	 				modelLocator.controlpanel_status = ControlPanelEvent.MANAGE_SURVEY;
-	 				loadModule( SurveyModelLocator.MANAGESURVEY_MODULE );
 	 				cpanel.currentState = 'admin';
 	 				break;
 	 				case UserData.USER:
 	 				leftbox.removeChild(anonymousLogin);
 	 				modelLocator.controlpanel_status = ControlPanelEvent.VIEW_SURVEY;
-	 				loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
 	 				cpanel.currentState = 'user';
 	 				break;
 	 				case UserData.ANONYMOUS:
 	 				leftbox.removeChild(cpanel);
 	 				modelLocator.controlpanel_status = ControlPanelEvent.VIEW_SURVEY;
-	 				loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
 	 				break;
 	 				default:
 	 				trace("MAIN FRAME ARRANGE UI FAILED");
@@ -50,7 +47,6 @@
 			
 	 			 		
 	 		public function loadSettings():void{
-	 			//topBar.setWelcomeTitle( currentUser );
 	 			var currentUser:UserData = modelLocator.user;
 	 			arrangeUserUI( currentUser.type);
 

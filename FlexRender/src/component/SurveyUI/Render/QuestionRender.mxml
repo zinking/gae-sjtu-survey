@@ -10,9 +10,7 @@
 		
 		
 		private function init():void{
-	 		if ( questiondata == null ){
-	 			return;
-	 		} 
+	 		if ( questiondata == null )return;
 	 		updateData( questiondata );	 		
 	 	}
 		
@@ -23,21 +21,43 @@
 				radio.label = item.description;
 				optionbox.addChild( radio );
 			}
-			problemtxt.text = qd.description;
-			piechart.dataProvider = qd.optionlist;
+			txtQuestion.text = qd.description;
+			questiondata = qd;
+			piechart.dataProvider = questiondata.optionlist;
+		}
+		
+		public function getQuestionVoteData():QuestionData{
+			var questiondata:QuestionData = new QuestionData();
+			questiondata.description = txtQuestion.text;
+			questiondata.optionlist.removeAll();
+			for each ( var item:RadioButton in optionbox.getChildren() ){
+				var optiondata:Object = new Object();
+				optiondata.description = item.label;
+				if ( item.selected ) optiondata.pollcount = 1;
+				else optiondata.pollcount = 0;
+				questiondata.optionlist.addItem(optiondata);
+			}
+			this.questiondata.AddVoteData( questiondata );
+			piechart.dataProvider = this.questiondata.optionlist;
+			return questiondata;
 		}
 	]]>
 </mx:Script>
 
 
 	<mx:VBox height="100%" width="100%" horizontalCenter="0" verticalCenter="0">
-		<mx:TextArea id="problemtxt" width="100%" height="25%" text="问题"/>
+		<mx:TextArea id="txtQuestion" width="100%" height="25%" text="问题"/>
 		<mx:HBox width="100%" height="75%" horizontalCenter="0" verticalCenter="-50">
 		    <mx:VBox id="optionbox" height="100%" width="60%" left="0" verticalCenter="0">
 		        <mx:RadioButton label="答案1" groupName="答案"/>
 		    </mx:VBox>
 		    <mx:VBox height="100%" width="40%" right="0" verticalCenter="0">
-		        <mx:PieChart id="piechart" width="100%" height="100%"/>
+		        <mx:PieChart id="piechart" width="100%" height="100%"
+		        	showDataTips="true">
+		        	<mx:series>
+           				<mx:PieSeries  field="pollcount" nameField="description" />
+        			</mx:series>
+		        </mx:PieChart>
 		    </mx:VBox>
 		</mx:HBox>
 	</mx:VBox>

@@ -3,8 +3,6 @@ package net.isurvey.event
 	
 	import com.adobe.cairngorm.control.CairngormEvent;
 	
-	import component.UserUI.ControlPanel;
-	
 	import flash.events.Event;
 	
 	import net.isurvey.model.*;
@@ -14,6 +12,7 @@ package net.isurvey.event
     	public static const MANAGE_SURVEY:int = 2;
     	public static const VIEW_SURVEY:int = 3;
     	public static const PAGE_UPDATE:int = 4;
+    	public static const VOTE_SURVEY:int = 5;
     	
 		public var operation_type:int;
 		

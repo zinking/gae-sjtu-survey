@@ -20,8 +20,9 @@
 		public var surveyheadlist:*;
 			
 		private function init():void{
+			md.surveyrendermodule = this;
 			setPageNumber();
-			//displayAllSurveyHeads( md.surveyheadlist );
+			displayAllSurveyHeads( );
 		}
 		
 		public function displayAllSurveyHeads(  ):void{
@@ -41,6 +42,11 @@
 			var sr:SurveyRender = acSurveyList.selectedChild as SurveyRender;
 			sr.retrieveSurveyBody();
 					
+		}
+		
+		public function getCurrentVoteData():SurveyData{
+			var sr:SurveyRender = acSurveyList.selectedChild as SurveyRender;
+			return  sr.getSurveyVoteData();
 		}
 		
 		public function setPageNumber():void{
@@ -67,14 +73,6 @@
 			npage.enabled = true;
 			trace(currentPageNumber);
 			
-			if ( currentPageNumber <= 1 ){
-				currentPageNumber = 1;
-				ppage.enabled = false;
-			}
-			if ( currentPageNumber >= md.totalpagenumber ){
-				currentPageNumber = md.totalpagenumber;
-				npage.enabled = false;
-			}		
 			md.currentpagenumber = currentPageNumber;
 			setPageNumber();
 			var event:ControlPanelEvent = new ControlPanelEvent(ControlPanelEvent.PAGE_UPDATE);		
@@ -82,7 +80,6 @@
 		}
 		
 		public function onSurveyFocusChange( event:IndexChangedEvent ):void{
-			//trace( "AccordionChanged"+event.newIndex );
 			var sr:SurveyRender = acSurveyList.selectedChild as SurveyRender;
 			sr.retrieveSurveyBody();
 		}

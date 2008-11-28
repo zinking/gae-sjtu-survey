@@ -22,8 +22,8 @@ package net.isurvey.model
 		
 		public function parseData( result:*):void{
 			description = result.description as String;
-			createdate	= result.createdate;
-			expiredate  = result.expiredate;
+			createdate	= result.createtime;
+			expiredate  = result.expiretime;
 			username	= result.username;
 			questionlist = new ArrayCollection( result.problemlist);
 			questioncount 	= result.problemcount;

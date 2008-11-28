@@ -26,6 +26,8 @@
 		import com.adobe.cairngorm.control.CairngormEventDispatcher;
 		import com.adobe.cairngorm.control.CairngormEvent;
 		
+		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
+		
 		public function init():void{
 			acQuestionList.removeAllChildren();
 		}
@@ -33,8 +35,6 @@
 		public function renderSurveyHead( surveyhead:Object ):void{
 			this.currentState = "Collapse";
 			label = surveyhead.description;
-			//dtCreate.selectedDate = surveyhead.createdate;
-			//dtExpire .selectedDate = surveyhead.expiredate;
 		}
 		
 		public function retrieveSurveyBody():void{
@@ -43,17 +43,34 @@
 			CairngormEventDispatcher.getInstance().dispatchEvent( evt );
 		}
 		
+		public function getSurveyVoteData():SurveyData{
+			var surveydata:SurveyData = new SurveyData();
+			surveydata.questionlist.removeAll();
+			surveydata.description = txtSurvey.text;
+			
+			for each( var questionitem:QuestionRender in acQuestionList.getChildren() ){
+				surveydata.questionlist.addItem( questionitem.getQuestionVoteData() );
+			}			
+			return surveydata;
+		}
+		
 		public function renderSurvey( sdata:SurveyData):void{
-			this.currentState = "";
+			currentState = "";
 			dtCreate.selectedDate = sdata.createdate;
 			dtExpire.selectedDate = sdata.expiredate;
+			
+			var currentdate:Date = new Date();
+			md.controlpanel.enableVote( currentdate <=  dtExpire.selectedDate );
+			
 			txtSurvey.text = sdata.description;
 			lblUser.text = "发起人:"+sdata.username;
+			acQuestionList.removeAllChildren();
 			
 			for each( var item:* in sdata.questionlist ){
 	 			var qr:QuestionRender = new QuestionRender();
 	 			qr.questiondata = new QuestionData();
 	 			qr.questiondata.parseData(item);
+	 			qr.label = item.description;
 	 			acQuestionList.addChild( qr );
 	 		}
 		}
@@ -63,13 +80,14 @@
 </mx:Script>
 
 	<mx:Label   text="创建日期："  x="26.5" bottom="10" id="label2"/>
-	<mx:DateField id="dtCreate"  editable="false"  enabled="true" x="79" bottom="10"/>
+	<mx:DateField id="dtCreate"  editable="false"  enabled="false" x="79" bottom="10"/>
 	<mx:Label   text="截止日期："  x="207.5" y="49" id="label1"/>
 	<mx:DateField id="dtExpire"  editable="false" 
-		enabled="true" x="270.5" y="47"/>
+		enabled="false" x="270.5" y="47"/>
 	<mx:Label id="lblUser" x="257" text="发起人:" bottom="10"/>
 	
-	<mx:Accordion id="acQuestionList" x="36.5" y="78" width="80%" height="50%">
+	<mx:Accordion id="acQuestionList" x="36.5" y="78" width="80%" height="60%">
+	<Render:QuestionRender/>
 	<Render:QuestionRender/>
 	</mx:Accordion>
 	<mx:Label x="40.5" y="12" text="QueryDescritpion" width="320" height="29" id="txtSurvey"/>

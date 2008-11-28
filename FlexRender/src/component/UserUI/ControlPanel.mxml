@@ -6,21 +6,19 @@
 		import net.isurvey.model.*;
 		import com.adobe.cairngorm.control.CairngormEventDispatcher;
 		import com.adobe.cairngorm.control.CairngormEvent;
-		private var curState:int = SurveyModelLocator.getInstance().controlpanel_status;
+		private var curState:int ;
 		
-		private function onManageSurvey( evt:Event):void{
-			if ( curState == ControlPanelEvent.MANAGE_SURVEY ) return;
-			var event:ControlPanelEvent = 
-					new ControlPanelEvent( ControlPanelEvent.MANAGE_SURVEY);	
-			CairngormEventDispatcher.getInstance().dispatchEvent( event );
+		
+		private function onControlPanelClick( evt:ControlPanelEvent ):void{
+			curState = SurveyModelLocator.getInstance().controlpanel_status;
+			if ( evt.operation_type == curState ) return;
+			CairngormEventDispatcher.getInstance().dispatchEvent( evt );
 		}
 		
-		private function onViewSurvey( evt:Event):void{
-			if ( curState == ControlPanelEvent.VIEW_SURVEY ) return;
-			var event:ControlPanelEvent = 
-					new ControlPanelEvent( ControlPanelEvent.VIEW_SURVEY);	
-			CairngormEventDispatcher.getInstance().dispatchEvent( event );			
+		public function enableVote( b:Boolean ):void{
+			if ( currentState == "user" ) lbVote.enabled = b;
 		}
+		
 		
 		
 	]]>
@@ -29,14 +27,14 @@
 		<mx:State name="admin">
 			<mx:AddChild position="lastChild">
 				<mx:LinkButton id="managesurveybtn" label="添加主题" horizontalCenter="0" top="70"
-					  click="onManageSurvey(event)"/>
+					  click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.MANAGE_SURVEY) )"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:LinkButton label="管理主题" horizontalCenter="0" top="110"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:LinkButton id="viewsurveybtn" label="查看主题" horizontalCenter="0" top="150"
-					click="onViewSurvey(event)"/>
+					click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.VIEW_SURVEY) )"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:LinkButton label="管理用户" horizontalCenter="0" top="190"/>
@@ -45,10 +43,14 @@
 		</mx:State>
 		<mx:State name="user">
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton label="个人资料" horizontalCenter="0" top="70"/>
+				<mx:LinkButton label="个人资料" horizontalCenter="0" top="70" width="50%"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton label="历史记录" horizontalCenter="0" top="120"/>
+				<mx:LinkButton label="历史记录" horizontalCenter="0" top="120" width="50%"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:LinkButton label="投票" horizontalCenter="0" top="170" width="50%" enabled="false" id="lbVote"
+					click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.VOTE_SURVEY) )"/>
 			</mx:AddChild>
 		</mx:State>
 	   
