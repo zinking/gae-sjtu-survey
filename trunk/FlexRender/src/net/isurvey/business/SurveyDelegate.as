@@ -32,6 +32,10 @@ package net.isurvey.business
 			var call:Object = service.getQuery( des );
 			call.addResponder( responder );
 		}
+		public function updateVote( vd:SurveyData ):void{
+			var call:Object = service.updateQuery( vd );
+			call.addResponder( responder );
+		}
 		
 		
 		

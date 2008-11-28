@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:ns1="component.SurveyUI.Render.*">
+	<mx:DateField x="154" y="252" id="dc"/>
+	<mx:DateField id="date3" selectedDate="{new Date (2005, 3, 10)}" x="154" y="152" enabled="false"/>
+	<mx:Script>
+		<![CDATA[
+			
+			
+			public function init():void{
+				
+			}
+		]]>
+	</mx:Script>
+	<ns1:SurveyRender id="sr" x="321" y="115">
+	</ns1:SurveyRender>
+	
+</mx:Application>

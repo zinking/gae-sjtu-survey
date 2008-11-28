@@ -7,11 +7,7 @@ package net.isurvey.command
 	import component.SurveyUI.Module.*;
 	import component.UserUI.ControlPanel;
 	
-	import flash.events.Event;
-	
 	import mx.controls.*;
-	import mx.events.FlexEvent;
-	import mx.events.ModuleEvent;
 	import mx.modules.ModuleLoader;
 	import mx.rpc.*;
 	import mx.rpc.events.*;
@@ -25,8 +21,8 @@ package net.isurvey.command
 	public class ControlPanelCommand implements ICommand,IResponder{
 		private var bodyLoader:ModuleLoader;
 		private var currentEvent:ControlPanelEvent;
-		private var mdLocator:SurveyModelLocator = SurveyModelLocator.getInstance();
-		private var cpl:ControlPanel = mdLocator.controlpanel;
+		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
+		private var cpl:ControlPanel = md.controlpanel;
 		
 		
 		private var headloaded:Boolean = false;
@@ -40,39 +36,35 @@ package net.isurvey.command
 			var evt:ControlPanelEvent = event as ControlPanelEvent;
 			currentEvent = evt;
 			var delegate:SurveyDelegate;
+			cpl.enabled = false;
 			switch( currentEvent.operation_type ){
 				//对于有异步远程数据调用的事件在事件处理的时候必须屏蔽一些操作
 				//防止，数据取回后已经切换到其他的控制面板
 					case ControlPanelEvent.VIEW_SURVEY:
-						loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
+						//loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
 						delegate = new SurveyDelegate(this);
-						cpl.enabled = false;//远程方法调用的时候禁止一切操作
-						delegate.getSurveyHeadList();	
+						delegate.getSurveyHeadList();
+						
 					break;
 					
 					case ControlPanelEvent.MANAGE_SURVEY:
 						loadModule( SurveyModelLocator.MANAGESURVEY_MODULE );
+						cpl.enabled = true;
 					break;
 					
 					case ControlPanelEvent.PAGE_UPDATE:
 						delegate = new SurveyDelegate(this);
-						cpl.enabled = false;//远程方法调用的时候禁止一切操作
 						delegate.getSurveyHeadList();	
+					break;
+					
+					case ControlPanelEvent.VOTE_SURVEY:
+						delegate = new SurveyDelegate(this);
+						delegate.updateVote( md.surveyrendermodule.getCurrentVoteData() );
 					break;
 			}
 			SurveyModelLocator.getInstance().controlpanel_status = evt.operation_type;
 			
 					
-		}
-		private function onModuleLoadReady(event:Event):void{
-			var srm:SurveyRenderModule; 
-			srm = bodyLoader.child as SurveyRenderModule;
-			srm.addEventListener(FlexEvent.CREATION_COMPLETE,onModuleLoadComplete);
-		}
-		private function onModuleLoadComplete( event:Event ):void{
-			var srm:SurveyRenderModule; 
-			srm = bodyLoader.child as SurveyRenderModule;
-			srm.displayAllSurveyHeads(  );	
 		}
 		
 		private function loadModule( moduleurl:String):void{
@@ -87,58 +79,42 @@ package net.isurvey.command
 		public function result( event : Object ) : void{
 			var evt:ResultEvent = event as ResultEvent;
 			var headlist:*;
-			bodyLoader.addEventListener( ModuleEvent.READY,onModuleLoadReady );
-			//根据控制面板不同的子类事件对BODY模块进行处理
 			switch( currentEvent.operation_type ){
 					case ControlPanelEvent.VIEW_SURVEY:
 						headlist = evt.result.HeadList;
-						//设置总的页数
-						mdLocator.totalpagenumber = evt.result.Count;
-						mdLocator.surveyheadlist = headlist;
-						//装载所有的SURVEY HEAD
-						//srm = bodyLoader.child as SurveyRenderModule;
-						//srm.surveyheadlist = headlist;
-						//srm.displayAllSurveyHeads( headlist );
-						
+						md.totalpagenumber = evt.result.Count;
+						md.surveyheadlist = headlist;
+						loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
 					break;
 					
 					case ControlPanelEvent.PAGE_UPDATE:
 						headlist = evt.result.HeadList;
-						//设置总的页数
-						mdLocator.totalpagenumber = evt.result.Count;
-						mdLocator.surveyheadlist = headlist;
-						//装载所有的SURVEY HEAD
-						//srm = bodyLoader.child as SurveyRenderModule;
-						////srm.displayAllSurveyHeads( headlist );
-						//srm.surveyheadlist = headlist;
+						md.totalpagenumber = evt.result.Count;
+						md.surveyheadlist = headlist;
 					break;
 					
-			}	
-			//这只能算是个TRICK来解决MODULE异步加载的问题
-			if ( !this.headloaded ) {
-				var srm:SurveyRenderModule;
-				srm = bodyLoader.child as SurveyRenderModule;
-				srm.surveyheadlist = headlist;
-				srm.displayAllSurveyHeads(  );
-			}
-	
-				
+					case ControlPanelEvent.VOTE_SURVEY:
+						if ( evt.result.UpdateResult ) Alert.show("投票成功");
+						//TODO:目前还处在测试投票系统是否正常工作的过程中，在实现了同一个用户不能两次投票之后就可以把下面这行去掉
+						//因为控制面板规定不能重复发出的相同的命令
+						currentEvent.operation_type = ControlPanelEvent.VIEW_SURVEY;
+					break;
+					
+			}		
+			md.controlpanel_status = currentEvent.operation_type;			
 			cpl.enabled = true;
 	   
 		}
-		
-	
+			
 		public function fault( event : Object ) : void
 		{
 			var faultEvent : FaultEvent = FaultEvent( event );
-			Alert.show( "Sever Cannot be achieved at the moment" );
+			Alert.show( "在处理SURVEY信息的时候服务端发生了错误" );
 			trace(faultEvent.fault.faultDetail);
 			trace(faultEvent.fault.faultString);			
 		}
 		
 		
-	
-
 
 	}
 }

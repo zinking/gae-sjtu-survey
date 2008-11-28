@@ -2,6 +2,7 @@ package net.isurvey.model
 {
 	import com.adobe.cairngorm.model.ModelLocator;
 	
+	import component.SurveyUI.Module.SurveyRenderModule;
 	import component.UserUI.ControlPanel;
 	
 	import mx.modules.ModuleLoader;
@@ -42,6 +43,7 @@ package net.isurvey.model
       	public var mainloader:ModuleLoader;
       	public var bodyloader:ModuleLoader;
       	public var controlpanel:ControlPanel;
+      	public var surveyrendermodule:SurveyRenderModule;
       	
       	     	
       	public static const LOGIN_MODULE:String 		= "component/UserUI/LoginModule.swf";

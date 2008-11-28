@@ -10,10 +10,18 @@ package net.isurvey.model{
 		public var optionlist:ArrayCollection;
 		
 		
-		public function QuestionData( /* des:String, list:ArrayCollection */){
-/* 			description = des;
-			optionlist = list; */
+		public function QuestionData( ){
 			optionlist = new ArrayCollection;
+		}
+		
+		public function AddVoteData( vd:QuestionData ):void{
+			var i:int;
+			for ( i = 0; i<vd.optionlist.length; i++ ){
+				var item:Object = this.optionlist[i];
+				var vitem:Object = vd.optionlist[i];
+				item.pollcount += vitem.pollcount;
+			}
+
 		}
 		
 		public function parseData( result:*):void{
@@ -28,6 +36,7 @@ package net.isurvey.model{
             copier.position = 0;
             return copier.readObject();
 		}
+		
 
 	}
 }
