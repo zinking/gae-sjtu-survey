@@ -60,30 +60,54 @@
 	 	]]>
 	 </mx:Script>
 
-	<mx:Style source="styles/style1.css"/>
-	<mx:Image  source="@Embed(source='images/2.1.JPG')" 
-		left="0" top="0" width="100%" scaleContent="true"  
-		useHandCursor="true" maintainAspectRatio="false"/>
-	<mx:Image  source="@Embed(source='images/2.jpg')" 
-		scaleContent="true"  top="0" horizontalCenter="0" width="954" maintainAspectRatio="false"
-		useHandCursor="true" />
-	<mx:Label text="Online Survey" fontSize="36" fontWeight="bold" color="#FFFFFF" top="122" left="181"/>
-
-	<mx:VBox id="leftbox" left="150" top="255">
-		<User:AccountRender id="anonymousLogin" left="150" top="255"/>
-		<User:ControlPanel  id="cpanel" left="150" top="505"/>
-	</mx:VBox>
-
+	<mx:Style source="styles/mainmodulestyle.css"/>
 	
-	<Util:TitleBar id="topBar" horizontalCenter="0" top="183"/>
-	<Util:Calendar right="150" top="255"/>
-	<Util:Update right="150" top="560"/>
-	
-	<!--<Survey:SurveyRenderComp horizontalCenter="0" top="255"/>-->
-	<mx:ModuleLoader id="mdLoader"   horizontalCenter="0" top="255" width="600" height="800"/>
+	<mx:VBox width="100%" height="100%">
 		
-	<mx:Label text="Design by WangZhen ChenYao ZhangYanLei LinQinQin and ZhangZhiYong " 
+
+	<mx:VBox id="header" height="15%">
+<!--		<mx:Image  source="@Embed(source='images/2.1.JPG')" 
+			left="0" top="0" width="100%" scaleContent="true"  
+			useHandCursor="true" maintainAspectRatio="false"/>-->
+		<mx:Image  source="@Embed(source='images/2.jpg')" 
+			scaleContent="true"  top="0" horizontalCenter="0" width="100%" maintainAspectRatio="false"
+			useHandCursor="true" />		
+		<Util:TitleBar id="topBar" horizontalCenter="0" top="183"/>
+		<mx:Label text="Online Survey" fontSize="36" fontWeight="bold" color="#FFFFFF" top="122" left="181"/>	
+	</mx:VBox>
+	
+	<mx:HBox id="body" height="70%">
+		<mx:Spacer width="5%"/>
+		<mx:VBox id="leftbox" width="20%" x="35" y="241">
+			<User:AccountRender id="anonymousLogin" left="150" top="255" height="235"/>
+			<User:ControlPanel  id="cpanel" left="150" top="505" width="230" height="250"/>
+		</mx:VBox>
+		
+		<mx:ModuleLoader id="mdLoader"   horizontalCenter="0" top="255" width="55%" height="100%"/>
+		
+		<mx:VBox id="rightbox" right="18" top="255" width="20%">
+			<Util:Calendar />
+			<Util:Update/>
+		</mx:VBox>		
+	</mx:HBox>
+	<mx:Box id="footer" height="15%">
+			<mx:Label text="Design by WangZhen ChenYao ZhangYanLei LinQinQin and ZhangZhiYong " 
 		horizontalCenter="0" color="#00FFFF" bottom="40"/>
+	</mx:Box>
+
+	</mx:VBox>	
+	
+
+
+	
+	
+
+
+
+	
+
+		
+
 	
 	
 	

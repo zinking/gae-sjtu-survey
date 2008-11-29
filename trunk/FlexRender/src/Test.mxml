@@ -11,7 +11,7 @@
 			}
 		]]>
 	</mx:Script>
-	<ns1:SurveyRender id="sr" x="321" y="115">
+	<ns1:SurveyRender id="sr" x="326" y="92">
 	</ns1:SurveyRender>
 	
 </mx:Application>
