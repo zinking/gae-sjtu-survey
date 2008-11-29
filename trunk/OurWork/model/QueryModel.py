@@ -11,6 +11,13 @@ class User(db.Model):
                     name );
          results = q.fetch(1);
          return results[0];
+     
+     
+    @staticmethod
+    def submitUser( username,password ):
+         newuser = User( name = username,
+                         password = password );
+         newuser.put();
         
     
     @staticmethod
@@ -50,7 +57,7 @@ class QueryPaper(db.Model):
             QueryProblem.submitProblem(problemData, newquery.key());
 
     @staticmethod
-    def updateQuery( queryData):
+    def updateQueryVote( queryData):
         q = QueryPaper.gql("WHERE description = :1", queryData.description );
         results = q.fetch(1);
         updatequery = results[0];
@@ -58,7 +65,7 @@ class QueryPaper(db.Model):
         updatequery.put();#UPDATE SURVEY POLLCOUNT
         for i in range(len( queryData.questionlist )) :
             problemData = queryData.questionlist[i];
-            QueryProblem.updateProblem(problemData, updatequery.key());
+            QueryProblem.updateProblemVote(problemData, updatequery.key());
         
             
     @staticmethod
@@ -66,6 +73,16 @@ class QueryPaper(db.Model):
         AllQuerys = QueryPaper.all();
         headlist = AllQuerys.fetch(pagesize,offset);
         return headlist;
+    
+    @staticmethod
+    def retrieveHistroySurveyHead( descriptionlist ):
+        historysurveylist = [];
+        for i in range( len( descriptionlist )):
+            des = descriptionlist[i];
+            q = QueryPaper.gql("WHERE description = :1", des.surveydescription );
+            survey = q.fetch(1)[0];
+            historysurveylist.append(survey);
+        return historysurveylist;
         
     @staticmethod
     def retrieveAllQuery():
@@ -121,7 +138,7 @@ class QueryProblem(db.Model):
             ProblemOption.submitOption(optionData, newproblem.key());
             
     @staticmethod
-    def updateProblem( problemData, querykey):
+    def updateProblemVote( problemData, querykey):
         q = QueryProblem.gql("WHERE description = :1 AND querypaper = :2 "
                              ,problemData.description ,querykey );
         results = q.fetch(1);
@@ -129,7 +146,7 @@ class QueryProblem(db.Model):
         iterlist = range( len(problemData.optionlist))
         for i in  iterlist:
             optionData = problemData.optionlist[i];
-            ProblemOption.updateOption(optionData, updateproblem.key());
+            ProblemOption.updateOptionVote(optionData, updateproblem.key());
             
     @staticmethod       
     def retrieveProblem( querykey ):
@@ -172,7 +189,7 @@ class ProblemOption(db.Model):
         newoption.put();
         
     @staticmethod#UPDATE ALL THE OPTION ITERATELY
-    def updateOption( optionData, problemkey ):
+    def updateOptionVote( optionData, problemkey ):
         q = ProblemOption.gql("WHERE description = :1 AND queryproblem = :2 "
                              ,optionData.description ,problemkey );
         results = q.fetch(1);
@@ -190,8 +207,20 @@ class ProblemOption(db.Model):
 #--------------------------------------------------------------------------------------------    
 #-------------------------------------------------------------------------------------------- 
 #--------------------------------------------------------------------------------------------  
-
+class UserSurveyHistory( db.Model ):
+    username = db.StringProperty(required = True );
+    surveydescription = db.StringProperty(required = True );
     
+    @staticmethod
+    def getUserSurvey( username, offset , pagesize ):
+        q = UserSurveyHistory.gql("WHERE username = :1 ", username  ); 
+        totalcount = q.count()/pagesize + 1;
+        historylist = q.fetch(  pagesize , offset );
+        return {
+                "hlist":historylist,
+                "count":totalcount
+                }  
+        
 class UserPollHistory( db.Model):
     user = db.ReferenceProperty( User, required = True );
     problem = db.ReferenceProperty( QueryPaper, required = True );
