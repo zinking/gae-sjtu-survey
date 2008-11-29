@@ -35,12 +35,24 @@ def getQuery(request,querydescription):
            "Survey":survey
            }
 
-def updateQuery( request, qdata):
-    QueryPaper.updateQuery( qdata );
-    
+def updateQueryVote( request, qdata, username ):
+    QueryPaper.updateQueryVote( qdata );
+    newuserhistory = UserSurveyHistory( username = username, 
+                                        surveydescription = qdata.description );
+    newuserhistory.put();
     return{
            "UpdateResult":True
            }
+    
+def getUserHistorySurveyHeads( request, username, offset, pagesize ): 
+    result = UserSurveyHistory.getUserSurvey(username, offset, pagesize );
+    historylist = result["hlist"];
+    headlist = QueryPaper.retrieveHistroySurveyHead( historylist );
+    return {
+            "HeadList":headlist,
+            "Count":result["count"]
+            }
+       
     
 def getAllQuery(request,username): 
     userkey = User.getUser(username).key();
@@ -66,7 +78,8 @@ surveyGateway = DjangoGateway({
     'qSurvey.getAllQuery':getAllQuery,
     'qSurvey.getAllSurveyHead':getAllSurveyHead,
     'qSurvey.getQuery':getQuery,
-    'qSurvey.updateQuery':updateQuery
+    'qSurvey.updateQueryVote':updateQueryVote,
+    'qSurvey.getUserHistorySurveyHeads':getUserHistorySurveyHeads
     #'getAllDepartments':getAllDepartments,
     #'updateUser':updateUser
 })
