@@ -45,9 +45,9 @@
 
 
 	<mx:StringValidator id="vdProblemDescription"  source="{txtQuestionDescription}" property="text"
-		minLength="5"  maxLength="50"/>
+		minLength="1"  maxLength="50"/>
 	<mx:StringValidator id="vdOptionDescription"  source="{txtOptionDescription}" property="text"
-		minLength="3"  maxLength="10"/>
+		minLength="1"  maxLength="50"/>
 	<mx:StringValidator />
 	<mx:VDividedBox width="95%" height="95%" left="10" top="10" verticalGap="10" liveDragging="false">
    		<mx:Form height="194" width="100%" >
