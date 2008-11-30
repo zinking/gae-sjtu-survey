@@ -4,25 +4,33 @@
 
 	<mx:Script>
 		<![CDATA[
+			import mx.events.ValidationResultEvent;
 			import net.isurvey.model.*;
 			import net.isurvey.event.*;
 			import com.adobe.cairngorm.control.CairngormEventDispatcher;
 			import com.adobe.cairngorm.control.CairngormEvent;
 			
-			private var modelLocator:SurveyModelLocator = SurveyModelLocator.getInstance();
+			private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
 			
 			public function setWelcomeTitle():void{
-				var currentUser:UserData = modelLocator.user;
+				var currentUser:UserData = md.user;
 				var welcometitle:String = "欢迎你 "+UserData.getType(currentUser.type) +" "
 							+ currentUser.name;
 				wtitle.text = welcometitle;
-
 	 			}
 	 			
 	 		private function onLogout(event:Event):void{
-				var evt:LogOutEvent = 
-					new LogOutEvent( );	
+				var evt:LogOutEvent = new LogOutEvent( );	
 				CairngormEventDispatcher.getInstance().dispatchEvent( evt );
+			}
+			
+			private function onSearchSurvey( event:Event ):void{
+				var snvr:ValidationResultEvent = vdSearchName.validate();
+				if ( snvr.type != ValidationResultEvent.VALID ) return;
+				
+				var search_evt:ManageSurveyEvent = new ManageSurveyEvent(ManageSurveyEvent.SEARCH_SURVEY );
+				md.search_survey_description = txtSearch.text;
+				CairngormEventDispatcher.getInstance().dispatchEvent( search_evt );
 			}
 			
 		]]>
@@ -33,11 +41,22 @@
 			fontWeight="bold" color="#FFFFFF" width="150" textAlign="center"/>
 		<mx:Spacer width="45"/>
 		<mx:VRule width="1" height="50"/>
-		<mx:Spacer width="250"/>
-		<mx:LinkButton label="home" width="80" textAlign="center"/>
-		<mx:LinkButton label="LogOut" width="80" textAlign="center"
+		<mx:Spacer width="20%"/>
+		<mx:LinkButton label="home" width="5%" textAlign="center"/>
+		<mx:LinkButton label="LogOut" width="5%" textAlign="center"
 			 click="onLogout(event)"/>
-		<mx:LinkButton label="help" width="80" textAlign="center"/>
+		<mx:LinkButton label="help" width="5%" textAlign="center"/>
+		<mx:Spacer width="20%"/>
+		
+		<mx:TextInput id="txtSearch" text="search survey" 
+			 focusIn="{txtSearch.text=''}" 
+			/>
+		<mx:LinkButton label="Search" width="5%" textAlign="center"
+			 click="onSearchSurvey(event)"
+			/>
+
 	</mx:ApplicationControlBar>
-	
+		<mx:StringValidator id="vdSearchName" source="{txtSearch}" property="text"
+		 maxLength="{SurveyModelLocator.max_description_length}" 
+		 minLength="{SurveyModelLocator.min_descritpion_length}"/>
 </mx:Canvas>

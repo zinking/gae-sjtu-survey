@@ -26,6 +26,13 @@
 			piechart.dataProvider = questiondata.optionlist;
 		}
 		
+		public function hasVote():Boolean{//如果有一个OPTION被勾选，那么该问题即被投票
+			for each ( var item:RadioButton in optionbox.getChildren() ){
+				if ( item.selected ) return true;
+			}
+			return false;			
+		}
+		
 		public function getQuestionVoteData():QuestionData{
 			var questiondata:QuestionData = new QuestionData();
 			questiondata.description = txtQuestion.text;

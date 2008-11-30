@@ -3,9 +3,7 @@
 	<mx:DateField x="154" y="252" id="dc"/>
 	<mx:DateField id="date3" selectedDate="{new Date (2005, 3, 10)}" x="154" y="152" enabled="false"/>
 	<mx:Script>
-		<![CDATA[
-			
-			
+		<![CDATA[			
 			public function init():void{
 				
 			}
@@ -13,5 +11,8 @@
 	</mx:Script>
 	<ns1:SurveyRender id="sr" x="326" y="92">
 	</ns1:SurveyRender>
+	<ns1:OptionRender x="100" y="360"/>
+	
+
 	
 </mx:Application>

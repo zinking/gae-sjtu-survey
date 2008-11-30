@@ -8,20 +8,52 @@
 		import net.isurvey.model.*;
 		
 		public var  questiondata:QuestionData = new QuestionData();
+		public var isValidQuestion:Boolean = false;
+		
 		public function init():void{
 			rdBox.removeAllChildren();
+			renderQuestionData( questiondata );
+		}
+		
+		public function renderQuestionData( questiondata:QuestionData ):void{
+			txtQuestionDescription.text = questiondata.description  ;
+			rdBox.removeAllChildren();
+			for each ( var item:Object in questiondata.optionlist ){
+				var rb:TextInput = new TextInput();
+				rb.text = item.description;
+				rdBox.addChild( rb );
+			}						
 		}
 		
 		public function getQuestionData():QuestionData{
 			questiondata.description = txtQuestionDescription.text;
 			questiondata.optionlist.removeAll();
-			for each ( var item:RadioButton in rdBox.getChildren() ){
+			for each ( var item:TextInput in rdBox.getChildren() ){
 				var optionitem:Object = new Object();
-				optionitem.optionname = item.label;
+				optionitem.optionname = item.text;
 				optionitem.pollcount = 0;
 				questiondata.optionlist.addItem( optionitem );
 			}						
 			return questiondata;
+		}
+
+		private function onAddOption( event:Event):void{
+			var rdOption:TextInput = new TextInput();
+			rdOption.text = txtOptionDescription.text;
+			rdBox.addChild( rdOption );
+			txtOptionDescription.text = "";
+		}
+		
+		private function validateCreatedQuestion( event:Event ):void{
+			if ( rdBox.getChildren().length < 2 ) {
+				rdBox.errorString = "请至少输入两个选项";
+				return;
+			}
+			else{
+				rdBox.errorString = "";
+			}
+			isValidQuestion = true;
+			this.dispatchEvent( new Event("ENABLE_ADD_QUESTION"));
 		}
 		
 		private function validate( event:Event ):void{
@@ -30,13 +62,11 @@
 			var odvr:ValidationResultEvent = vdOptionDescription.validate();
 			if ( pdvr.type == ValidationResultEvent.VALID &&
 				 odvr.type == ValidationResultEvent.VALID ) btnAddOption.enabled = true;
-			else btnAddOption.enabled = false;
-		}
-		private function onAddOption( event:Event):void{
-			var rdOption:RadioButton = new RadioButton();
-			rdOption.label = txtOptionDescription.text;
-			rdBox.addChild( rdOption );
-			txtOptionDescription.text = "";
+			else {
+				btnAddOption.enabled = false;
+				return;
+			}
+			
 		}
 		
 		
@@ -75,12 +105,14 @@
 		<mx:Canvas label="Label" height="171" width="100%">			
 			<mx:Button id="btnAddOption" label="添加问题选项" right="230" y="10" enabled="false"
 				click="onAddOption(event)"/>
-			<mx:VBox id="rdBox" width="100%" height="100%" horizontalAlign="center" 
+			<mx:VBox id="rdBox" 
+				width="100%" height="100%" horizontalAlign="center" 
 				verticalAlign="middle" enabled="true" visible="true">
 				<mx:RadioButton label="Radio1"/>
 				<mx:RadioButton label="Radio2"/>	
 			</mx:VBox>
-			<mx:Button label="确认问题" x="262" y="127" enabled="false"/>
+			<mx:Button label="确认问题" x="262" y="127" enabled="true"  visible="true"
+				 click="validateCreatedQuestion(event)"/>
 		</mx:Canvas>
 	</mx:VDividedBox>
 	
