@@ -14,7 +14,8 @@ package net.isurvey.control
 			addCommand( LogOutEvent.LOGOUT , LogOutCommand );
 			addCommand( LoginEvent.LOGIN , LoginCommand );
 			addCommand( ControlPanelEvent.CONTROL_PANEL , ControlPanelCommand);	
-			addCommand( ManageSurveyEvent.MANAGESURVEY_EVENT , ManageSurveyCommand);	  
+			addCommand( ManageSurveyEvent.MANAGESURVEY_EVENT , ManageSurveyCommand);	
+			addCommand( RegisterEvent.REGISTER, RegisterCommand );  
 		}	
 	}
 }

@@ -63,6 +63,9 @@
 			var total:int = md.totalpagenumber;
 			var curr:int = md.currentpagenumber;
 			pageinfo.text = "Page:"+ curr +"/"+ total;
+			
+			ppage.enabled = true;
+			npage.enabled = true;
 				
 			var currentPageNumber:int = md.currentpagenumber;
 			if ( currentPageNumber <= 1 ){

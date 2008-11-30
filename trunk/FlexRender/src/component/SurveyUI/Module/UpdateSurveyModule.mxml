@@ -24,28 +24,34 @@
 			this.renderSurveyData( sr.getSurveyVoteData() );
 		}
 		
-		private function validateCreateDate():void{
+		private function validateCreateDate():Boolean{
 			//先判断发布时间对不对，即不能再今天的前几天发布
 			var date:Date = new Date();
-			if ( dtCreateDate.selectedDate < date ){
+			if ( dtCreateDate.selectedDate <  date ){
 				dtCreateDate.selectedDate =null;
 				dtCreateDate.errorString = "发布时间不能早于今天";
+				return false;
 			} 
-			else dtCreateDate.errorString = "发布时间不能早于今天";
+			else dtCreateDate.errorString = "";
+			
+			if ( dtCreateDate.selectedDate > dtEndDate.selectedDate ){
+				dtEndDate.selectedDate = null;
+				dtEndDate.errorString = "截止日期必须于发布日期之后";
+				return false;
+			}
+			else dtEndDate.errorString = "";
+			return true;
 		}
 		
 		public function validate( event:Event ):void{
 			
-			//先判断发布时间对不对，即不能再今天的前几天发布
-			var date:Date = new Date()
+			if ( ! validateCreateDate() ) return;
 						
-			var snvr:ValidationResultEvent = vdSurveyName.validate();
 			var sdvr:ValidationResultEvent = vdSurveyDescription.validate();
-			if ( snvr.type == ValidationResultEvent.VALID &&
-				 sdvr.type == ValidationResultEvent.VALID &&
-				 dtCreateDate.selectedDate < dtEndDate.selectedDate
-				 ) 	disableButton(false,btnAddQuestion);
-			else 	disableButton( true,btnAddQuestion,"请先完成调查描述");
+			if (  sdvr.type == ValidationResultEvent.VALID  ) 	
+				 disableButton(false,btnAddQuestion);
+			else 	
+			disableButton( true,btnAddQuestion,"请先完成调查描述");
 			
 		}		
 		/*
@@ -97,10 +103,10 @@
 		
 		public function renderSurveyData( surveydata:SurveyData ):void{
 			txtSurveyDescription.text = surveydata.description  ;
-			txtSurveyName.text = surveydata.description;//TODO:remove this
+			//txtSurveyName.text = surveydata.description;//TODO:remove this
 			
 			txtSurveyDescription.enabled = false;//SURVEY的主题不能被修改，因为它是作为主键唯一标识主题的
-			txtSurveyName.enabled = false;
+			//txtSurveyName.enabled = false;
 			
 			dtCreateDate.selectedDate = surveydata.createdate  ;
 			dtEndDate.selectedDate = surveydata.expiredate  ;
@@ -119,8 +125,8 @@
 		]]>
 	</mx:Script>
 	
-	<mx:StringValidator id="vdSurveyName" source="{txtSurveyName}" property="text"
-		 maxLength="20" minLength="5"/>
+<!--	<mx:StringValidator id="vdSurveyName" source="{txtSurveyName}" property="text"
+		 maxLength="20" minLength="5"/>-->
 	<mx:StringValidator id="vdSurveyDescription" source="{txtSurveyDescription}" property="text"
 		 maxLength="60" minLength="4"/>
 	
@@ -136,11 +142,11 @@
 	</mx:ApplicationControlBar>
 	
 		<mx:Form width="100%" left="3" top="3">
-		<mx:FormItem label="主题名" width="100%" fontSize="14" required="true">
+<!--		<mx:FormItem label="主题名" width="100%" fontSize="14" required="true">
 			<mx:TextInput id="txtSurveyName" 
 				 change="validate(event)"
 				width="100%" height="100%"/>
-		</mx:FormItem>
+		</mx:FormItem>-->
 		<mx:FormItem label="主题背景描述" width="100%" fontSize="14" required="true">
 			<mx:TextArea id="txtSurveyDescription" 
 				 change="validate(event)"

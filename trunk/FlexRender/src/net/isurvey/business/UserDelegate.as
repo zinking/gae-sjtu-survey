@@ -1,8 +1,10 @@
 package net.isurvey.business
 {
-	import mx.rpc.IResponder;
 	import com.adobe.cairngorm.business.ServiceLocator;
+	
+	import mx.rpc.IResponder;
 	import mx.rpc.events.*;
+	
 	import net.isurvey.model.*;
 
 	
@@ -17,7 +19,20 @@ package net.isurvey.business
 		
 	   public function validateUser( usr:UserData ) : void
 	   {  
-		   var call : Object = service.userAuthenticate( usr );
+		   	var call : Object ;
+		   	if ( usr.type == UserData.USER ) call = service.userAuthenticate( usr );
+		   	else call = service.adminAuthenticate( usr );
+			call.addResponder( responder );
+	   }
+	   
+	   public function checkUserAvailable( username:String ):void{
+	   		var call : Object = service.checkUserAvailable( username );
+			call.addResponder( responder );   	
+	   }
+	   
+	   public function addUser( usr:UserData ) : void
+	   {  
+		   var call : Object = service.addUser( usr );
 			call.addResponder( responder );
 	   }
 	   

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="230" height="300">
-<mx:Script>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="230" height="300"
+	 creationComplete="init()">
+<mx:Script >
 	<![CDATA[
 		import net.isurvey.event.*;
 		import net.isurvey.model.*;
@@ -11,8 +12,11 @@
 		
 		
 		private var curState:int ;
-		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
-		private var bodyLoader:ModuleLoader = md.bodyloader;
+		private var md:SurveyModelLocator ;
+		
+		private function init():void{
+
+		}
 		
 		private function onControlPanelClick( evt:ControlPanelEvent ):void{
 			curState = SurveyModelLocator.getInstance().controlpanel_status;
@@ -31,39 +35,58 @@
 				lbVote.errorString = errstring;
 			}
 		}
+		
 		public function onModifySurvey( event:Event ):void{
-			loadModule( SurveyModelLocator.UPDATESURVEY_MODULE );
+			md = SurveyModelLocator.getInstance();
+			md.bodyframeLoad( SurveyModelLocator.UPDATESURVEY_MODULE );
+			switchAdminView( ManageSurveyEvent.MODIFY_SURVEY );//切换管理员控制面板的视图
 		}
 		
-		private function loadModule( moduleurl:String):void{
-			bodyLoader = md.bodyloader;	
-			bodyLoader.unloadModule();
-			bodyLoader.url = moduleurl;
-	 		bodyLoader.loadModule();	
+		public function switchAdminView( type:int ):void{
+			if ( currentState != "admin" ) return;
+			switch( type ){
+				case ControlPanelEvent.VIEW_SURVEY:
+					enableUDSurvey( true );
+				break;
+				case ControlPanelEvent.MANAGE_SURVEY:
+					enableUDSurvey( false );
+				break;
+				case ManageSurveyEvent.MODIFY_SURVEY:
+					lbDeleteSurvey.visible = false;
+				break;
+				case ManageSurveyEvent.SEARCH_SURVEY:
+					enableUDSurvey( false );
+				break;
+				
+				
+			}
 		}
 		
-		
-		
+		private function enableUDSurvey( b:Boolean):void{
+				lbModifySurvey.visible = b;
+				lbDeleteSurvey.visible = b;
+		}
+				
 		
 	]]>
 </mx:Script>
 	<mx:states>
 		<mx:State name="admin">
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton id="managesurveybtn" label="添加主题" horizontalCenter="0" top="70"
-					  click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.MANAGE_SURVEY) )"/>
+				<mx:LinkButton id="lbAddSurvey" label="添加主题" horizontalCenter="0" top="110"
+					  click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.MANAGE_SURVEY) )" width="50%"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton label="修改主题" horizontalCenter="0" top="110"
-					click="onModifySurvey(event)"/>
+				<mx:LinkButton id="lbModifySurvey" label="修改主题" horizontalCenter="0" top="148"
+					click="onModifySurvey(event)" width="50%" visible="false"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton id="viewsurveybtn" label="查看主题" horizontalCenter="0" top="150"
-					click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.VIEW_SURVEY) )"/>
+				<mx:LinkButton id="lbViewSurvey" label="查看主题" horizontalCenter="0" top="67"
+					click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.VIEW_SURVEY) )" width="50%"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton label="删除主题" horizontalCenter="0" top="190"
-					click="onManageSurveyClick( new ManageSurveyEvent( ManageSurveyEvent.DELETE_SURVEY) )"/>
+				<mx:LinkButton id="lbDeleteSurvey" label="删除主题" horizontalCenter="0" top="190"
+					click="onManageSurveyClick( new ManageSurveyEvent( ManageSurveyEvent.DELETE_SURVEY) )" width="50%" visible="false"/>
 			</mx:AddChild>
 			
 		</mx:State>
