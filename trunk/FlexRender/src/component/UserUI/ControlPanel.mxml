@@ -6,8 +6,13 @@
 		import net.isurvey.model.*;
 		import com.adobe.cairngorm.control.CairngormEventDispatcher;
 		import com.adobe.cairngorm.control.CairngormEvent;
-		private var curState:int ;
+		import mx.modules.ModuleLoader;
+		import net.isurvey.business.*;
 		
+		
+		private var curState:int ;
+		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
+		private var bodyLoader:ModuleLoader = md.bodyloader;
 		
 		private function onControlPanelClick( evt:ControlPanelEvent ):void{
 			curState = SurveyModelLocator.getInstance().controlpanel_status;
@@ -15,9 +20,28 @@
 			CairngormEventDispatcher.getInstance().dispatchEvent( evt );
 		}
 		
-		public function enableVote( b:Boolean ):void{
-			if ( currentState == "user" ) lbVote.enabled = b;
+		private function onManageSurveyClick( evt:ManageSurveyEvent ):void{
+			evt.surveydescripton = md.surveyrendermodule.acSurveyList.selectedChild.label;
+			CairngormEventDispatcher.getInstance().dispatchEvent( evt );
 		}
+		
+		public function disableVote( b:Boolean , errstring:String = "" ):void{
+			if ( currentState == "user" ) {
+				lbVote.enabled = !b;
+				lbVote.errorString = errstring;
+			}
+		}
+		public function onModifySurvey( event:Event ):void{
+			loadModule( SurveyModelLocator.UPDATESURVEY_MODULE );
+		}
+		
+		private function loadModule( moduleurl:String):void{
+			bodyLoader = md.bodyloader;	
+			bodyLoader.unloadModule();
+			bodyLoader.url = moduleurl;
+	 		bodyLoader.loadModule();	
+		}
+		
 		
 		
 		
@@ -30,14 +54,16 @@
 					  click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.MANAGE_SURVEY) )"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton label="管理主题" horizontalCenter="0" top="110"/>
+				<mx:LinkButton label="修改主题" horizontalCenter="0" top="110"
+					click="onModifySurvey(event)"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:LinkButton id="viewsurveybtn" label="查看主题" horizontalCenter="0" top="150"
 					click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.VIEW_SURVEY) )"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton label="管理用户" horizontalCenter="0" top="190"/>
+				<mx:LinkButton label="删除主题" horizontalCenter="0" top="190"
+					click="onManageSurveyClick( new ManageSurveyEvent( ManageSurveyEvent.DELETE_SURVEY) )"/>
 			</mx:AddChild>
 			
 		</mx:State>
@@ -46,7 +72,8 @@
 				<mx:LinkButton label="个人资料" horizontalCenter="0" top="70" width="50%"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton label="历史记录" horizontalCenter="0" top="120" width="50%"/>
+				<mx:LinkButton label="历史记录" horizontalCenter="0" top="120" width="50%"
+					click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.VIEW_HISTORY) )"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
 				<mx:LinkButton label="投票" horizontalCenter="0" top="170" width="50%" enabled="false" id="lbVote"

@@ -25,7 +25,7 @@ package net.isurvey.command
 		private var cpl:ControlPanel = md.controlpanel;
 		
 		
-		private var headloaded:Boolean = false;
+		//private var headloaded:Boolean = false;
 		
 		public function ControlPanelCommand(){
 			//初始化MODULE体装载函数
@@ -37,14 +37,13 @@ package net.isurvey.command
 			currentEvent = evt;
 			var delegate:SurveyDelegate;
 			cpl.enabled = false;
+			delegate = new SurveyDelegate(this);
 			switch( currentEvent.operation_type ){
 				//对于有异步远程数据调用的事件在事件处理的时候必须屏蔽一些操作
 				//防止，数据取回后已经切换到其他的控制面板
 					case ControlPanelEvent.VIEW_SURVEY:
 						//loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
-						delegate = new SurveyDelegate(this);
 						delegate.getSurveyHeadList();
-						
 					break;
 					
 					case ControlPanelEvent.MANAGE_SURVEY:
@@ -53,13 +52,17 @@ package net.isurvey.command
 					break;
 					
 					case ControlPanelEvent.PAGE_UPDATE:
-						delegate = new SurveyDelegate(this);
+						//delegate = new SurveyDelegate(this);
 						delegate.getSurveyHeadList();	
 					break;
 					
 					case ControlPanelEvent.VOTE_SURVEY:
-						delegate = new SurveyDelegate(this);
+						//delegate = new SurveyDelegate(this);
 						delegate.updateVote( md.surveyrendermodule.getCurrentVoteData() );
+					break;
+					
+					case ControlPanelEvent.VIEW_HISTORY:
+						delegate.getSurveyHistoryHeadList();
 					break;
 			}
 			SurveyModelLocator.getInstance().controlpanel_status = evt.operation_type;
@@ -72,7 +75,7 @@ package net.isurvey.command
 			bodyLoader.unloadModule();
 			bodyLoader.url = moduleurl;
 	 		bodyLoader.loadModule();
-	 		this.headloaded = true;
+	 		//this.headloaded = true;
 	 		
 		}
 		
@@ -91,6 +94,7 @@ package net.isurvey.command
 						headlist = evt.result.HeadList;
 						md.totalpagenumber = evt.result.Count;
 						md.surveyheadlist = headlist;
+						loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
 					break;
 					
 					case ControlPanelEvent.VOTE_SURVEY:
@@ -98,6 +102,13 @@ package net.isurvey.command
 						//TODO:目前还处在测试投票系统是否正常工作的过程中，在实现了同一个用户不能两次投票之后就可以把下面这行去掉
 						//因为控制面板规定不能重复发出的相同的命令
 						currentEvent.operation_type = ControlPanelEvent.VIEW_SURVEY;
+					break;
+					
+					case ControlPanelEvent.VIEW_HISTORY:
+						headlist = evt.result.HeadList;
+						md.totalpagenumber = evt.result.Count;
+						md.surveyheadlist = headlist;
+						loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
 					break;
 					
 			}		

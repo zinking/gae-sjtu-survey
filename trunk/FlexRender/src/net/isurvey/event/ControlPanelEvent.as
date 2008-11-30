@@ -13,6 +13,7 @@ package net.isurvey.event
     	public static const VIEW_SURVEY:int = 3;
     	public static const PAGE_UPDATE:int = 4;
     	public static const VOTE_SURVEY:int = 5;
+    	public static const VIEW_HISTORY:int = 6;
     	
 		public var operation_type:int;
 		

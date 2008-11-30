@@ -47,6 +47,10 @@
 			var surveydata:SurveyData = new SurveyData();
 			surveydata.questionlist.removeAll();
 			surveydata.description = txtSurvey.text;
+			surveydata.expiredate = dtExpire.selectedDate;
+			surveydata.createdate = dtCreate.selectedDate;
+			surveydata.username = lblUser.text;
+			
 			
 			for each( var questionitem:QuestionRender in acQuestionList.getChildren() ){
 				surveydata.questionlist.addItem( questionitem.getQuestionVoteData() );
@@ -54,13 +58,28 @@
 			return surveydata;
 		}
 		
+		public function checkValidVote():Boolean{
+			for each( var questionitem:QuestionRender in acQuestionList.getChildren() ){
+				if ( ! questionitem.hasVote() ) return false;
+			}			
+			return true;
+		}
+		
+		public function checkVoteAvailability():void{
+			var currentdate:Date = new Date();
+			if ( currentdate >  dtExpire.selectedDate ){
+				md.controlpanel.disableVote( true,"该投票已经过期,无法投票");
+			}
+			else if ( !checkValidVote() )md.controlpanel.disableVote( true,"未完成所有问题，无法投票");
+			else md.controlpanel.disableVote(false);
+		}
+		
 		public function renderSurvey( sdata:SurveyData):void{
 			currentState = "";
 			dtCreate.selectedDate = sdata.createdate;
 			dtExpire.selectedDate = sdata.expiredate;
-			
-			var currentdate:Date = new Date();
-			md.controlpanel.enableVote( currentdate <=  dtExpire.selectedDate );
+			//TODO：目前有一个小BUG好久还没调好
+			checkVoteAvailability();
 			
 			txtSurvey.text = sdata.description;
 			lblUser.text = "发起人:"+sdata.username;

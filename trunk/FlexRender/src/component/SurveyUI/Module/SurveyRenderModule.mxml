@@ -38,10 +38,20 @@
 				surveyRender.renderSurveyHead( surveyhead );
 				acSurveyList.addChild(surveyRender); 
 			} 	
-			
 			var sr:SurveyRender = acSurveyList.selectedChild as SurveyRender;
 			sr.retrieveSurveyBody();
+
 					
+		}
+		
+		//将当前选中的ACCORDION展开
+		public function onSurveyListComplete( event:Event ):void{
+
+		}
+		
+		public function deleteSelectedSurvey():void{
+			//var sr:SurveyRender =  as SurveyRender;
+			acSurveyList.removeChild( acSurveyList.selectedChild );
 		}
 		
 		public function getCurrentVoteData():SurveyData{
@@ -97,7 +107,7 @@
 		<mx:Label id="lblTip" text="调查" fontSize="20" fontWeight="bold" textAlign="center" width="60%" color="#FFFFFF"/>
 	</mx:ApplicationControlBar>
 	<mx:Accordion id = "acSurveyList"
-		 change="onSurveyFocusChange( event)"
+		 change="onSurveyFocusChange( event)" creationComplete="onSurveyListComplete(event)"
 		width="95%" height="80%" horizontalCenter="0" top="70">
 		<Render:QuestionRender label="Theme1"/>
 		<Render:QuestionRender label="Theme2"/>

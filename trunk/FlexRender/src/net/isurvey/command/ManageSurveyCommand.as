@@ -4,6 +4,7 @@ package net.isurvey.command
 	import com.adobe.cairngorm.control.CairngormEvent;
 	
 	import mx.controls.Alert;
+	import mx.modules.ModuleLoader;
 	import mx.rpc.IResponder;
 	import mx.rpc.events.*;
 	
@@ -13,8 +14,8 @@ package net.isurvey.command
 	
 	public class ManageSurveyCommand implements ICommand, IResponder{
 		private var survey:SurveyData;
-		private var modelLocator:SurveyModelLocator =
-				SurveyModelLocator.getInstance();
+		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
+		private var bodyLoader:ModuleLoader = SurveyModelLocator.getInstance().bodyloader;
 				
 		private var currentevent:ManageSurveyEvent;
 		
@@ -31,7 +32,20 @@ package net.isurvey.command
 					break;	
 				case ManageSurveyEvent.GET_SURVEY:
 					delegate.getSurvey( currentevent.surveyrender.label );
-					break;			
+					break;	
+					
+				case ManageSurveyEvent.DELETE_SURVEY:
+					var des:String = evt.surveydescripton;
+					delegate.deleteSurvey( des );
+					break;	
+				
+				case ManageSurveyEvent.MODIFY_SURVEY:
+					delegate.deleteSurvey( evt.surveydata.description );
+					break;	
+					
+				case ManageSurveyEvent.SEARCH_SURVEY:
+					delegate.searchSurveyHeads( md.search_survey_description );
+					break;		
 			}
 
 
@@ -39,17 +53,44 @@ package net.isurvey.command
 	
 		public function result( event : Object ) : void{
 			var evt:ResultEvent= event as ResultEvent;
+			var r:Boolean;//Result
 			switch( currentevent.surveytype ){
 				case ManageSurveyEvent.ADD_SURVEY:
-					var r:Boolean = evt.result.AddResult;
+					 r = evt.result.AddResult;
 					if ( r ) Alert.show("提交问卷成功");
-					else Alert.show("问卷添加失败");
 					break;	
 				case ManageSurveyEvent.GET_SURVEY:
 					var surveydata:SurveyData = new SurveyData();
 					surveydata.parseData( evt.result.Survey );
 					currentevent.surveyrender.renderSurvey( surveydata );
-					break;			
+					break;
+					
+				case ManageSurveyEvent.DELETE_SURVEY:
+					 r = evt.result.DeleteResult;
+					if( r ){
+						md.surveyrendermodule.deleteSelectedSurvey();
+						Alert.show("删除成功");
+					}
+					break;	
+				case ManageSurveyEvent.MODIFY_SURVEY:
+					//先获得删除的结果
+					var deleteresult:Boolean =  evt.result.DeleteResult;
+					if ( deleteresult ){
+						var delegate:SurveyDelegate = new SurveyDelegate(this);
+						delegate.addSurvey( currentevent.surveydata );
+						trace("modify half done: delete finished");
+						return;
+					}
+					var addresult:Boolean =  evt.result.AddResult;
+					if ( addresult ) Alert.show("修改问卷成功");
+					break;	
+					
+				case ManageSurveyEvent.SEARCH_SURVEY:
+					var headlist:* = evt.result.HeadList;
+					md.totalpagenumber = evt.result.Count;
+					md.surveyheadlist = headlist;
+					loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
+					break;				
 			}
 
 		}
@@ -59,9 +100,16 @@ package net.isurvey.command
 		public function fault( event : Object ) : void
 		{
 			var faultEvent : FaultEvent = FaultEvent( event );
-			Alert.show( "Sever Cannot be achieved at the moment" );
+			Alert.show( "管理问卷时服务端出现错误。" );
 			trace(faultEvent.fault.faultDetail);
 			trace(faultEvent.fault.faultString);
+		}
+		
+		
+		private function loadModule( moduleurl:String):void{	
+			bodyLoader.unloadModule();
+			bodyLoader.url = moduleurl;
+	 		bodyLoader.loadModule();	
 		}
 
 	}

@@ -20,6 +20,8 @@
 			
 		public function init():void{
 			acQuestionList.removeAllChildren();
+			var sr:SurveyRender = md.surveyrendermodule.acSurveyList.selectedChild as SurveyRender;
+			this.renderSurveyData( sr.getSurveyVoteData() );
 		}
 		
 		private function validateCreateDate():void{
@@ -85,14 +87,35 @@
 			surveydata.username = md.user.name;//TODO:ADD HERE TO GET 
 		}
 		
-		public function onSubmitSurvey( event:Event ) :void{
+		public function onModifySurvey( event:Event ) :void{
 			setCurrentSurvey();
-			var evt:ManageSurveyEvent = new ManageSurveyEvent( ManageSurveyEvent.ADD_SURVEY );
-			evt.surveydata = surveydata;	 			
-			CairngormEventDispatcher.getInstance().dispatchEvent( evt );
+						
+			var modify_evt:ManageSurveyEvent = new ManageSurveyEvent( ManageSurveyEvent.MODIFY_SURVEY );
+			modify_evt.surveydata = surveydata;	 			
+			CairngormEventDispatcher.getInstance().dispatchEvent( modify_evt );
 		}
 		
+		public function renderSurveyData( surveydata:SurveyData ):void{
+			txtSurveyDescription.text = surveydata.description  ;
+			txtSurveyName.text = surveydata.description;//TODO:remove this
 			
+			txtSurveyDescription.enabled = false;//SURVEY的主题不能被修改，因为它是作为主键唯一标识主题的
+			txtSurveyName.enabled = false;
+			
+			dtCreateDate.selectedDate = surveydata.createdate  ;
+			dtEndDate.selectedDate = surveydata.expiredate  ;
+			acQuestionList.removeAllChildren();
+			
+			for each ( var item:QuestionData in surveydata.questionlist ){
+				var cq:CreateQuestion = new CreateQuestion();
+				cq.questiondata = item;
+				cq.percentWidth = 100;
+				cq.label = item.description;
+				acQuestionList.addChild( cq );				
+				
+			}
+		}
+				
 		]]>
 	</mx:Script>
 	
@@ -155,8 +178,8 @@
 	
 	<mx:ApplicationControlBar width="100%">
 		<mx:Button id="btnSubmitSurvey" 
-			 click="onSubmitSurvey(event)"
-			label="提交问卷" enabled="true" />
+			 click="onModifySurvey(event)"
+			label="修改问卷" enabled="true" />
 	</mx:ApplicationControlBar>
 </mx:VBox>
 	

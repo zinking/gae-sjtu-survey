@@ -35,7 +35,10 @@ package net.isurvey.model
       	public var totalpagenumber:int 	 = 0;
       	
       	public var surveyheadlist:Array;
+      	//public var updatesurveydata:SurveyData;
       	
+
+      	public var search_survey_description:String;
       	
 
       	      	
@@ -45,12 +48,16 @@ package net.isurvey.model
       	public var controlpanel:ControlPanel;
       	public var surveyrendermodule:SurveyRenderModule;
       	
+      	
+      	public static const min_descritpion_length:int = 1;
+      	public static const max_description_length:int = 50;      	
       	     	
       	public static const LOGIN_MODULE:String 		= "component/UserUI/LoginModule.swf";
       	public static const MAINFRAME_MODULE:String 	= "component/SurveyUI/MainFrame.swf";
       	//public static const ADDSURVEY_MODULE:String 	= "component/SurveyUI/Addsurvey/AddSurveyUIModule.swf";
       	public static const VIEWSURVEY_MODULE:String 	= "component/SurveyUI/Module/SurveyRenderModule.swf";
-      	public static const MANAGESURVEY_MODULE:String	= "component/SurveyUI/Module/ManageSurveyModule.swf"
+      	public static const MANAGESURVEY_MODULE:String	= "component/SurveyUI/Module/ManageSurveyModule.swf";
+      	public static const UPDATESURVEY_MODULE:String	= "component/SurveyUI/Module/UpdateSurveyModule.swf";
 		
 	}
 }
