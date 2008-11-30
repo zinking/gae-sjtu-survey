@@ -21,7 +21,8 @@ def addQuery(request,qdata):
 def getAllSurveyHead(request,offset,pagesize):
     
     headlist = QueryPaper.retrieveAllSurveyHead(pagesize,offset);
-    querycount = db.Query( QueryPaper ).count()/pagesize + 1;
+    headcount = db.Query( QueryPaper ).count();
+    querycount = PAGE.getPageCount( headcount, pagesize );
     
     return {
             "HeadList":headlist,
@@ -35,6 +36,12 @@ def getQuery(request,querydescription):
            "Survey":survey
            }
 
+def deleteSurvey( request,querydescription ):
+    QueryPaper.deleteSurveyData( querydescription );
+    return{
+           "DeleteResult":True
+           }
+
 def updateQueryVote( request, qdata, username ):
     QueryPaper.updateQueryVote( qdata );
     newuserhistory = UserSurveyHistory( username = username, 
@@ -44,6 +51,7 @@ def updateQueryVote( request, qdata, username ):
            "UpdateResult":True
            }
     
+    
 def getUserHistorySurveyHeads( request, username, offset, pagesize ): 
     result = UserSurveyHistory.getUserSurvey(username, offset, pagesize );
     historylist = result["hlist"];
@@ -52,6 +60,15 @@ def getUserHistorySurveyHeads( request, username, offset, pagesize ):
             "HeadList":headlist,
             "Count":result["count"]
             }
+    
+def searchSurveyHeads( request, description_critia,offset, pagesize ):
+    result = QueryPaper.searchSurvey( description_critia, pagesize, offset );
+    return {
+            "HeadList":result['slist'],
+            "Count":result["count"]
+            }
+    
+    
        
     
 def getAllQuery(request,username): 
@@ -65,21 +82,15 @@ def getAllQuery(request,username):
     return  {
              "Query":Querys,
              }
-    
-
-
-    
-
-    
-    
+       
 
 surveyGateway = DjangoGateway({
     'qSurvey.addQuery': addQuery,
     'qSurvey.getAllQuery':getAllQuery,
     'qSurvey.getAllSurveyHead':getAllSurveyHead,
     'qSurvey.getQuery':getQuery,
+    'qSurvey.deleteSurvey':deleteSurvey,
     'qSurvey.updateQueryVote':updateQueryVote,
-    'qSurvey.getUserHistorySurveyHeads':getUserHistorySurveyHeads
-    #'getAllDepartments':getAllDepartments,
-    #'updateUser':updateUser
+    'qSurvey.getUserHistorySurveyHeads':getUserHistorySurveyHeads,
+    'qSurvey.searchSurveyHeads':searchSurveyHeads
 })

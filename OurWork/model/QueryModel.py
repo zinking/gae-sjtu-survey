@@ -4,6 +4,7 @@ from model.DataModelUtil import *;
 class User(db.Model):
     name = db.StringProperty(required = True);#UNIQUE
     password = db.StringProperty(default = "#123" );
+    type = db.StringProperty(default = "USER" );
     
     @staticmethod
     def getUser(name ):
@@ -18,16 +19,42 @@ class User(db.Model):
          newuser = User( name = username,
                          password = password );
          newuser.put();
+         
+    @staticmethod
+    def hasUsername( username ):
+        q = User.gql( "WHERE name = :1", username );
         
-    
+        return q.count() != 0;
+           
     @staticmethod
     def hasUser(name,password):
         q = db.GqlQuery("SELECT * FROM User WHERE name = :1 AND password = :2",
                     name, password );
         if ( q.count() > 0 ):
-             return True;
+             return {
+                     'AuthResult':True,
+                     'User':q.fetch(1)[0]
+                     }
         else:
-            return False;
+            return {
+                     'AuthResult':False,
+                     'User':''
+                     }
+        
+    @staticmethod
+    def hasAdmin(name,password):
+        q = User.gql( "WHERE name = :1 AND password = :2 AND type = :3", 
+                      name,password,'ADMIN' );
+        if ( q.count() > 0 ):
+            return {
+                     'AuthResult':True,
+                     'User':q.fetch(1)[0]
+                     }
+        else: 
+            return {
+                     'AuthResult':False,
+                     'User':''
+                     }
         
 #--------------------------------------------------------------------------------------------    
 #-------------------------------------------------------------------------------------------- 
@@ -66,13 +93,54 @@ class QueryPaper(db.Model):
         for i in range(len( queryData.questionlist )) :
             problemData = queryData.questionlist[i];
             QueryProblem.updateProblemVote(problemData, updatequery.key());
-        
+    
+    @staticmethod
+    def deleteSurveyData( description ): 
+        q = QueryPaper.gql("WHERE description = :1", description );
+        deletequery = q.fetch(1)[0];#
+        questiondeletequery = QueryProblem.gql("WHERE querypaper = :1", deletequery.key() );
+        questioncount = questiondeletequery.count();
+        questionlist = questiondeletequery.fetch( questioncount );
+        for question in questionlist:
+            optiondeletequery = ProblemOption.gql("WHERE queryproblem = :1", question.key() );
+            optioncount = optiondeletequery.count();
+            optionlist = optiondeletequery.fetch( optioncount );
+            for option in optionlist:
+                option.delete();
+            question.delete();
+        deletequery.delete();
+               
             
     @staticmethod
     def retrieveAllSurveyHead(pagesize,offset):
         AllQuerys = QueryPaper.all();
         headlist = AllQuerys.fetch(pagesize,offset);
         return headlist;
+    
+    @staticmethod
+    def searchSurvey(critia,pagesize,offset):
+        AllQuerys = QueryPaper.all();
+        headlist = AllQuerys.fetch( AllQuerys.count() );
+        critifiedlist = [];
+        for survey in headlist:
+            if (survey.description.find( critia ) != -1 ):
+                critifiedlist.append( survey );
+        #put all searched survey into a list
+        #implemented page mechannism for survey
+        pagedlist = [];
+        critified_len = len(critifiedlist)
+        for i in range( pagesize ):
+            if ( offset + i < critified_len ):
+                pagedlist.append( critifiedlist[offset + i] );
+                
+        pagecount = PAGE.getPageCount( critified_len, pagesize );
+        
+        return {
+                'slist':pagedlist,
+                'count':pagecount
+                }
+                
+                
     
     @staticmethod
     def retrieveHistroySurveyHead( descriptionlist ):
@@ -216,9 +284,10 @@ class UserSurveyHistory( db.Model ):
         q = UserSurveyHistory.gql("WHERE username = :1 ", username  ); 
         totalcount = q.count()/pagesize + 1;
         historylist = q.fetch(  pagesize , offset );
+        pagecount = PAGE.getPageCount( totalcount, pagesize );
         return {
                 "hlist":historylist,
-                "count":totalcount
+                "count":pagecount
                 }  
         
 class UserPollHistory( db.Model):
