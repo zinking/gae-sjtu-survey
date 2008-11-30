@@ -4,7 +4,6 @@ package net.isurvey.command
 	import com.adobe.cairngorm.control.CairngormEvent;
 	
 	import mx.controls.Alert;
-	import mx.modules.ModuleLoader;
 	import mx.rpc.IResponder;
 	import mx.rpc.events.*;
 	
@@ -15,34 +14,54 @@ package net.isurvey.command
 	public class RegisterCommand implements ICommand, IResponder{
 		private var user:UserData;
 		
-		private var mainLoader:ModuleLoader = 
-				SurveyModelLocator.getInstance().mainloader;
-		private var modelLocator:SurveyModelLocator =
-				SurveyModelLocator.getInstance();
+		private var md:SurveyModelLocator;
+		private var current_event:RegisterEvent;
 		
 		public function RegisterCommand(){
 		}
 		
 		public function execute( event : CairngormEvent ): void{
 			var evt:RegisterEvent = event as RegisterEvent;
+			current_event = evt;
 			user = evt.user;
-			
 			var delegate:UserDelegate = new UserDelegate(this);
-			delegate.addUser( user );
+			
+			switch ( evt.register_type ){
+				case RegisterEvent.CHECKUSER_AVAILBLE:
+					delegate.checkUserAvailable( user.name );
+				break;
+				case RegisterEvent.REGISTER_USER:
+					delegate.addUser( user );
+				break;
+			}
+			
+			
 		}
 		
 		public function result( event : Object ) : void{
 			var evt:ResultEvent= event as ResultEvent;
-			//var usr:* = evt.result.User ;
 			
-			if ( evt.result.AuthResult ){
-				Alert.show("Register failed");
-				return;
+			
+			switch ( current_event.register_type ){
+				case RegisterEvent.CHECKUSER_AVAILBLE:
+					if ( evt.result.HasUsername ){  
+						current_event.register_module.setWarningInfo("该用户已经存在");
+						current_event.register_module.isValidUsername = false;
+					}
+					else{
+						current_event.register_module.setWarningInfo("用户名有效");
+						current_event.register_module.isValidUsername = true;
+					}
+				break;
+				
+				case RegisterEvent.REGISTER_USER:
+					if ( evt.result.AddResult ){
+						Alert.show("注册成功，返回登陆界面");
+						md = SurveyModelLocator.getInstance();
+						md.mainframeLoad( SurveyModelLocator.LOGIN_MODULE );
+					}
+				break;
 			}
-			Alert.show("Register Successful");
-			trace("Register Successful");
-			modelLocator.user = user;
-			loadMainFrame();
 	   
 		}
 		
@@ -54,10 +73,6 @@ package net.isurvey.command
 			trace(faultEvent.fault.faultString);
 		}
 
-		private function loadMainFrame():void{
-			mainLoader.unloadModule();
-			mainLoader.url = SurveyModelLocator.MAINFRAME_MODULE;
-			mainLoader.loadModule();
-		}
+
 	}
 }

@@ -13,7 +13,6 @@
 			import mx.controls.*;
 			import mx.events.ValidationResultEvent;
 			
-			//public var user:UserData = new UserData();
 	
 		private function getUser():UserData{
 			var user:UserData = new UserData();
@@ -22,19 +21,27 @@
 			
 			if ( adminRadio.selected == true ) user.type = UserData.ADMIN;
 			else if ( userRadio.selected == true ) user.type = UserData.USER;
+			return user;			
+		}
+		
+		private function onRegisterUser(event:Event):void{
+			loadModule( SurveyModelLocator.REGISTERUSER_MODULE );
 			
-			return user;
-			
+		}
+		
+		private function loadModule( moduleurl:String):void{
+			var md:SurveyModelLocator = SurveyModelLocator.getInstance();
+			md.mainloader.unloadModule();
+			md.mainloader.url = moduleurl;
+	 		md.mainloader.loadModule();
 		}
 			
 			
 		private function login(event:Event):void
 		{
-			var usr:UserData = getUser();
-			
+			var usr:UserData = getUser();		
 			var evt:LoginEvent = new LoginEvent(usr);
-			CairngormEventDispatcher.getInstance().dispatchEvent( evt );
-					
+			CairngormEventDispatcher.getInstance().dispatchEvent( evt );					
 		}
 		
 		private function anonymouslogin(event:Event):void
@@ -43,8 +50,7 @@
 			usr.name = "";
 			usr.type = UserData.ANONYMOUS;
 			var evt:LoginEvent = new LoginEvent(usr);
-			CairngormEventDispatcher.getInstance().dispatchEvent( evt );
-					
+			CairngormEventDispatcher.getInstance().dispatchEvent( evt );			
 		}
 		
 		
@@ -98,7 +104,9 @@
 		<mx:Button verticalCenter="223" horizontalCenter="-183" label="登录进站" 
 			id="submit" enabled="true"
 			click="login(event)"/>
-		<mx:Button horizontalCenter="85" verticalCenter="223" label="新用户注册"/>
+		<mx:Button horizontalCenter="85" verticalCenter="223" label="新用户注册"
+			 click="onRegisterUser(event)"/>
+		
 		<mx:Button horizontalCenter="-55" verticalCenter="223" label="匿名登录"
 			click="anonymouslogin(event)"/>
 		

@@ -92,6 +92,8 @@ package net.isurvey.command
 					loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
 					break;				
 			}
+			md.controlpanel_status = currentevent.surveytype;
+			md.controlpanel.switchAdminView( currentevent.surveytype );
 
 		}
 		

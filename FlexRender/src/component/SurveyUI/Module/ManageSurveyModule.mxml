@@ -22,28 +22,34 @@
 			acQuestionList.removeAllChildren();
 		}
 		
-		private function validateCreateDate():void{
+		private function validateCreateDate():Boolean{
 			//先判断发布时间对不对，即不能再今天的前几天发布
 			var date:Date = new Date();
-			if ( dtCreateDate.selectedDate < date ){
+			if ( dtCreateDate.selectedDate <  date ){
 				dtCreateDate.selectedDate =null;
 				dtCreateDate.errorString = "发布时间不能早于今天";
+				return false;
 			} 
-			else dtCreateDate.errorString = "发布时间不能早于今天";
+			else dtCreateDate.errorString = "";
+			
+			if ( dtCreateDate.selectedDate > dtEndDate.selectedDate ){
+				dtEndDate.selectedDate = null;
+				dtEndDate.errorString = "截止日期必须于发布日期之后";
+				return false;
+			}
+			else dtEndDate.errorString = "";
+			return true;
 		}
 		
 		public function validate( event:Event ):void{
 			
-			//先判断发布时间对不对，即不能再今天的前几天发布
-			var date:Date = new Date()
+			if ( ! validateCreateDate() ) return;
 						
-			var snvr:ValidationResultEvent = vdSurveyName.validate();
 			var sdvr:ValidationResultEvent = vdSurveyDescription.validate();
-			if ( snvr.type == ValidationResultEvent.VALID &&
-				 sdvr.type == ValidationResultEvent.VALID &&
-				 dtCreateDate.selectedDate < dtEndDate.selectedDate
-				 ) 	disableButton(false,btnAddQuestion);
-			else 	disableButton( true,btnAddQuestion,"请先完成调查描述");
+			if (  sdvr.type == ValidationResultEvent.VALID  ) 	
+				 disableButton(false,btnAddQuestion);
+			else 	
+			disableButton( true,btnAddQuestion,"请先完成调查描述");
 			
 		}		
 		/*
@@ -58,12 +64,24 @@
 			//----------------test
 			acQuestionList.selectedIndex = acQuestionList.selectedIndex + 1;
 			cq.addEventListener("ENABLE_ADD_QUESTION",enableAddQuestion);
-			disableButton(true,btnAddQuestion,"请先完成调查描述");		
+			disableButton(true,btnAddQuestion,"请先完成调查描述");
+			disableButton(true,btnSubmitSurvey,"请完成整个问卷");//有新添加的问卷，当然SURVEY是有问题的		
 		}
 		
-		//-------------------------------
+		//-------处理问卷的子问题正确提交的情况
 		public function enableAddQuestion( event:Event ):void{
 			disableButton(false,btnAddQuestion);
+			var isValidSurvey:Boolean = false;
+			for each ( var item:CreateQuestion in acQuestionList.getChildren() ){
+				if ( !item.isValidQuestion ){
+					isValidSurvey = false;
+					disableButton(true,btnSubmitSurvey,"请完成整个问卷");
+					return;
+				}
+			}
+			isValidSurvey = true;
+			disableButton(false,btnSubmitSurvey);
+			
 		}
 		
 		private function disableButton( b:Boolean, button:Button, errmsg:String = ""):void{
@@ -96,10 +114,10 @@
 		]]>
 	</mx:Script>
 	
-	<mx:StringValidator id="vdSurveyName" source="{txtSurveyName}" property="text"
-		 maxLength="20" minLength="5"/>
+
 	<mx:StringValidator id="vdSurveyDescription" source="{txtSurveyDescription}" property="text"
-		 maxLength="60" minLength="4"/>
+		 maxLength="{SurveyModelLocator.max_description_length}" 
+		 minLength="{SurveyModelLocator.min_descritpion_length}"/>
 	
 <mx:Canvas  width="100%" height="100%" 
 	xmlns:Survey="component.SurveyUI.*"
@@ -113,15 +131,11 @@
 	</mx:ApplicationControlBar>
 	
 		<mx:Form width="100%" left="3" top="3">
-		<mx:FormItem label="主题名" width="100%" fontSize="14" required="true">
-			<mx:TextInput id="txtSurveyName" 
-				 change="validate(event)"
-				width="100%" height="100%"/>
-		</mx:FormItem>
-		<mx:FormItem label="主题背景描述" width="100%" fontSize="14" required="true">
+		<mx:FormItem label="主题描述" width="100%" fontSize="14" required="true">
 			<mx:TextArea id="txtSurveyDescription" 
 				 change="validate(event)"
-				width="100%" height="100%"/>
+				width="80%" height="100%"/>
+			<mx:Label id="lbSurveyInfo" />
 		</mx:FormItem>
 		<mx:HBox width="100%">
 			<mx:FormItem label="主题发布时间" width="50%" fontSize="14" required="true">
@@ -156,7 +170,7 @@
 	<mx:ApplicationControlBar width="100%">
 		<mx:Button id="btnSubmitSurvey" 
 			 click="onSubmitSurvey(event)"
-			label="提交问卷" enabled="true" />
+			label="提交问卷" enabled="false"  errorString="请完成整个问卷"/>
 	</mx:ApplicationControlBar>
 </mx:VBox>
 	

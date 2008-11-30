@@ -8,7 +8,10 @@
 		import net.isurvey.model.*;
 		
 		public var  questiondata:QuestionData = new QuestionData();
+		
+		
 		public var isValidQuestion:Boolean = false;
+		private var isValidQuestionHeader:Boolean = false;
 		
 		public function init():void{
 			rdBox.removeAllChildren();
@@ -42,18 +45,23 @@
 			rdOption.text = txtOptionDescription.text;
 			rdBox.addChild( rdOption );
 			txtOptionDescription.text = "";
-		}
-		
-		private function validateCreatedQuestion( event:Event ):void{
+			
+			//每一次添加的时候对问题进行校验
 			if ( rdBox.getChildren().length < 2 ) {
 				rdBox.errorString = "请至少输入两个选项";
+				isValidQuestion = false;
 				return;
 			}
 			else{
 				rdBox.errorString = "";
+				isValidQuestion = isValidQuestionHeader;//当问题的选项正确的时候，问题的正确性取决于问题头部的正确性
+				//如果问题正确了可以要求添加下一个问题
+				if ( isValidQuestion ) dispatchEvent( new Event("ENABLE_ADD_QUESTION"));
 			}
-			isValidQuestion = true;
-			this.dispatchEvent( new Event("ENABLE_ADD_QUESTION"));
+		}
+		
+		private function validateCreatedQuestion( event:Event ):void{			
+			//if ( isValidQuestion ) dispatchEvent( new Event("ENABLE_ADD_QUESTION"));
 		}
 		
 		private function validate( event:Event ):void{
@@ -61,7 +69,10 @@
 			var pdvr:ValidationResultEvent = vdProblemDescription.validate();
 			var odvr:ValidationResultEvent = vdOptionDescription.validate();
 			if ( pdvr.type == ValidationResultEvent.VALID &&
-				 odvr.type == ValidationResultEvent.VALID ) btnAddOption.enabled = true;
+				 odvr.type == ValidationResultEvent.VALID ) {
+				 	btnAddOption.enabled = true;
+				 	isValidQuestionHeader = true;
+				 }
 			else {
 				btnAddOption.enabled = false;
 				return;
@@ -81,12 +92,13 @@
 	<mx:StringValidator />
 	<mx:VDividedBox width="95%" height="95%" left="10" top="10" verticalGap="10" liveDragging="false">
    		<mx:Form height="194" width="100%" >
-   			<mx:FormHeading label="问题描述" 
-   				width="100%" textAlign="left" height="22" fontWeight="normal" textDecoration="normal"/>
-			<mx:Canvas width="100%" height="68">
-				<mx:TextArea   id="txtQuestionDescription" width="100%" height="100%"
+   			<mx:FormHeading label="填写下述选项" 
+   				width="100%" textAlign="center" height="22" fontWeight="normal" textDecoration="normal"/>
+   			<mx:FormItem label="问题描述" width="100%" height="68">
+   				<mx:TextArea   id="txtQuestionDescription" width="100%" height="100%"
 					 change="validate(event)"/>
-			</mx:Canvas>
+   			</mx:FormItem>
+
 		
 			<mx:FormItem label="问题类型" width="100%" fontSize="14" horizontalAlign="left" required="true">
 				<mx:HBox height="100%" width="100%">
@@ -97,21 +109,26 @@
 			</mx:FormItem>
 		
 			<mx:FormItem label="选项描述" width="100%" fontSize="14" horizontalAlign="left" required="true">
-				<mx:TextInput id="txtOptionDescription" width="100%"
+			<mx:HBox>
+				<mx:TextInput id="txtOptionDescription" width="90%"
 					change="validate(event)"/>
+				<mx:Button id="btnAddOption" width="10%"
+					label="添加选项"  enabled="false"
+				click="onAddOption(event)"/>
+			</mx:HBox>
+				
 			</mx:FormItem>
 		</mx:Form>
 	
 		<mx:Canvas label="Label" height="171" width="100%">			
-			<mx:Button id="btnAddOption" label="添加问题选项" right="230" y="10" enabled="false"
-				click="onAddOption(event)"/>
+			
 			<mx:VBox id="rdBox" 
 				width="100%" height="100%" horizontalAlign="center" 
 				verticalAlign="middle" enabled="true" visible="true">
 				<mx:RadioButton label="Radio1"/>
 				<mx:RadioButton label="Radio2"/>	
 			</mx:VBox>
-			<mx:Button label="确认问题" x="262" y="127" enabled="true"  visible="true"
+			<mx:Button label="确认问题" x="262" y="127" enabled="false"  visible="true"
 				 click="validateCreatedQuestion(event)"/>
 		</mx:Canvas>
 	</mx:VDividedBox>

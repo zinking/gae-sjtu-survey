@@ -24,6 +24,24 @@ package net.isurvey.model
       		return modelLocator;
       	}
       	
+      	public function mainframeLoad( moduleurl:String ):void{
+			mainloader.unloadModule();
+			mainloader.url = moduleurl;
+	 		mainloader.loadModule();
+      	}
+      	
+      	public function bodyframeLoad( bodymoduleurl:String ):void{
+      		bodyloader.unloadModule();
+      		bodyloader.url = bodymoduleurl;
+      		bodyloader.loadModule();
+      	}
+      	
+      	
+      	
+      	
+      	
+      	
+      	
       	public var user:UserData;
       	//public var
       	
@@ -39,6 +57,7 @@ package net.isurvey.model
       	
 
       	public var search_survey_description:String;
+      	public var currentpagemode:int;
       	
 
       	      	
@@ -58,6 +77,7 @@ package net.isurvey.model
       	public static const VIEWSURVEY_MODULE:String 	= "component/SurveyUI/Module/SurveyRenderModule.swf";
       	public static const MANAGESURVEY_MODULE:String	= "component/SurveyUI/Module/ManageSurveyModule.swf";
       	public static const UPDATESURVEY_MODULE:String	= "component/SurveyUI/Module/UpdateSurveyModule.swf";
+      	public static const REGISTERUSER_MODULE:String	= "component/UserUI/RegisterModule.swf";
 		
 	}
 }

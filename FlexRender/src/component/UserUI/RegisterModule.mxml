@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="400" height="300">
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
+	 creationComplete="init()">
 
 <mx:Script>
 		<![CDATA[
@@ -11,29 +12,45 @@
 			import mx.rpc.events.*;
 			import mx.controls.*;
 			import mx.events.ValidationResultEvent;
+					
+		public var isValidUsername:Boolean = false;
 			
 		private function getUser():UserData{
 			var user:UserData = new UserData();
 			user.name = username.text;
 			user.password = password.text;
 			
-			return user;
-			
+			return user;	
 		}
-			
 		
-		private function register(event:Event):void
-		{
+		private function init():void{
+			trace("this loaded");
+		}
+		
+		private function checkUsername( event:Event):void{
 			var usr:UserData = getUser();
-			
-		    var evt:RegisterEvent = new RegisterEvent(usr);
+			if ( usr.name == '' ) return;
+		    var evt:RegisterEvent = new RegisterEvent( RegisterEvent.CHECKUSER_AVAILBLE );
+		    evt.register_module = this;
+		    evt.user = usr;
 			CairngormEventDispatcher.getInstance().dispatchEvent( evt );
-					
+		}
+			
+		
+		private function onRegister(event:Event):void{
+			var usr:UserData = getUser();
+		    var evt:RegisterEvent = new RegisterEvent( RegisterEvent.REGISTER_USER );
+		    evt.user = usr;
+			CairngormEventDispatcher.getInstance().dispatchEvent( evt );			
+		}
+		
+		private function onCancel( event:Event ):void{
+			var md:SurveyModelLocator = SurveyModelLocator.getInstance();
+			md.mainframeLoad( SurveyModelLocator.LOGIN_MODULE );
 		}
 		
 			
-		private function validate(event:Event):void
-		{
+		private function validate(event:Event):void{
 			var vru:ValidationResultEvent = validUsr.validate();
 			var vrp:ValidationResultEvent = validPassword.validate();
 			var vrsp:ValidationResultEvent = validSamePassword.validate();
@@ -41,13 +58,20 @@
 			if ( vru.type == ValidationResultEvent.VALID 
 					&& vrp.type == ValidationResultEvent.VALID
 					&& vrsp.type == ValidationResultEvent.VALID 
-					&& password.text == samepassword.text){ 
+					&& password.text == samepassword.text
+					&& isValidUsername){ 
 				submit.enabled = true;
 			}
 			else{
 				submit.enabled = false;
 			}
+			
 		}
+		
+		public function setWarningInfo( str:String ):void{
+			lblUsername.text = str;
+		}
+		
 				]]>
 	</mx:Script>
 
@@ -62,8 +86,13 @@
     	
 	<mx:Form x="0" y="0" width="100%" height="100%">
 		<mx:FormItem label="*请选择您的用户名：" horizontalAlign="left">
+		<mx:HBox>
 			<mx:TextInput id="username" 
-			change="validate(event)" />
+			change="validate(event)" 
+		    focusOut="checkUsername(event)"/>
+			<mx:Label id="lblUsername" color="#DB5C16"/>
+		</mx:HBox>
+
 		</mx:FormItem>
 		
 		<mx:FormItem>
@@ -99,7 +128,6 @@
 		<mx:FormItem label="性别">
 			<mx:HBox width="100%">
 				<mx:RadioButton label="男"/>
-				<mx:Spacer height="100%" width="20"/>
 				<mx:RadioButton label="女"/>
 			</mx:HBox>
 		</mx:FormItem>
@@ -107,9 +135,10 @@
 		<mx:FormItem>
 			<mx:HBox width="100%">
 				<mx:Button label="确定" id="submit"
-					enabled="true" click = "register(event)"/>
-				<mx:Spacer height="100%" width="20"/>
-				<mx:Button label="取消"/>
+					enabled="false" 
+					 click="onRegister(event)"/>
+				<mx:Button label="取消"
+					 click="onCancel(event)"/>
 			</mx:HBox>
 		</mx:FormItem>
 		

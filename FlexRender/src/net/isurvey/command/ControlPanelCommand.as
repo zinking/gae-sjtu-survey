@@ -19,7 +19,7 @@ package net.isurvey.command
 	/*FIEXED潜在的问题ADMIN在显示SURVEY与ADDSURVEY模块之间来回切换的时候，会造成数据加载时的空对象问题*/
 	
 	public class ControlPanelCommand implements ICommand,IResponder{
-		private var bodyLoader:ModuleLoader;
+
 		private var currentEvent:ControlPanelEvent;
 		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
 		private var cpl:ControlPanel = md.controlpanel;
@@ -28,8 +28,7 @@ package net.isurvey.command
 		//private var headloaded:Boolean = false;
 		
 		public function ControlPanelCommand(){
-			//初始化MODULE体装载函数
-			bodyLoader = SurveyModelLocator.getInstance().bodyloader;
+			
 		}
 		
 		public function execute( event : CairngormEvent ): void{
@@ -38,46 +37,54 @@ package net.isurvey.command
 			var delegate:SurveyDelegate;
 			cpl.enabled = false;
 			delegate = new SurveyDelegate(this);
+			
 			switch( currentEvent.operation_type ){
 				//对于有异步远程数据调用的事件在事件处理的时候必须屏蔽一些操作
 				//防止，数据取回后已经切换到其他的控制面板
 					case ControlPanelEvent.VIEW_SURVEY:
-						//loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
 						delegate.getSurveyHeadList();
+						md.currentpagemode = ControlPanelEvent.VIEW_SURVEY;
 					break;
 					
 					case ControlPanelEvent.MANAGE_SURVEY:
-						loadModule( SurveyModelLocator.MANAGESURVEY_MODULE );
+						md.bodyframeLoad( SurveyModelLocator.MANAGESURVEY_MODULE );
 						cpl.enabled = true;
 					break;
 					
 					case ControlPanelEvent.PAGE_UPDATE:
-						//delegate = new SurveyDelegate(this);
-						delegate.getSurveyHeadList();	
+						//delegate.getSurveyHeadList();提供对三种查看视图
+						UpdateCorrespondingPage();	
 					break;
 					
 					case ControlPanelEvent.VOTE_SURVEY:
-						//delegate = new SurveyDelegate(this);
 						delegate.updateVote( md.surveyrendermodule.getCurrentVoteData() );
 					break;
 					
 					case ControlPanelEvent.VIEW_HISTORY:
 						delegate.getSurveyHistoryHeadList();
+						md.currentpagemode = ControlPanelEvent.VIEW_SURVEY;
 					break;
 			}
-			SurveyModelLocator.getInstance().controlpanel_status = evt.operation_type;
 			
+			SurveyModelLocator.getInstance().controlpanel_status = evt.operation_type;
+			md.controlpanel.switchAdminView( evt.operation_type );
 					
 		}
 		
-		private function loadModule( moduleurl:String):void{
-			
-			bodyLoader.unloadModule();
-			bodyLoader.url = moduleurl;
-	 		bodyLoader.loadModule();
-	 		//this.headloaded = true;
-	 		
+		public function UpdateCorrespondingPage():void{
+			var delegate:SurveyDelegate = new SurveyDelegate(this);
+			switch( md.currentpagemode ){
+				case ControlPanelEvent.VIEW_SURVEY:
+					delegate.getSurveyHeadList();
+				break;
+				
+				case ControlPanelEvent.VIEW_HISTORY:
+					delegate.getSurveyHistoryHeadList();
+				break;
+			}
 		}
+		
+
 		
 		public function result( event : Object ) : void{
 			var evt:ResultEvent = event as ResultEvent;
@@ -87,14 +94,14 @@ package net.isurvey.command
 						headlist = evt.result.HeadList;
 						md.totalpagenumber = evt.result.Count;
 						md.surveyheadlist = headlist;
-						loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
+						md.bodyframeLoad( SurveyModelLocator.VIEWSURVEY_MODULE );
 					break;
 					
 					case ControlPanelEvent.PAGE_UPDATE:
 						headlist = evt.result.HeadList;
 						md.totalpagenumber = evt.result.Count;
 						md.surveyheadlist = headlist;
-						loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
+						md.bodyframeLoad( SurveyModelLocator.VIEWSURVEY_MODULE );
 					break;
 					
 					case ControlPanelEvent.VOTE_SURVEY:
@@ -108,7 +115,7 @@ package net.isurvey.command
 						headlist = evt.result.HeadList;
 						md.totalpagenumber = evt.result.Count;
 						md.surveyheadlist = headlist;
-						loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
+						md.bodyframeLoad( SurveyModelLocator.VIEWSURVEY_MODULE );
 					break;
 					
 			}		
