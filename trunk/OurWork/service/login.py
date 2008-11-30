@@ -8,45 +8,45 @@ def userAuthenticate(request,user ):
 
     #u = User(name="wang",password="123456");
     #u.put();
-    
-    username = user.name;
-    password = user.password; 
-    
+    result = User.hasUser(user.name, user.password) 
     return {
-     'AuthResult':User.hasUser(username, password),
-     'User':User(name = "wang", password="123")
+     'AuthResult':result['AuthResult'],
+     'User':result['User']
     }
+    
+def adminAuthenticate( request,user ):
+    
+    #u = User(name="wang",password="123456",type="ADMIN");
+    #u.put();  
+    result = User.hasAdmin(user.name, user.password) 
+    return {
+     'AuthResult':result['AuthResult'],
+     'User':result['User']
+    }  
+    
+    
        
-
-
-   
-
-
- 
+def addUser( request, user ):
+    User.submitUser( user.name , user.password);
     
-def userindex(request):
-    html = "<H1>People</H1><HR>"
-    return HttpResponse(html)
+    return{
+           'AddResult':True
+           }
 
-def AddData(request, data ):
-    #user = User( name="wang",password ="123456");
-    #user.put();
-    name = data.name;
-    password = data.password;
-    request['user'] = "wang";
+def checkUserAvailable( request, username ):
     
+    return{
+           'HasUsername':User.hasUsername( username )
+           }
 
-    
 
-#def updateUser(request,userID,userName,depID):
-    #user=User.objects.get(id=userID)
-    #user.name=userName
-    #user.depID=depID
     
 
 userGateway = DjangoGateway({
     'iSurvey.userAuthenticate': userAuthenticate,
-    'iSurvey.AddData':AddData
+    'iSurvey.addUser':addUser,
+    'iSurvey.checkUserAvailable':checkUserAvailable,
+    'iSurvey.adminAuthenticate':adminAuthenticate
     #'getAllDepartments':getAllDepartments,
     #'updateUser':updateUser
 })

@@ -1,12 +1,22 @@
 from model.QueryModel import *;
 from datetime import datetime;
 
-class OBJ():
-        pass;
+
+
+class PAGE():
+    @staticmethod
+    def getPageCount( totalnumber, pagesize ):
+        pagecount = 0;
+        if ( totalnumber % pagesize == 0 ):
+            pagecount = totalnumber /pagesize ;
+        else:
+            pagecount = totalnumber /pagesize + 1;
+            
+        return pagecount;
+
 
 class DMU():
-    
-        
+          
     @staticmethod
     def AssignQuery( dbQuery ):
 
