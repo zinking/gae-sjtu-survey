@@ -6,7 +6,11 @@
 		import mx.controls.RadioButton;
 		
 		import  net.isurvey.model.*;
-		public var questiondata:QuestionData;
+		import util.Localizator;   
+               
+       	[Bindable] 
+       	private var localizator : Localizator = Localizator.getInstance(); 
+       	public var questiondata:QuestionData;
 		
 		
 		private function init():void{
@@ -53,7 +57,7 @@
 
 
 	<mx:VBox height="100%" width="100%" horizontalCenter="0" verticalCenter="0">
-		<mx:TextArea id="txtQuestion" width="100%" height="25%" text="问题"/>
+		<mx:TextArea id="txtQuestion" width="100%" height="25%" text="{localizator.getText('render_module_ta_question')}"/>
 		<mx:HBox width="100%" height="75%" horizontalCenter="0" verticalCenter="-50">
 		    <mx:VBox id="optionbox" height="100%" width="60%" left="0" verticalCenter="0">
 		        <mx:RadioButton label="答案1" groupName="答案"/>

@@ -11,7 +11,15 @@
 			import mx.rpc.*;
 			import mx.rpc.events.*;
 			import mx.controls.*;
-			import mx.events.ValidationResultEvent;
+			import mx.events.ValidationResultEvent;			
+		    import util.Localizator;   
+               
+       	[Bindable]   
+       	private var localizator : Localizator = Localizator.getInstance();   
+               
+       	private function changeLanguage(language:String):void {   
+                localizator.language = language;   
+       	} 
 			
 	
 		private function getUser():UserData{
@@ -87,7 +95,7 @@
 			horizontalCenter="0" top="0" width="560" height="401"/>
 			
 			
-		<mx:Label horizontalCenter="-234" verticalCenter="180" text="用户名" width="50" height="20" 
+		<mx:Label horizontalCenter="-234" verticalCenter="180" text="{localizator.getText('login_module_b_username')}" width="50" height="20" 
 			textAlign="center" fontSize="12" fontWeight="bold"/>
 			
 		<mx:TextInput id="username" horizontalCenter="-132" verticalCenter="180" width="120" height="20"
@@ -95,25 +103,34 @@
 		<mx:TextInput id="password" horizontalCenter="71" verticalCenter="180" width="120" height="20" 
 			change="validate(event)" displayAsPassword="true" text="123456"/>
 		
-		<mx:Label horizontalCenter="-22" verticalCenter="180" text="密码" width="50" height="20" 
+		<mx:Label horizontalCenter="-22" verticalCenter="180" text="{localizator.getText('login_module_b_password')}" width="50" height="20" 
 			textAlign="center" fontSize="12" fontWeight="bold"/>
-		<mx:RadioButton id="adminRadio" horizontalCenter="202" verticalCenter="180" label="管理员"/>
-		<mx:RadioButton id="userRadio" horizontalCenter="196" verticalCenter="212" label="用户"  selected="true"/>
+		<mx:RadioButton id="adminRadio" horizontalCenter="202" verticalCenter="180" 
+			label="{localizator.getText('login_module_rb_admin')}"/>
+		<mx:RadioButton id="userRadio" horizontalCenter="196" verticalCenter="212"  selected="true"
+			label="{localizator.getText('login_module_rb_user')}"/>
 		
 		
-		<mx:Button verticalCenter="223" horizontalCenter="-183" label="登录进站" 
+		<mx:Button verticalCenter="223" horizontalCenter="-183" 
 			id="submit" enabled="true"
-			click="login(event)"/>
-		<mx:Button horizontalCenter="85" verticalCenter="223" label="新用户注册"
-			 click="onRegisterUser(event)"/>
+			click="login(event)"
+			label="{localizator.getText('login_module_b_login')}"/>
+		<mx:Button horizontalCenter="85" verticalCenter="223" 
+			 click="onRegisterUser(event)"
+			 label="{localizator.getText('login_module_b_register')}"/>
 		
-		<mx:Button horizontalCenter="-55" verticalCenter="223" label="匿名登录"
-			click="anonymouslogin(event)"/>
+		<mx:Button horizontalCenter="-55" verticalCenter="223" 
+			click="anonymouslogin(event)"
+			label="{localizator.getText('login_module_b_anonymous')}"/>
 		
 		
 		<mx:Label horizontalCenter="-136" verticalCenter="-71" text="Online Survey"  
 			fontFamily="Verdana" fontSize="36" fontWeight="bold" fontStyle="normal" color="#FFFFFF"/>
 		<mx:Label horizontalCenter="244" verticalCenter="124" text="Team 8" color="#FFFFFF" fontSize="15" fontWeight="bold"/>
 	</mx:Canvas>
+	<mx:Button y="22" label="{localizator.getText('login_module_b_english')}" 
+		id="btnEnglishVersion" click="changeLanguage('en_US')" right="10" width="80"/>
+	<mx:Button y="55" label="{localizator.getText('login_module_b_chinese')}" 
+		id="btnChineseVersion" click="changeLanguage('zh_CN')" right="10" width="80"/>
 
 </mx:Module>

@@ -12,7 +12,10 @@
 			import mx.rpc.events.*;
 			import mx.controls.*;
 			import mx.events.ValidationResultEvent;
-					
+			import util.Localizator;   
+               
+   		[Bindable] 
+       	private var localizator : Localizator = Localizator.getInstance(); 		
 		public var isValidUsername:Boolean = false;
 			
 		private function getUser():UserData{
@@ -85,7 +88,7 @@
     	property="text" minLength="4" maxLength="12"/>
     	
 	<mx:Form x="0" y="0" width="100%" height="100%">
-		<mx:FormItem label="*请选择您的用户名：" horizontalAlign="left">
+		<mx:FormItem label="{localizator.getText('register_module_fi_entername')}" horizontalAlign="left">
 		<mx:HBox>
 			<mx:TextInput id="username" 
 			change="validate(event)" 
@@ -96,48 +99,48 @@
 		</mx:FormItem>
 		
 		<mx:FormItem>
-			<mx:Label text="不超过7个汉字，或14个字节(数字，字母和下划线)"/>
+			<mx:Label text="{localizator.getText('register_module_fi_nomore')}"/>
 		</mx:FormItem>
 		
-		<mx:FormItem label="*请输入您的密码：">
+		<mx:FormItem label="{localizator.getText('register_module_fi_enterpassword')}">
 			<mx:TextInput id="password"
 			change="validate(event)" displayAsPassword="true" />
 		</mx:FormItem>
 		
 		<mx:FormItem>
-			<mx:Label text="长度必须最少包含8个字符，字母区分大小写。"/>
+			<mx:Label text="{localizator.getText('register_module_fi_nomorethan')}"/>
 		</mx:FormItem>
 		
-		<mx:FormItem label="*请再次输入您的密码：">
+		<mx:FormItem label="{localizator.getText('register_module_fi_enterpasswordagain')}">
 			<mx:TextInput id="samepassword"
 				change="validate(event)" displayAsPassword="true" />
 		</mx:FormItem>
 		
-		<mx:FormItem label="*请输入您的邮箱：">
+		<mx:FormItem label="{localizator.getText('register_module_fi_mail')}">
 			<mx:TextInput/>
 		</mx:FormItem>
 		
 		<mx:FormItem>
-			<mx:Label text="请输入有效的邮件地址，当密码遗失时凭此领取。"/>
+			<mx:Label text="{localizator.getText('register_module_fi_mail1')}"/>
 		</mx:FormItem>
 		
-		<mx:FormItem label="姓名：">
+		<mx:FormItem label="{localizator.getText('register_module_fi_name')}">
 			<mx:TextInput/>
 		</mx:FormItem>
 		
-		<mx:FormItem label="性别">
+		<mx:FormItem label="{localizator.getText('register_module_fi_gender')}">
 			<mx:HBox width="100%">
-				<mx:RadioButton label="男"/>
-				<mx:RadioButton label="女"/>
+				<mx:RadioButton label="{localizator.getText('register_module_fi_male')}"/>
+				<mx:RadioButton label="{localizator.getText('register_module_fi_female')}"/>
 			</mx:HBox>
 		</mx:FormItem>
 		
 		<mx:FormItem>
 			<mx:HBox width="100%">
-				<mx:Button label="确定" id="submit"
+				<mx:Button label="{localizator.getText('register_module_fi_OK')}" id="submit"
 					enabled="false" 
 					 click="onRegister(event)"/>
-				<mx:Button label="取消"
+				<mx:Button label="{localizator.getText('register_module_fi_cancel')}"
 					 click="onCancel(event)"/>
 			</mx:HBox>
 		</mx:FormItem>

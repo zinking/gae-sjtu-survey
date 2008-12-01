@@ -9,13 +9,16 @@
 		import com.adobe.cairngorm.control.CairngormEvent;
 		import mx.modules.ModuleLoader;
 		import net.isurvey.business.*;
-		
+		import util.Localizator;   
+               
+        [Bindable] 
+       	private var localizator : Localizator = Localizator.getInstance(); 
 		
 		private var curState:int ;
 		private var md:SurveyModelLocator ;
 		
 		private function init():void{
-
+			md = SurveyModelLocator.getInstance();
 		}
 		
 		private function onControlPanelClick( evt:ControlPanelEvent ):void{
@@ -73,33 +76,33 @@
 	<mx:states>
 		<mx:State name="admin">
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton id="lbAddSurvey" label="添加主题" horizontalCenter="0" top="110"
+				<mx:LinkButton id="lbAddSurvey" label="{localizator.getText('control_module_lb_addsurvey')}" horizontalCenter="0" top="110"
 					  click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.MANAGE_SURVEY) )" width="50%"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton id="lbModifySurvey" label="修改主题" horizontalCenter="0" top="148"
+				<mx:LinkButton id="lbModifySurvey" label="{localizator.getText('control_module_lb_modifysurvey')}" horizontalCenter="0" top="148"
 					click="onModifySurvey(event)" width="50%" visible="false"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton id="lbViewSurvey" label="查看主题" horizontalCenter="0" top="67"
+				<mx:LinkButton id="lbViewSurvey" label="{localizator.getText('control_module_lb_viewsurvey')}" horizontalCenter="0" top="67"
 					click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.VIEW_SURVEY) )" width="50%"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton id="lbDeleteSurvey" label="删除主题" horizontalCenter="0" top="190"
+				<mx:LinkButton id="lbDeleteSurvey" label="{localizator.getText('control_module_lb_deletesurvey')}" horizontalCenter="0" top="190"
 					click="onManageSurveyClick( new ManageSurveyEvent( ManageSurveyEvent.DELETE_SURVEY) )" width="50%" visible="false"/>
 			</mx:AddChild>
 			
 		</mx:State>
 		<mx:State name="user">
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton label="个人资料" horizontalCenter="0" top="70" width="50%"/>
+				<mx:LinkButton label="{localizator.getText('control_module_lb_personaldata')}" horizontalCenter="0" top="70" width="50%"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton label="历史记录" horizontalCenter="0" top="120" width="50%"
+				<mx:LinkButton label="{localizator.getText('control_module_lb_histore')}" horizontalCenter="0" top="120" width="50%"
 					click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.VIEW_HISTORY) )"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton label="投票" horizontalCenter="0" top="170" width="50%" enabled="false" id="lbVote"
+				<mx:LinkButton label="{localizator.getText('control_module_lb_vote')}" horizontalCenter="0" top="170" width="50%" enabled="false" id="lbVote"
 					click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.VOTE_SURVEY) )"/>
 			</mx:AddChild>
 		</mx:State>
@@ -111,7 +114,7 @@
 		<mx:Spacer width="10"/>
 		<mx:Image source="@Embed(source='images/1.gif')" />
 		<mx:Spacer width="10"/>
-		<mx:Label text="操作" fontSize="20" fontWeight="bold" 
+		<mx:Label text="{localizator.getText('control_module_lb_operate')}" fontSize="20" fontWeight="bold" 
 			textAlign="center" width="100" color="#FFFFFF"/>
 	</mx:ApplicationControlBar>
 	

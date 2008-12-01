@@ -14,7 +14,7 @@
 			
 			public function setWelcomeTitle():void{
 				var currentUser:UserData = md.user;
-				var welcometitle:String = "欢迎你 "+UserData.getType(currentUser.type) +" "
+				var welcometitle:String = localizator.getText('titlebar_module_t_welcome')+UserData.getType(currentUser.type) +" "
 							+ currentUser.name;
 				wtitle.text = welcometitle;
 	 			}
@@ -42,13 +42,13 @@
 		<mx:Spacer width="45"/>
 		<mx:VRule width="1" height="50"/>
 		<mx:Spacer width="20%"/>
-		<mx:LinkButton label="home" width="5%" textAlign="center"/>
-		<mx:LinkButton label="LogOut" width="5%" textAlign="center"
+		<mx:LinkButton label="{localizator.getText('titlebar_module_t_home')}" width="5%" textAlign="center"/>
+		<mx:LinkButton label="{localizator.getText('titlebar_module_t_logout')}" width="5%" textAlign="center"
 			 click="onLogout(event)"/>
 		<mx:LinkButton label="help" width="5%" textAlign="center"/>
 		<mx:Spacer width="20%"/>
 		
-		<mx:TextInput id="txtSearch" text="search survey" 
+		<mx:TextInput id="txtSearch" text="{localizator.getText('titlebar_module_t_searchsurvey')}" 
 			 focusIn="{txtSearch.text=''}" 
 			/>
 		<mx:LinkButton label="Search" width="5%" textAlign="center"

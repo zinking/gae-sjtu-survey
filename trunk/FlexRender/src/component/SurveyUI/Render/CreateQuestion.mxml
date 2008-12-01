@@ -6,13 +6,15 @@
 		import mx.events.ValidationResultEvent;
 		import mx.controls.RadioButton;
 		import net.isurvey.model.*;
+		import util.Localizator; 
 		
 		public var  questiondata:QuestionData = new QuestionData();
 		
 		
 		public var isValidQuestion:Boolean = false;
 		private var isValidQuestionHeader:Boolean = false;
-		
+		[Bindable] 
+		private var localizator : Localizator = Localizator.getInstance();   
 		public function init():void{
 			rdBox.removeAllChildren();
 			renderQuestionData( questiondata );
@@ -48,7 +50,7 @@
 			
 			//每一次添加的时候对问题进行校验
 			if ( rdBox.getChildren().length < 2 ) {
-				rdBox.errorString = "请至少输入两个选项";
+				rdBox.errorString = localizator.getText('create_module_es_twooption');
 				isValidQuestion = false;
 				return;
 			}
@@ -92,28 +94,28 @@
 	<mx:StringValidator />
 	<mx:VDividedBox width="95%" height="95%" left="10" top="10" verticalGap="10" liveDragging="false">
    		<mx:Form height="194" width="100%" >
-   			<mx:FormHeading label="填写下述选项" 
+   			<mx:FormHeading label="{localizator.getText('create_module_es_filloption')}"
    				width="100%" textAlign="center" height="22" fontWeight="normal" textDecoration="normal"/>
-   			<mx:FormItem label="问题描述" width="100%" height="68">
+   			<mx:FormItem label="{localizator.getText('create_module_es_questiondescription')}" width="100%" height="68">
    				<mx:TextArea   id="txtQuestionDescription" width="100%" height="100%"
 					 change="validate(event)"/>
    			</mx:FormItem>
 
 		
-			<mx:FormItem label="问题类型" width="100%" fontSize="14" horizontalAlign="left" required="true">
+			<mx:FormItem label="{localizator.getText('create_module_es_typeofquestion')}" width="100%" fontSize="14" horizontalAlign="left" required="true">
 				<mx:HBox height="100%" width="100%">
 					<mx:Spacer width="10%"/>
-					<mx:RadioButton  label="单选" selected="true"/>
-					<mx:RadioButton  label="多选" enabled="false"/>
+					<mx:RadioButton  label="{localizator.getText('create_module_es_single')}" selected="true"/>
+					<mx:RadioButton  label="{localizator.getText('create_module_es_multiple')}" enabled="false"/>
 				</mx:HBox>
 			</mx:FormItem>
 		
-			<mx:FormItem label="选项描述" width="100%" fontSize="14" horizontalAlign="left" required="true">
+			<mx:FormItem label="{localizator.getText('create_module_es_optiondescription')}" width="100%" fontSize="14" horizontalAlign="left" required="true">
 			<mx:HBox>
 				<mx:TextInput id="txtOptionDescription" width="90%"
 					change="validate(event)"/>
 				<mx:Button id="btnAddOption" width="10%"
-					label="添加选项"  enabled="false"
+					label="{localizator.getText('create_module_es_addoption')}"  enabled="false"
 				click="onAddOption(event)"/>
 			</mx:HBox>
 				
@@ -128,7 +130,7 @@
 				<mx:RadioButton label="Radio1"/>
 				<mx:RadioButton label="Radio2"/>	
 			</mx:VBox>
-			<mx:Button label="确认问题" x="262" y="127" enabled="false"  visible="true"
+			<mx:Button label="{localizator.getText('create_module_es_confirmation')}" x="262" y="127" enabled="false"  visible="true"
 				 click="validateCreatedQuestion(event)"/>
 		</mx:Canvas>
 	</mx:VDividedBox>

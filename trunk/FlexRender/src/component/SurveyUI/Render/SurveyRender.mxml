@@ -25,9 +25,10 @@
 		import net.isurvey.model.*;
 		import com.adobe.cairngorm.control.CairngormEventDispatcher;
 		import com.adobe.cairngorm.control.CairngormEvent;
-		
+		import util.Localizator; 
 		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
-		
+		[Bindable] 
+		private var localizator : Localizator = Localizator.getInstance();   
 		public function init():void{
 			acQuestionList.removeAllChildren();
 		}
@@ -68,9 +69,9 @@
 		public function checkVoteAvailability():void{
 			var currentdate:Date = new Date();
 			if ( currentdate >  dtExpire.selectedDate ){
-				md.controlpanel.disableVote( true,"该投票已经过期,无法投票");
+				md.controlpanel.disableVote( true,localizator.getText('surveyr_module_cp_expired') );
 			}
-			else if ( !checkValidVote() )md.controlpanel.disableVote( true,"未完成所有问题，无法投票");
+			else if ( !checkValidVote() )md.controlpanel.disableVote( true,localizator.getText('surveyr_module_cp_notcomplete'));
 			else md.controlpanel.disableVote(false);
 		}
 		
@@ -82,7 +83,7 @@
 			checkVoteAvailability();
 			
 			txtSurvey.text = sdata.description;
-			lblUser.text = "发起人:"+sdata.username;
+			lblUser.text = localizator.getText('surveyr_module_fi_sponser')+sdata.username;
 			acQuestionList.removeAllChildren();
 			
 			for each( var item:* in sdata.questionlist ){
@@ -98,12 +99,12 @@
 	]]>
 </mx:Script>
 
-	<mx:Label   text="创建日期："  x="26.5" bottom="10" id="label2"/>
+	<mx:Label   text="{localizator.getText('manage_module_fi_releasetime')}"  x="26.5" bottom="10" id="label2"/>
 	<mx:DateField id="dtCreate"  editable="false"  enabled="false" x="79" bottom="10"/>
-	<mx:Label   text="截止日期："  x="207.5" y="49" id="label1"/>
+	<mx:Label   text="{localizator.getText('manage_module_fi_deadline')}"  x="207.5" y="49" id="label1"/>
 	<mx:DateField id="dtExpire"  editable="false" 
 		enabled="false" x="270.5" y="47"/>
-	<mx:Label id="lblUser" x="257" text="发起人:" bottom="10"/>
+	<mx:Label id="lblUser" x="257" text="{localizator.getText('surveyr_module_fi_sponser')}" bottom="10"/>
 	
 	<mx:Accordion id="acQuestionList" x="36.5" y="78" width="80%" height="60%">
 	<Render:QuestionRender/>
