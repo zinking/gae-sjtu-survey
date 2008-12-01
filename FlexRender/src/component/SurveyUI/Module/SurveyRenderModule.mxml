@@ -14,11 +14,15 @@
 		import net.isurvey.model.*;
 		import com.adobe.cairngorm.control.CairngormEventDispatcher;
 		import com.adobe.cairngorm.control.CairngormEvent;
+		import util.Localizator;  
 		
 		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
 		
 		public var surveyheadlist:*;
-			
+		
+		[Bindable] 
+		private var localizator : Localizator = Localizator.getInstance();
+				
 		private function init():void{
 			md.surveyrendermodule = this;
 			setPageNumber();
@@ -107,7 +111,7 @@
 		<mx:Spacer width="10"/>
 		<mx:Image source="@Embed(source='images/1.gif')" />
 		<mx:Spacer width="10%"/>
-		<mx:Label id="lblTip" text="调查" fontSize="20" fontWeight="bold" textAlign="center" width="60%" color="#FFFFFF"/>
+		<mx:Label id="lblTip" text="{localizator.getText('manage_module_l_survey')}" fontSize="20" fontWeight="bold" textAlign="center" width="60%" color="#FFFFFF"/>
 	</mx:ApplicationControlBar>
 	<mx:Accordion id = "acSurveyList"
 		 change="onSurveyFocusChange( event)" creationComplete="onSurveyListComplete(event)"
@@ -117,9 +121,9 @@
 		<Render:QuestionRender label="Theme3"/>
 	</mx:Accordion>
 	
-	<mx:LinkButton id="ppage" label="上一页" horizontalCenter="0" 
+	<mx:LinkButton id="ppage" label="{localizator.getText('surveyrender_module_lb_previous')}" horizontalCenter="0" 
 		click="updatePageNumber(-1)" bottom="20" enabled="false"/>
-	<mx:LinkButton id="npage" label="下一页" right="60"
+	<mx:LinkButton id="npage" label="{localizator.getText('surveyrender_module_lb_next')}" right="60"
 		click="updatePageNumber(1)" bottom="20"/>	
 	<mx:Label id="pageinfo" x="286" y="560" text="Page" width="84"/>
 </mx:Canvas>

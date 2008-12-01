@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="230" height="300">
+<mx:Script>
+	<![CDATA[
+		import util.Localizator;   
+               
+       	[Bindable]   
+       	private var localizator : Localizator = Localizator.getInstance();   
+	]]>
+</mx:Script>
 	<mx:ApplicationControlBar top="0" width="230" horizontalCenter="0" height="50">
 		<mx:Spacer width="10"/>
 		<mx:Image source="@Embed(source='images/1.gif')"/>
 		<mx:Spacer width="10"/>
-		<mx:Label text="最近更新" fontSize="20" fontWeight="bold" textAlign="center" width="100" color="#FFFFFF"/>
+		<mx:Label text="{localizator.getText('update_module_l_recently_updated')}" fontSize="20" fontWeight="bold" textAlign="center" width="100" color="#FFFFFF"/>
 	</mx:ApplicationControlBar>
 	
 </mx:Canvas>

@@ -14,10 +14,13 @@
 		import net.isurvey.model.*;
 		import com.adobe.cairngorm.control.CairngormEventDispatcher;
 		import com.adobe.cairngorm.control.CairngormEvent;
-		
+		import util.Localizator;  
+	
 		private var surveydata:SurveyData = new SurveyData();
 		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
-			
+		
+		[Bindable] 
+		private var localizator : Localizator = Localizator.getInstance();		
 		public function init():void{
 			acQuestionList.removeAllChildren();
 			var sr:SurveyRender = md.surveyrendermodule.acSurveyList.selectedChild as SurveyRender;
@@ -29,14 +32,14 @@
 			var date:Date = new Date();
 			if ( dtCreateDate.selectedDate <  date ){
 				dtCreateDate.selectedDate =null;
-				dtCreateDate.errorString = "发布时间不能早于今天";
+				dtCreateDate.errorString = localizator.getText('manage_module_er_releasetime');
 				return false;
 			} 
 			else dtCreateDate.errorString = "";
 			
 			if ( dtCreateDate.selectedDate > dtEndDate.selectedDate ){
 				dtEndDate.selectedDate = null;
-				dtEndDate.errorString = "截止日期必须于发布日期之后";
+				dtEndDate.errorString = localizator.getText('manage_module_er_deadline');
 				return false;
 			}
 			else dtEndDate.errorString = "";
@@ -51,7 +54,7 @@
 			if (  sdvr.type == ValidationResultEvent.VALID  ) 	
 				 disableButton(false,btnAddQuestion);
 			else 	
-			disableButton( true,btnAddQuestion,"请先完成调查描述");
+			disableButton( true,btnAddQuestion,localizator.getText('manage_module_b_validate'));
 			
 		}		
 		/*
@@ -66,7 +69,7 @@
 			//----------------test
 			acQuestionList.selectedIndex = acQuestionList.selectedIndex + 1;
 			cq.addEventListener("ENABLE_ADD_QUESTION",enableAddQuestion);
-			disableButton(true,btnAddQuestion,"请先完成调查描述");		
+			disableButton(true,btnAddQuestion,localizator.getText('manage_module_b_validate'));		
 		}
 		
 		//-------------------------------
@@ -138,42 +141,42 @@
 		<mx:Spacer width="10"/>
 		<mx:Image source="@Embed(source='images/1.gif')" />
 		<mx:Spacer width="120"/>
-		<mx:Label text="调查" fontSize="20" fontWeight="bold" textAlign="center" width="100" color="#FFFFFF"/>
+		<mx:Label text="{localizator.getText('manage_module_l_survey')}" fontSize="20" fontWeight="bold" textAlign="center" width="100" color="#FFFFFF"/>
 	</mx:ApplicationControlBar>
 	
 		<mx:Form width="100%" left="3" top="3">
-<!--		<mx:FormItem label="主题名" width="100%" fontSize="14" required="true">
+<!--		<mx:FormItem label="{localizator.getText('manage_module_fi_surveydecription')}" width="100%" fontSize="14" required="true">
 			<mx:TextInput id="txtSurveyName" 
 				 change="validate(event)"
 				width="100%" height="100%"/>
 		</mx:FormItem>-->
-		<mx:FormItem label="主题背景描述" width="100%" fontSize="14" required="true">
+		<mx:FormItem label="{localizator.getText('manage_module_fi_surveydecription')}" width="100%" fontSize="14" required="true">
 			<mx:TextArea id="txtSurveyDescription" 
 				 change="validate(event)"
 				width="100%" height="100%"/>
 		</mx:FormItem>
 		<mx:HBox width="100%">
-			<mx:FormItem label="主题发布时间" width="50%" fontSize="14" required="true">
+			<mx:FormItem label="{localizator.getText('manage_module_fi_releasetime')}" width="50%" fontSize="14" required="true">
 				<mx:DateField id="dtCreateDate" width="100%" height="100%"
 				 change="validate(event)"/>
 			</mx:FormItem>
-			<mx:FormItem label="主题截止时间" fontSize="14" width="50%" required="true">
+			<mx:FormItem label="{localizator.getText('manage_module_fi_deadline')}" fontSize="14" width="50%" required="true">
 				<mx:DateField id="dtEndDate" width="50%" height="100%"
 					change="validate(event)"/>
 			</mx:FormItem>
 		</mx:HBox>
-		<mx:FormItem label="是否默认主题" width="100%" fontSize="14" required="true">
+		<mx:FormItem label="{localizator.getText('manage_module_fi_defaultsurvey')}" width="100%" fontSize="14" required="true">
 			<mx:HBox width="100%" height="100%">
 				<mx:Spacer width="20%"/>
-				<mx:RadioButton x="0" y="-2" label="是" selected="true" enabled="false"/>
-				<mx:RadioButton x="70" y="-2" label="否" selected="true" enabled="false"/>
+				<mx:RadioButton x="0" y="-2" label="{localizator.getText('manage_module_rb_yes')}" selected="true" enabled="false"/>
+				<mx:RadioButton x="70" y="-2" label="{localizator.getText('manage_module_rb_no')}" selected="true" enabled="false"/>
 			</mx:HBox>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:ApplicationControlBar width="100%" dock="true">
 		<mx:Button id="btnAddQuestion" 
 			 click="onAddQuestion(event)"
-			label="添加问题" enabled="false"  errorString="请先完成调查描述"/>
+			label="{localizator.getText('manage_module_b_addquestion')}" enabled="false"  errorString="{localizator.getText('manage_module_b_validate')}"/>
 	</mx:ApplicationControlBar>
 	<mx:Accordion id = "acQuestionList"		 
 		width="100%" horizontalCenter="0" top="70">
@@ -185,7 +188,7 @@
 	<mx:ApplicationControlBar width="100%">
 		<mx:Button id="btnSubmitSurvey" 
 			 click="onModifySurvey(event)"
-			label="修改问卷" enabled="true" />
+			label="{localizator.getText('update_module_b_updatesurvey')}" enabled="true" />
 	</mx:ApplicationControlBar>
 </mx:VBox>
 	
