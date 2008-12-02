@@ -2,7 +2,20 @@
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:render="component.Render.*"
 	layout="absolute" width="500" height="600"
-	 creationComplete="init()" xmlns:Render="component.SurveyUI.Render.*">
+	 creationComplete="init()" 
+	 xmlns:Render="component.SurveyUI.Render.*"
+	 xmlns:viewStackEffects="org.efflex.viewStackEffects.*"
+	 xmlns:effects="org.efflex.*"
+	 removedEffect="flipPapervision3D">
+	 
+	 <effects:FlipPapervision3D id="flipPapervision3D"
+        duration="600" constrain="false" direction="up"/>
+        
+<!--     <viewStackEffects:FlipPapervision3D id="flipPapervision3DStackEffect"
+         duration="600"  direction="up"
+        popUp="true" modal="true"
+        modalTransparencyBlur="0" modalTransparencyDuration="0"/>-->
+	 
 	<mx:Script>
 		<![CDATA[
 		import mx.events.IndexChangedEvent;

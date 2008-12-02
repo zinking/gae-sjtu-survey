@@ -2,8 +2,15 @@
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:render="component.Render.*"
 	xmlns:Render="component.SurveyUI.Render.*"
+	xmlns:effects="org.efflex.*"
 	layout="absolute" width="600" height="800"
+	 removedEffect="flipPapervision3D"
 	 >
+	 
+	 
+	 <effects:FlipPapervision3D id="flipPapervision3D"
+        duration="600" constrain="false" direction="up"/>
+        
 	<mx:Script>
 		<![CDATA[
 		import mx.events.ValidationResultEvent;

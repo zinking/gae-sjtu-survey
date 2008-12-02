@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:Render="component.SurveyUI.Render.*"
-	 creationComplete="init()" 
+	xmlns:effects="org.efflex.*"
+	xmlns:viewStackEffects="org.efflex.viewStackEffects.*"
+	creationComplete="init()" 
 	width="400" height="300"
-	>
+	backgroundColor="#A4F7FA" backgroundAlpha="0.22">
+	
+	<effects:FlipPapervision3D id="flipPapervision3D"/>
+<!--   <viewStackEffects:Squash id="squash"
+        duration="200"
+        direction="left"
+        />-->
+<!--       <viewStackEffects:FlipPapervision3D id="flipPapervision3DStackEffect"
+         duration="600"  direction="up"
+        popUp="true" modal="true"
+        modalTransparencyBlur="0" modalTransparencyDuration="0"/>-->
+	
+	
 	<mx:states>
 		<mx:State name="Collapse">
 			<mx:RemoveChild target="{txtSurvey}"/>
