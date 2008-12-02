@@ -99,7 +99,7 @@
 			textAlign="center" fontSize="12" fontWeight="bold"/>
 			
 		<mx:TextInput id="username" horizontalCenter="-132" verticalCenter="180" width="120" height="20"
-			change="validate(event)" text="wang"/>
+			change="validate(event)" text="zzy"/>
 		<mx:TextInput id="password" horizontalCenter="71" verticalCenter="180" width="120" height="20" 
 			change="validate(event)" displayAsPassword="true" text="123456"/>
 		

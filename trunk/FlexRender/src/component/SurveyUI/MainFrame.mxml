@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" height="100%"
-	 xmlns:Util="component.Util.*" xmlns:Survey="component.SurveyUI.*" xmlns:User="component.UserUI.*"
+	 xmlns:Util="component.Util.*" 
+	 xmlns:Survey="component.SurveyUI.*" 
+	 xmlns:User="component.UserUI.*"
+	 xmlns:effects="org.efflex.*"
 	  creationComplete="init()" xmlns:ns1="*">
+	  
+	  	<effects:FlipPapervision3D id="flipPapervision3D"
+        duration="200" constrain="false" direction="up"
+        popUp="false" modal="false"
+        modalTransparency="0.5" modalTransparencyColor="0xFFFFFF"
+        modalTransparencyBlur="0" modalTransparencyDuration="0"/>
+	  
 	 <mx:Script>
 	 	<![CDATA[
 
@@ -19,11 +29,7 @@
 	 			modelLocator.controlpanel = cpanel;
 	 			loadSettings();	 			
 	 		}
-	 		private function loadModule( moduleurl:String):void{
-				mdLoader.unloadModule();
-				mdLoader.url = moduleurl;
-	 			mdLoader.loadModule();
-			} 
+
 			private function arrangeUserUI( type:int ):void{
 				switch( type ){
 					case UserData.ADMIN:
@@ -63,13 +69,13 @@
 
 	<mx:Style source="styles/mainmodulestyle.css"/>
 	
+
+	
 	<mx:Box width="100%" height="100%" horizontalAlign="center">
 		
 
 	<mx:VBox id="header" height="15%">
-<!--		<mx:Image  source="@Embed(source='images/2.1.JPG')" 
-			left="0" top="0" width="100%" scaleContent="true"  
-			useHandCursor="true" maintainAspectRatio="false"/>-->
+
 		<mx:Image  source="@Embed(source='images/2.jpg')" 
 			scaleContent="true"  top="0" horizontalCenter="0" width="100%" maintainAspectRatio="false"
 			useHandCursor="true" />		

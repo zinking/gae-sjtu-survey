@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="350" height="400"
-	 initialize="init()">
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml" width="350" height="400"
+	xmlns:effects="org.efflex.*"
+	 initialize="init()"
+>
+	 
+<!--	 <effects:FlipPapervision3D id="flipPapervision3D"
+        duration="200" constrain="false" direction="up"
+        popUp="false" modal="false"
+        modalTransparency="0.5" modalTransparencyColor="0xFFFFFF"
+        modalTransparencyBlur="0" modalTransparencyDuration="0"/>-->
+        
 <mx:Script>
 	<![CDATA[
 		import mx.events.ValidationResultEvent;
@@ -9,10 +19,10 @@
 		import util.Localizator; 
 		
 		public var  questiondata:QuestionData = new QuestionData();
-		
-		
+				
 		public var isValidQuestion:Boolean = false;
 		private var isValidQuestionHeader:Boolean = false;
+		
 		[Bindable] 
 		private var localizator : Localizator = Localizator.getInstance();   
 		public function init():void{
