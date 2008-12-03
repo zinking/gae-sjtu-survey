@@ -148,6 +148,8 @@ class QueryPaper(db.Model):
         for i in range( len( descriptionlist )):
             des = descriptionlist[i];
             q = QueryPaper.gql("WHERE description = :1", des.surveydescription );
+            if( q.count() == 0 ):
+                continue;
             survey = q.fetch(1)[0];
             historysurveylist.append(survey);
         return historysurveylist;
@@ -289,6 +291,14 @@ class UserSurveyHistory( db.Model ):
                 "hlist":historylist,
                 "count":pagecount
                 }  
+        
+    @staticmethod
+    def deleteHistory( surveydescription ):
+        q = UserSurveyHistory.gql("WHERE surveydescription = :1 ", surveydescription  ); 
+        historylist = q.fetch( q.count() );
+        for histroy in historylist:
+            histroy.delete();
+        
         
 class UserPollHistory( db.Model):
     user = db.ReferenceProperty( User, required = True );
