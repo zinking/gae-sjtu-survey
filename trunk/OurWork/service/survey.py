@@ -37,6 +37,7 @@ def getQuery(request,querydescription):
            }
 
 def deleteSurvey( request,querydescription ):
+    UserSurveyHistory.deleteHistory( querydescription );
     QueryPaper.deleteSurveyData( querydescription );
     return{
            "DeleteResult":True
