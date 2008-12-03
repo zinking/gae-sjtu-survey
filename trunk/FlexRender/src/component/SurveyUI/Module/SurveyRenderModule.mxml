@@ -8,8 +8,11 @@
 	 xmlns:effects="org.efflex.*"
 	 removedEffect="flipPapervision3D">
 	 
-	 <effects:FlipPapervision3D id="flipPapervision3D"
-        duration="600" constrain="false" direction="up"/>
+
+        
+
+	 <effects:FlipPapervision3D id="flipPapervision3D"         
+      direction="up"/> 
         
 <!--     <viewStackEffects:FlipPapervision3D id="flipPapervision3DStackEffect"
          duration="600"  direction="up"
@@ -124,7 +127,10 @@
 		<mx:Spacer width="10"/>
 		<mx:Image source="@Embed(source='images/1.gif')" />
 		<mx:Spacer width="10%"/>
-		<mx:Label id="lblTip" text="{localizator.getText('manage_module_l_survey')}" fontSize="20" fontWeight="bold" textAlign="center" width="60%" color="#FFFFFF"/>
+		<mx:Label id="lblTip" 
+			text="{localizator.getText('manage_module_l_survey')}" 
+			fontSize="20" fontWeight="bold" textAlign="center" 
+			width="60%" color="#FFFFFF"/>
 	</mx:ApplicationControlBar>
 	<mx:Accordion id = "acSurveyList"
 		 change="onSurveyFocusChange( event)" creationComplete="onSurveyListComplete(event)"
@@ -134,9 +140,13 @@
 		<Render:QuestionRender label="Theme3"/>
 	</mx:Accordion>
 	
-	<mx:LinkButton id="ppage" label="{localizator.getText('surveyrender_module_lb_previous')}" horizontalCenter="0" 
+	<mx:LinkButton id="ppage" 
+		label="{localizator.getText('surveyrender_module_lb_previous')}" 
+		horizontalCenter="0" 
 		click="updatePageNumber(-1)" bottom="20" enabled="false"/>
-	<mx:LinkButton id="npage" label="{localizator.getText('surveyrender_module_lb_next')}" right="60"
+	<mx:LinkButton id="npage" 
+		label="{localizator.getText('surveyrender_module_lb_next')}" 
+		right="60"
 		click="updatePageNumber(1)" bottom="20"/>	
 	<mx:Label id="pageinfo" x="286" y="560" text="Page" width="84"/>
 </mx:Canvas>

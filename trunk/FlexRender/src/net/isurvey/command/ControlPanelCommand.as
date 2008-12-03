@@ -38,14 +38,11 @@ package net.isurvey.command
 			cpl.enabled = false;
 			delegate = new SurveyDelegate(this);
 			
+
+			
 			switch( currentEvent.operation_type ){
 				//对于有异步远程数据调用的事件在事件处理的时候必须屏蔽一些操作
-				//防止，数据取回后已经切换到其他的控制面板
-					case ControlPanelEvent.VIEW_SURVEY:
-						delegate.getSurveyHeadList();
-						md.currentpagemode = ControlPanelEvent.VIEW_SURVEY;
-					break;
-					
+				//防止，数据取回后已经切换到其他的控制面板					
 					case ControlPanelEvent.MANAGE_SURVEY:
 						md.bodyframeLoad( SurveyModelLocator.MANAGESURVEY_MODULE );
 						cpl.enabled = true;
@@ -60,10 +57,28 @@ package net.isurvey.command
 						delegate.updateVote( md.surveyrendermodule.getCurrentVoteData() );
 					break;
 					
+					case ControlPanelEvent.VIEW_SURVEY:
+						if ( md.currentpagemode != ControlPanelEvent.VIEW_SURVEY )//页模式之间跳转，那么从第一页开始
+							md.currentpagenumber = 1;
+						delegate.getSurveyHeadList();
+						md.currentpagemode = ControlPanelEvent.VIEW_SURVEY;
+					break;					
+					
 					case ControlPanelEvent.VIEW_HISTORY:
+						if ( md.currentpagemode != ControlPanelEvent.VIEW_HISTORY )//页模式之间跳转，那么从第一页开始
+							md.currentpagenumber = 1;					
 						delegate.getSurveyHistoryHeadList();
 						md.currentpagemode = ControlPanelEvent.VIEW_SURVEY;
+
 					break;
+					
+					case ControlPanelEvent.SEARCH_SURVEY:
+						if ( md.currentpagemode != ControlPanelEvent.SEARCH_SURVEY )//页模式之间跳转，那么从第一页开始
+							md.currentpagenumber = 1;					
+						delegate.searchSurveyHeads( md.search_survey_description );
+						md.currentpagemode = ControlPanelEvent.SEARCH_SURVEY;
+					break;	
+	
 			}
 			
 			SurveyModelLocator.getInstance().controlpanel_status = evt.operation_type;
@@ -80,6 +95,10 @@ package net.isurvey.command
 				
 				case ControlPanelEvent.VIEW_HISTORY:
 					delegate.getSurveyHistoryHeadList();
+				break;
+				
+				case ControlPanelEvent.SEARCH_SURVEY:
+					delegate.searchSurveyHeads( md.search_survey_description );
 				break;
 			}
 		}
@@ -117,6 +136,13 @@ package net.isurvey.command
 						md.surveyheadlist = headlist;
 						md.bodyframeLoad( SurveyModelLocator.VIEWSURVEY_MODULE );
 					break;
+					
+					case ControlPanelEvent.SEARCH_SURVEY:
+						headlist = evt.result.HeadList;
+						md.totalpagenumber = evt.result.Count;
+						md.surveyheadlist = headlist;
+						md.bodyframeLoad( SurveyModelLocator.VIEWSURVEY_MODULE );
+					break;					
 					
 			}		
 			md.controlpanel_status = currentEvent.operation_type;			

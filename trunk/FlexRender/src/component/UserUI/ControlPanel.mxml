@@ -46,22 +46,30 @@
 		}
 		
 		public function switchAdminView( type:int ):void{
-			if ( currentState != "admin" ) return;
-			switch( type ){
-				case ControlPanelEvent.VIEW_SURVEY:
-					enableUDSurvey( true );
-				break;
-				case ControlPanelEvent.MANAGE_SURVEY:
-					enableUDSurvey( false );
-				break;
-				case ManageSurveyEvent.MODIFY_SURVEY:
-					lbDeleteSurvey.visible = false;
-				break;
-				case ManageSurveyEvent.SEARCH_SURVEY:
-					enableUDSurvey( false );
-				break;
-				
-				
+			if ( currentState == "admin" ) {
+				switch( type ){
+					case ControlPanelEvent.VIEW_SURVEY:
+						enableUDSurvey( true );
+					break;
+					case ControlPanelEvent.MANAGE_SURVEY:
+						enableUDSurvey( false );
+					break;
+					case ManageSurveyEvent.MODIFY_SURVEY:
+						lbDeleteSurvey.visible = false;
+					break;
+					case ManageSurveyEvent.SEARCH_SURVEY:
+						enableUDSurvey( false );
+					break;				
+				}
+			}
+			else if ( currentState == "user" ){
+/* 				lbVote.visible = false;
+				switch( type ){
+					case ControlPanelEvent.VIEW_SURVEY:
+					case ManageSurveyEvent.SEARCH_SURVEY:
+						lbVote.visible = true;
+					break;
+					} */
 			}
 		}
 		
@@ -76,34 +84,53 @@
 	<mx:states>
 		<mx:State name="admin">
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton id="lbAddSurvey" label="{localizator.getText('control_module_lb_addsurvey')}" horizontalCenter="0" top="110"
-					  click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.MANAGE_SURVEY) )" width="50%"/>
+				<mx:LinkButton id="lbAddSurvey" 
+					label="{localizator.getText('control_module_lb_addsurvey')}" 
+					horizontalCenter="0" top="110"
+					  click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.MANAGE_SURVEY) )" 
+					  width="50%"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton id="lbModifySurvey" label="{localizator.getText('control_module_lb_modifysurvey')}" horizontalCenter="0" top="148"
+				<mx:LinkButton id="lbModifySurvey" 
+					label="{localizator.getText('control_module_lb_modifysurvey')}" 
+					horizontalCenter="0" top="148"
 					click="onModifySurvey(event)" width="50%" visible="false"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton id="lbViewSurvey" label="{localizator.getText('control_module_lb_viewsurvey')}" horizontalCenter="0" top="67"
+				<mx:LinkButton id="lbViewSurvey" 
+					label="{localizator.getText('control_module_lb_viewsurvey')}" 
+					horizontalCenter="0" top="67"
 					click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.VIEW_SURVEY) )" width="50%"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton id="lbDeleteSurvey" label="{localizator.getText('control_module_lb_deletesurvey')}" horizontalCenter="0" top="190"
-					click="onManageSurveyClick( new ManageSurveyEvent( ManageSurveyEvent.DELETE_SURVEY) )" width="50%" visible="false"/>
+				<mx:LinkButton id="lbDeleteSurvey" 
+					label="{localizator.getText('control_module_lb_deletesurvey')}" 
+					horizontalCenter="0" top="190"
+					click="onManageSurveyClick( new ManageSurveyEvent( ManageSurveyEvent.DELETE_SURVEY) )" 
+					width="50%" visible="false"/>
 			</mx:AddChild>
 			
 		</mx:State>
 		<mx:State name="user">
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton label="{localizator.getText('control_module_lb_personaldata')}" horizontalCenter="0" top="70" width="50%"/>
+				<mx:LinkButton label="{localizator.getText('control_module_lb_personaldata')}" 
+					horizontalCenter="-6" top="208" width="50%"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton label="{localizator.getText('control_module_lb_histore')}" horizontalCenter="0" top="120" width="50%"
+				<mx:LinkButton label="{localizator.getText('control_module_lb_histore')}" 
+					horizontalCenter="0" top="120" width="50%"
 					click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.VIEW_HISTORY) )"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">
-				<mx:LinkButton label="{localizator.getText('control_module_lb_vote')}" horizontalCenter="0" top="170" width="50%" enabled="false" id="lbVote"
+				<mx:LinkButton label="{localizator.getText('control_module_lb_vote')}" 
+					horizontalCenter="0" top="164" width="50%" enabled="false" id="lbVote"
 					click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.VOTE_SURVEY) )"/>
+			</mx:AddChild>
+			<mx:AddChild position="lastChild">
+				<mx:LinkButton id="lbUserViewSurvey" 
+					label="{localizator.getText('control_module_lb_viewsurvey')}" 
+					horizontalCenter="0" top="87"
+					click="onControlPanelClick( new ControlPanelEvent( ControlPanelEvent.VIEW_SURVEY) )" width="50%"/>
 			</mx:AddChild>
 		</mx:State>
 	   

@@ -10,11 +10,13 @@ package net.isurvey.event
 	public class ControlPanelEvent extends CairngormEvent{
 		public static const CONTROL_PANEL:String = "control_panel";
     	public static const MANAGE_SURVEY:int = 2;
-    	public static const VIEW_SURVEY:int = 3;
     	public static const PAGE_UPDATE:int = 4;
     	public static const VOTE_SURVEY:int = 5;
-    	public static const VIEW_HISTORY:int = 6;
     	
+    	public static const VIEW_HISTORY:int = 6;
+    	public static const VIEW_SURVEY:int = 3;
+    	public static const SEARCH_SURVEY:int = 7;
+    	    	
 		public var operation_type:int;
 		
 		public function ControlPanelEvent( optype:int ){

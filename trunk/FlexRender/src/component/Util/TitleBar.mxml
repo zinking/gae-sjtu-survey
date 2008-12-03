@@ -34,14 +34,14 @@
 				var snvr:ValidationResultEvent = vdSearchName.validate();
 				if ( snvr.type != ValidationResultEvent.VALID ) return;
 				
-				var search_evt:ManageSurveyEvent = new ManageSurveyEvent(ManageSurveyEvent.SEARCH_SURVEY );
+				var search_evt:ControlPanelEvent = new ControlPanelEvent(ControlPanelEvent.SEARCH_SURVEY );
 				md.search_survey_description = txtSearch.text;
 				CairngormEventDispatcher.getInstance().dispatchEvent( search_evt );
 			}
 			
 		]]>
 	</mx:Script>
-	<mx:ApplicationControlBar width="1000" height="50" horizontalCenter="0" verticalCenter="0">
+	<mx:ApplicationControlBar width="90%" height="50" horizontalCenter="0" verticalCenter="0">
 		<mx:Spacer width="45"/>
 		<mx:Text id="wtitle" text="欢迎，用户名" fontSize="12" 
 			fontWeight="bold" color="#FFFFFF" width="150" textAlign="center"/>
@@ -51,13 +51,13 @@
 		<mx:LinkButton label="{localizator.getText('titlebar_module_t_home')}" width="5%" textAlign="center"/>
 		<mx:LinkButton label="{localizator.getText('titlebar_module_t_logout')}" width="5%" textAlign="center"
 			 click="onLogout(event)"/>
-		<mx:LinkButton label="help" width="5%" textAlign="center"/>
+		<mx:LinkButton label="{localizator.getText('titlebar_module_t_help')}" width="5%" textAlign="center"/>
 		<mx:Spacer width="20%"/>
 		
 		<mx:TextInput id="txtSearch" text="{localizator.getText('titlebar_module_t_searchsurvey')}" 
 			 focusIn="{txtSearch.text=''}" 
 			/>
-		<mx:LinkButton label="Search" width="5%" textAlign="center"
+		<mx:LinkButton label="{localizator.getText('titlebar_module_t_searchsurvey')}" width="5%" textAlign="center"
 			 click="onSearchSurvey(event)"
 			/>
 
