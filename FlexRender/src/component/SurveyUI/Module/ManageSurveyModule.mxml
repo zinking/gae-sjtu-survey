@@ -9,7 +9,7 @@
 	 
 	 
 	 <effects:FlipPapervision3D id="flipPapervision3D"
-        duration="600" constrain="false" direction="up"/>
+        duration="300" constrain="false" direction="up"/>
         
 	<mx:Script>
 		<![CDATA[
@@ -39,6 +39,7 @@
 				dtCreateDate.errorString = localizator.getText('manage_module_er_releasetime');
 				return false;
 			} 
+			else if ( dtCreateDate.selectedDate == date ) dtCreateDate.errorString = "";
 			else dtCreateDate.errorString = "";
 			
 			if ( dtCreateDate.selectedDate > dtEndDate.selectedDate ){
@@ -178,8 +179,8 @@
 	</mx:ApplicationControlBar>
 	<mx:Accordion id = "acQuestionList"		 
 		width="100%" horizontalCenter="0" top="70">
-		<Render:CreateQuestion label="{localizator.getText('manage_module_cq_theme1')}" width="100%"/>
-		<Render:CreateQuestion label="{localizator.getText('manage_module_cq_theme1')}" width="100%"/>
+		<Render:CreateQuestion label="theme1" width="100%"/>
+		<Render:CreateQuestion label="theme1" width="100%"/>
 
 	</mx:Accordion>
 	

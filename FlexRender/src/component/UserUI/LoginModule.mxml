@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" 
-	layout="absolute" width="100%" height="100%" >
+	xmlns:effects="org.efflex.*"
+	xmlns:viewStackEffects="org.efflex.viewStackEffects.*"
+	layout="absolute" width="100%" height="100%"
+	>
+	
+			
+	  <effects:TileFade id="tileFadeOut"
+        numColumns="10" numRows="10"
+        duration="600" alphaFrom="0" alphaTo="1"
+        order="random" />
+
 	
 	<mx:Script>
 		<![CDATA[
@@ -95,15 +105,19 @@
 			horizontalCenter="0" top="0" width="560" height="401"/>
 			
 			
-		<mx:Label horizontalCenter="-234" verticalCenter="180" text="{localizator.getText('login_module_b_username')}" width="50" height="20" 
+		<mx:Label horizontalCenter="-234" verticalCenter="180" 
+			text="{localizator.getText('login_module_b_username')}" 
+			width="50" height="20" 
 			textAlign="center" fontSize="12" fontWeight="bold"/>
 			
 		<mx:TextInput id="username" horizontalCenter="-132" verticalCenter="180" width="120" height="20"
-			change="validate(event)" text="zzy"/>
+			change="validate(event)" text="wang"/>
 		<mx:TextInput id="password" horizontalCenter="71" verticalCenter="180" width="120" height="20" 
 			change="validate(event)" displayAsPassword="true" text="123456"/>
 		
-		<mx:Label horizontalCenter="-22" verticalCenter="180" text="{localizator.getText('login_module_b_password')}" width="50" height="20" 
+		<mx:Label horizontalCenter="-22" verticalCenter="180" 
+			text="{localizator.getText('login_module_b_password')}" 
+			width="50" height="20" 
 			textAlign="center" fontSize="12" fontWeight="bold"/>
 		<mx:RadioButton id="adminRadio" horizontalCenter="202" verticalCenter="180" 
 			label="{localizator.getText('login_module_rb_admin')}"/>

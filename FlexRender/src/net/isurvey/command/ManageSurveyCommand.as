@@ -2,6 +2,7 @@ package net.isurvey.command
 {
 	import com.adobe.cairngorm.commands.ICommand;
 	import com.adobe.cairngorm.control.CairngormEvent;
+	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
 	import mx.controls.Alert;
 	import mx.modules.ModuleLoader;
@@ -9,6 +10,7 @@ package net.isurvey.command
 	import mx.rpc.events.*;
 	
 	import net.isurvey.business.*;
+	import net.isurvey.event.ControlPanelEvent;
 	import net.isurvey.event.ManageSurveyEvent;
 	import net.isurvey.model.*;
 	
@@ -58,6 +60,7 @@ package net.isurvey.command
 				case ManageSurveyEvent.ADD_SURVEY:
 					 r = evt.result.AddResult;
 					if ( r ) Alert.show("提交问卷成功");
+					switch2ViewSurvey();
 					break;	
 				case ManageSurveyEvent.GET_SURVEY:
 					var surveydata:SurveyData = new SurveyData();
@@ -71,6 +74,7 @@ package net.isurvey.command
 						md.surveyrendermodule.deleteSelectedSurvey();
 						Alert.show("删除成功");
 					}
+					switch2ViewSurvey();
 					break;	
 				case ManageSurveyEvent.MODIFY_SURVEY:
 					//先获得删除的结果
@@ -83,6 +87,7 @@ package net.isurvey.command
 					}
 					var addresult:Boolean =  evt.result.AddResult;
 					if ( addresult ) Alert.show("修改问卷成功");
+					switch2ViewSurvey();
 					break;	
 					
 				case ManageSurveyEvent.SEARCH_SURVEY:
@@ -112,6 +117,11 @@ package net.isurvey.command
 			bodyLoader.unloadModule();
 			bodyLoader.url = moduleurl;
 	 		bodyLoader.loadModule();	
+		}
+		
+		private function switch2ViewSurvey():void{
+			var evt:ControlPanelEvent = new ControlPanelEvent( ControlPanelEvent.VIEW_SURVEY);
+			CairngormEventDispatcher.getInstance().dispatchEvent( evt );
 		}
 
 	}

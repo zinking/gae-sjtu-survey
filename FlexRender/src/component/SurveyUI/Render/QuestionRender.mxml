@@ -23,11 +23,16 @@
 			for each ( var item:* in qd.optionlist ){
 				var radio:RadioButton = new RadioButton();
 				radio.label = item.description;
+				radio.addEventListener( MouseEvent.CLICK,onRdClick);
 				optionbox.addChild( radio );
 			}
 			txtQuestion.text = qd.description;
 			questiondata = qd;
 			piechart.dataProvider = questiondata.optionlist;
+		}
+		
+		public function onRdClick( event:Event ):void{
+			this.dispatchEvent( new Event("VOTE_EVENT"));
 		}
 		
 		public function hasVote():Boolean{//如果有一个OPTION被勾选，那么该问题即被投票
