@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
-	 creationComplete="init()">
+	 creationComplete="init()" width="100%" height="100%">
 
 <mx:Script>
 		<![CDATA[
@@ -77,6 +77,8 @@
 		
 				]]>
 	</mx:Script>
+	
+	<mx:Style source="styles/style5.css"/>
 
 
 <!-- 客户端校验器部分-->
@@ -87,7 +89,8 @@
     <mx:StringValidator id="validSamePassword" source="{samepassword}"	
     	property="text" minLength="4" maxLength="12"/>
     	
-	<mx:Form x="0" y="0" width="100%" height="100%">
+  <mx:Panel width="700" height="600" horizontalCenter="0" top="80">
+  	<mx:Form width="100%" height="100%" >
 		<mx:FormItem label="{localizator.getText('register_module_fi_entername')}" horizontalAlign="left">
 		<mx:HBox>
 			<mx:TextInput id="username" 
@@ -146,5 +149,7 @@
 		</mx:FormItem>
 		
 	</mx:Form>
+  </mx:Panel>
+	
 	
 </mx:Module>

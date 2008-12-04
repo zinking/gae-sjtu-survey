@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Image  source="@Embed(source='images/2.jpg')" 
+			scaleContent="true"  top="0" horizontalCenter="0" width="100%" maintainAspectRatio="false"
+			useHandCursor="true"  height="100%"/>		
+    <mx:Label text="Online Survey" fontSize="36" fontWeight="bold" color="#FFFFFF" top="127" horizontalCenter="-200"/>
+</mx:Canvas>
