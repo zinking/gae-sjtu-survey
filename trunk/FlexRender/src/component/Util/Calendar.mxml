@@ -8,13 +8,13 @@
        	private var localizator : Localizator = Localizator.getInstance();   
 	]]>
 </mx:Script>
-	<mx:ApplicationControlBar top="0" width="230" horizontalCenter="0" height="50">
-		<mx:Spacer width="10"/>
+	<mx:ApplicationControlBar top="0" width="100%" horizontalCenter="0" height="16%">
+		<mx:Spacer width="5%"/>
 		<mx:Image source="@Embed(source='images/1.gif')" />
-		<mx:Spacer width="10"/>
+		<mx:Spacer width="5%"/>
 		<mx:Label text="{localizator.getText('calendar_module_l_calendar')}" fontSize="20" fontWeight="bold" 
 			textAlign="center" width="100" color="#FFFFFF"/>
 	</mx:ApplicationControlBar>
-	<mx:DateChooser horizontalCenter="0" top="80" width="220" height="200"/>
+	<mx:DateChooser horizontalCenter="0" width="95%" height="68%" verticalCenter="30"/>
 	
 </mx:Canvas>

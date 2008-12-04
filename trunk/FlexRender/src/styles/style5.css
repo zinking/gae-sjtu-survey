@@ -3,19 +3,6 @@ Module {
    backgroundGradientColors: #0099ff, #ffffff;
 }
 
-Accordion {
-   backgroundAlpha: 0.7;
-   selectedFillColors: #ffff00, #ffff99;
-   borderColor: #ffff00;
-   textRollOverColor: #00ffff;
-   textSelectedColor: #ff0066;
-   headerStyleName: "myaccordionHeader";
-}
-
-.myaccordionHeader {
-   fontSize: 12;
-}
-
 Button {
    cornerRadius: 10;
    textRollOverColor: #00ffff;
@@ -25,39 +12,6 @@ Button {
    fontWeight: bold;
 }
 
-ButtonBar {
-   buttonStyleName: "mybuttonBarButtonStyle";
-   firstButtonStyleName: "mybuttonBarFirstButtonStyle";
-   lastButtonStyleName: "mybuttonBarLastButtonStyle";
-}
-
-.mybuttonBarButtonStyle {
-   textRollOverColor: #00ffff;
-   textSelectedColor: #ff0033;
-   borderColor: #ffff00;
-   fontSize: 12;
-}
-
-.mybuttonBarFirstButtonStyle {
-   cornerRadius: 10;
-}
-
-.mybuttonBarLastButtonStyle {
-   cornerRadius: 10;
-}
-
-CheckBox {
-   borderColor: #ffff00;
-   textSelectedColor: #ff0033;
-   textRollOverColor: #00ffff;
-   fontSize: 12;
-}
-
-DateChooser {
-   todayColor: #ff00ff;
-   borderColor: #ffff00;
-   fontSize: 12;
-}
 
 HScrollBar {
    cornerRadius: 0;
@@ -67,7 +21,7 @@ HScrollBar {
 }
 
 Panel {
-   borderColor: #ffffff;
+   borderColor: #0099ff;
    borderAlpha: 0.3;
    cornerRadius: 10;
    backgroundAlpha: 0.7;
@@ -79,6 +33,7 @@ Panel {
 
 .mypanelTitle {
    fontSize: 12;
+   height: 30
 }
 
 RadioButton {
@@ -88,28 +43,6 @@ RadioButton {
    fontSize: 12;
 }
 
-TabNavigator {
-   cornerRadius: 0;
-   backgroundAlpha: 0.7;
-   borderColor: #ffff00;
-   tabStyleName: "myTabs";
-   firstTabStyleName: "myTabs";
-   lastTabStyleName: "myTabs";
-   selectedTabTextStyleName: "mySelectedTabs";
-}
-
-.myTabs {
-   cornerRadius: 10;
-   backgroundAlpha: 0.7;
-   borderColor: #ffff00;
-   textRollOverColor: #00ffff;
-   fontSize: 12;
-
-}
-
-.mySelectedTabs {
-   textRollOverColor: #ff0033;
-}
 
 TextArea {
    fontSize: 12;
