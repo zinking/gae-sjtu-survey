@@ -11,14 +11,26 @@ try:
 except ValueError:
     print "Classes already registered"
 
-def addQuery(request,qdata):
+def addQuery(request,qdata, default = False):
     QueryPaper.submitQuery(qdata );
-    
+    if ( default ): DefaultSurvey.AddDefaultSurvey( qdata.description );
     return {
             "AddResult":True
             }
     
+def getDefaultSurvey( request ):  
+    return{
+           "HeadList":DefaultSurvey.GetDefaultSurvey()
+           }  
+    
+def checkSurveyDescription( request,description ):
+    
+    return {
+            "Result":QueryPaper.checkSurveyDescription(description)
+            }
+    
 def getAllSurveyHead(request,offset,pagesize):
+    
     
     headlist = QueryPaper.retrieveAllSurveyHead(pagesize,offset);
     headcount = db.Query( QueryPaper ).count();
@@ -29,16 +41,19 @@ def getAllSurveyHead(request,offset,pagesize):
             "Count":querycount
             }
     
-def getQuery(request,querydescription):
+def getQuery(request,querydescription,username):
     
     survey = QueryPaper.retrieveQuery( querydescription );  
+    hasvote = UserSurveyHistory.hasHistory( username,querydescription );
     return{
-           "Survey":survey
+           "Survey":survey,
+           "HasVoted":hasvote
            }
 
 def deleteSurvey( request,querydescription ):
     UserSurveyHistory.deleteHistory( querydescription );
     QueryPaper.deleteSurveyData( querydescription );
+    DefaultSurvey.DeleteDefault( querydescription );
     return{
            "DeleteResult":True
            }
@@ -93,5 +108,7 @@ surveyGateway = DjangoGateway({
     'qSurvey.deleteSurvey':deleteSurvey,
     'qSurvey.updateQueryVote':updateQueryVote,
     'qSurvey.getUserHistorySurveyHeads':getUserHistorySurveyHeads,
-    'qSurvey.searchSurveyHeads':searchSurveyHeads
+    'qSurvey.searchSurveyHeads':searchSurveyHeads,
+    'qSurvey.checkSurveyDescription':checkSurveyDescription,
+    'qSurvey.getDefaultSurvey':getDefaultSurvey
 })
