@@ -18,13 +18,15 @@
 		import net.isurvey.model.*;
 		import util.Localizator; 
 		
-		public var  questiondata:QuestionData = new QuestionData();
-				
-		public var isValidQuestion:Boolean = false;
-		private var isValidQuestionHeader:Boolean = false;
+		public static const QUESTION_MODIFIED:String ="question_modified";
+		
+		public 	var  questiondata:QuestionData 		= new QuestionData();	
+		public 	var isValidQuestion:Boolean 		= false;
+		private var isValidQuestionHeader:Boolean 	= false;
 		
 		[Bindable] 
-		private var localizator : Localizator = Localizator.getInstance();   
+		private var localizator : Localizator = Localizator.getInstance();
+		   
 		public function init():void{
 			rdBox.removeAllChildren();
 			renderQuestionData( questiondata );
@@ -34,18 +36,21 @@
 			txtQuestionDescription.text = questiondata.description  ;
 			rdBox.removeAllChildren();
 			for each ( var item:Object in questiondata.optionlist ){
-				var rb:TextInput = new TextInput();
-				rb.text = item.description;
-				rdBox.addChild( rb );
-			}						
+				var rdOption:OptionRender = new OptionRender();
+				rdOption.text = item.description;
+				rdOption.addEventListener( OptionRender.OPTION_DELETED ,onDelOption);
+				rdOption.addEventListener( OptionRender.OPTION_MODIFIED,onEditOption);
+				rdBox.addChild( rdOption );
+			}
+			isValidQuestion = true;						
 		}
 		
 		public function getQuestionData():QuestionData{
 			questiondata.description = txtQuestionDescription.text;
 			questiondata.optionlist.removeAll();
-			for each ( var item:TextInput in rdBox.getChildren() ){
+			for each ( var item:OptionRender in rdBox.getChildren() ){
 				var optionitem:Object = new Object();
-				optionitem.optionname = item.text;
+				optionitem.optionname = item.getText();
 				optionitem.pollcount = 0;
 				questiondata.optionlist.addItem( optionitem );
 			}						
@@ -53,43 +58,97 @@
 		}
 
 		private function onAddOption( event:Event):void{
-			var rdOption:TextInput = new TextInput();
-			rdOption.text = txtOptionDescription.text;
-			rdBox.addChild( rdOption );
-			txtOptionDescription.text = "";
-			
-			//每一次添加的时候对问题进行校验
-			if ( rdBox.getChildren().length < 2 ) {
-				rdBox.errorString = localizator.getText('create_module_es_twooption');
-				isValidQuestion = false;
+			if ( !checkValidOption( txtOptionDescription.text ) ){
+				btnAddOption.enabled = false ;
 				return;
 			}
-			else{
-				rdBox.errorString = "";
-				isValidQuestion = isValidQuestionHeader;//当问题的选项正确的时候，问题的正确性取决于问题头部的正确性
-				//如果问题正确了可以要求添加下一个问题
-				if ( isValidQuestion ) dispatchEvent( new Event("ENABLE_ADD_QUESTION"));
-			}
+			
+			var rdOption:OptionRender = new OptionRender();
+			rdOption.text = txtOptionDescription.text;
+			rdOption.addEventListener( OptionRender.OPTION_DELETED ,onDelOption);
+			rdOption.addEventListener( OptionRender.OPTION_MODIFIED,onEditOption);
+			rdBox.addChild( rdOption );
+			
+			
+			validateQuestion(event);
+			dispatchEvent( new Event( QUESTION_MODIFIED ));
+			
+			txtOptionDescription.text = "";
+			btnAddOption.enabled = false;
 		}
 		
-		private function validateCreatedQuestion( event:Event ):void{			
-			//if ( isValidQuestion ) dispatchEvent( new Event("ENABLE_ADD_QUESTION"));
+		private function onEditOption( event:Event ):void{
+			validateQuestion(event);
+			dispatchEvent( new Event( QUESTION_MODIFIED ));
 		}
 		
-		private function validate( event:Event ):void{
-			this.label = txtQuestionDescription.text;
+		private function onDelOption( event:Event):void{
+			rdBox.removeChild( event.target as OptionRender );
+			validateQuestion(event);
+			dispatchEvent( new Event( QUESTION_MODIFIED ));
+		}	
+
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////			
+		
+		private function validateQuestionHeader( ):Boolean{
 			var pdvr:ValidationResultEvent = vdProblemDescription.validate();
 			var odvr:ValidationResultEvent = vdOptionDescription.validate();
-			if ( pdvr.type == ValidationResultEvent.VALID &&
-				 odvr.type == ValidationResultEvent.VALID ) {
-				 	btnAddOption.enabled = true;
-				 	isValidQuestionHeader = true;
-				 }
-			else {
-				btnAddOption.enabled = false;
-				return;
-			}
 			
+			btnAddOption.enabled = ( odvr.type == ValidationResultEvent.VALID );
+			return  ( pdvr.type == ValidationResultEvent.VALID ) ; 
+		}
+			
+		
+		private function validateOptionList(  ):Boolean{											
+				if ( rdBox.getChildren().length < 2 ) {
+					rdBox.errorString = localizator.getText('create_module_es_twooption');
+					return false;
+				}
+				else{//假设所有选项刚刚添加的时候都是正确的，修改的时候会有相应的判断
+					for each( var item:OptionRender in rdBox.getChildren() ){
+						if ( !item.isValidOption ) return false; 
+					}
+					rdBox.errorString = "";
+					return true;
+				}			
+		}
+		
+		private function validateQuestion( event:Event ):void{
+			var isValidHeader:Boolean 		= validateQuestionHeader();
+			var isValidOptionList:Boolean 	= validateOptionList();
+			isValidQuestion = isValidHeader && isValidOptionList;
+		}
+		
+		private function checkValidOption( option_des:String ):Boolean{
+			for each( var item:OptionRender in rdBox.getChildren() ){
+				if ( item.text == option_des ) return false; 
+			}
+			return true;
+		}
+		
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////			
+		
+
+		
+		private function onQuestionTextChange( event:Event ):void{
+			
+			//VALIDATE QUESTION QUESTION DESCRIPTION
+			//VALIDATE QUESTION OPTION
+			label = txtQuestionDescription.text;
+			
+			
+			//if( ! checkValidOption( txtOptionDescription.text )
+			
+			validateQuestion( event );
+			dispatchEvent( new Event(QUESTION_MODIFIED));
 		}
 		
 		
@@ -98,21 +157,29 @@
 
 
 	<mx:StringValidator id="vdProblemDescription"  source="{txtQuestionDescription}" property="text"
-		minLength="1"  maxLength="50"/>
+		maxLength="{SurveyModelLocator.max_description_length}" 
+		minLength="{SurveyModelLocator.min_descritpion_length}"/>
 	<mx:StringValidator id="vdOptionDescription"  source="{txtOptionDescription}" property="text"
-		minLength="1"  maxLength="50"/>
+		maxLength="{SurveyModelLocator.max_description_length}" 
+		minLength="{SurveyModelLocator.min_descritpion_length}"/>
 	<mx:StringValidator />
 	<mx:VDividedBox width="95%" height="95%" left="10" top="10" verticalGap="10" liveDragging="false">
    		<mx:Form height="194" width="100%" >
-   			<mx:FormHeading label="{localizator.getText('create_module_es_filloption')}"
+   			<mx:FormHeading 
+   				label="{localizator.getText('create_module_es_filloption')}"
    				width="100%" textAlign="center" height="22" fontWeight="normal" textDecoration="normal"/>
-   			<mx:FormItem label="{localizator.getText('create_module_es_questiondescription')}" width="100%" height="68">
-   				<mx:TextArea   id="txtQuestionDescription" width="100%" height="100%"
-					 change="validate(event)"/>
+   			<mx:FormItem 
+   				label="{localizator.getText('create_module_es_questiondescription')}" 
+   				width="100%" height="68">
+   				<mx:TextArea   
+   					id="txtQuestionDescription" width="100%" height="100%"
+					change="onQuestionTextChange(event)"/>
    			</mx:FormItem>
 
 		
-			<mx:FormItem label="{localizator.getText('create_module_es_typeofquestion')}" width="100%" fontSize="14" horizontalAlign="left" required="true">
+			<mx:FormItem 
+				label="{localizator.getText('create_module_es_typeofquestion')}" 
+				width="100%" fontSize="14" horizontalAlign="left" required="true">
 				<mx:HBox height="100%" width="100%">
 					<mx:Spacer width="10%"/>
 					<mx:RadioButton  label="{localizator.getText('create_module_es_single')}" selected="true"/>
@@ -120,11 +187,15 @@
 				</mx:HBox>
 			</mx:FormItem>
 		
-			<mx:FormItem label="{localizator.getText('create_module_es_optiondescription')}" width="100%" fontSize="14" horizontalAlign="left" required="true">
+			<mx:FormItem 
+				label="{localizator.getText('create_module_es_optiondescription')}" 
+				width="100%" fontSize="14" horizontalAlign="left" required="true">
 			<mx:HBox>
-				<mx:TextInput id="txtOptionDescription" width="90%"
-					change="validate(event)"/>
-				<mx:Button id="btnAddOption" width="10%"
+				<mx:TextInput 
+					id="txtOptionDescription" width="90%"
+					change="onQuestionTextChange(event)"/>
+				<mx:Button 
+					id="btnAddOption" width="10%"
 					label="{localizator.getText('create_module_es_addoption')}"  enabled="false"
 				click="onAddOption(event)"/>
 			</mx:HBox>
@@ -140,8 +211,10 @@
 				<mx:RadioButton label="Radio1"/>
 				<mx:RadioButton label="Radio2"/>	
 			</mx:VBox>
-			<mx:Button label="{localizator.getText('create_module_es_confirmation')}" x="262" y="127" enabled="false"  visible="true"
-				 click="validateCreatedQuestion(event)"/>
+			<mx:Button 
+				label="{localizator.getText('create_module_es_confirmation')}" 
+				x="262" y="127" enabled="false"  visible="false"
+				click="onQuestionTextChange(event)"/>
 		</mx:Canvas>
 	</mx:VDividedBox>
 	

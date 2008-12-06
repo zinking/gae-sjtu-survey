@@ -12,7 +12,7 @@
         
 
 	 <effects:FlipPapervision3D id="flipPapervision3D"         
-      direction="up"/> 
+      	direction="up"/> 
         
 <!--     <viewStackEffects:FlipPapervision3D id="flipPapervision3DStackEffect"
          duration="600"  direction="up"
@@ -51,17 +51,16 @@
 			acSurveyList.removeAllChildren();
 			if ( headlist.length == 0 ){
 				lblTip.text = "目前没有任何调查";
+				md.controlpanel.switchAdminView( ControlPanelEvent.MANAGE_SURVEY );
 				return;
 			}
 			for each ( var surveyhead:* in headlist ){
-				var surveyRender:SurveyRender = new SurveyRender();//TODO:改进为SURVEYRENDER
+				var surveyRender:SurveyRender = new SurveyRender( );//TODO:改进为SURVEYRENDER
 				surveyRender.renderSurveyHead( surveyhead );
 				acSurveyList.addChild(surveyRender); 
 			} 	
 			var sr:SurveyRender = acSurveyList.selectedChild as SurveyRender;
-			sr.retrieveSurveyBody();
-
-					
+			sr.retrieveSurveyBody();					
 		}
 		
 		//将当前选中的ACCORDION展开
@@ -135,7 +134,7 @@
 	<mx:Accordion id = "acSurveyList"
 		 change="onSurveyFocusChange( event)" creationComplete="onSurveyListComplete(event)"
 		width="95%" height="80%" horizontalCenter="0" top="70">
-		<Render:QuestionRender label="Theme1"/>
+		<Render:QuestionRender id="standardqr" label="Theme1" width="100%" height="100%"/>
 		<Render:QuestionRender label="Theme2"/>
 		<Render:QuestionRender label="Theme3"/>
 	</mx:Accordion>

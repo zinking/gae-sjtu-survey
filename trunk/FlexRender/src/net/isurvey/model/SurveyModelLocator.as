@@ -2,6 +2,7 @@ package net.isurvey.model
 {
 	import com.adobe.cairngorm.model.ModelLocator;
 	
+	import component.SurveyUI.Module.ManageSurveyModule;
 	import component.SurveyUI.Module.SurveyRenderModule;
 	import component.UserUI.ControlPanel;
 	
@@ -66,10 +67,13 @@ package net.isurvey.model
       	public var bodyloader:ModuleLoader;
       	public var controlpanel:ControlPanel;
       	public var surveyrendermodule:SurveyRenderModule;
+      	public var managesurveymodule:ManageSurveyModule;
       	
       	
       	public static const min_descritpion_length:int = 1;
-      	public static const max_description_length:int = 50;      	
+      	public static const max_description_length:int = 50;
+      	public static const min_userinfo_length:int = 3;
+      	public static const max_userinfo_length:int = 15;      	
       	     	
       	public static const LOGIN_MODULE:String 		= "component/UserUI/LoginModule.swf";
       	public static const MAINFRAME_MODULE:String 	= "component/SurveyUI/MainFrame.swf";

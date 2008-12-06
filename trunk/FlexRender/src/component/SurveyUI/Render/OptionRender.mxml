@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox 
+	xmlns:mx="http://www.adobe.com/2006/mxml" width="250">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.ValidationResultEvent;
+			import net.isurvey.model.*;
+			
+			public static const OPTION_MODIFIED:String ="option_modified";
+			public static const OPTION_DELETED:String ="option_deleted";
+			
+			
+			[Bindable]
+			public var text:String;
+			
+			public var isValidOption:Boolean = true;
+			
+			private function onDelClick( event:Event ):void{
+				var evt:Event = new Event( OPTION_DELETED );		
+				dispatchEvent( evt  );
+			}
+			
+			public function getText():String{
+				return txtOption.text;
+			}
+			
+			private function onOptionChange():void{
+				var odvr:ValidationResultEvent = vdOptionDescription.validate();
+				isValidOption = ( odvr.type == ValidationResultEvent.VALID );
+				dispatchEvent( new Event( OPTION_MODIFIED ) );
+			}
+			
+			
+			
+		]]>
+	</mx:Script>
+	<mx:StringValidator id="vdOptionDescription"  source="{txtOption}" property="text"
+		maxLength="{SurveyModelLocator.max_description_length}" 
+		minLength="{SurveyModelLocator.min_descritpion_length}"
+		/>
+	 <mx:TextInput  id="txtOption" text="{text}" width="70%"
+	 	 change="onOptionChange()"/>	
+	 <mx:Spacer width="10%"/>
+	 <mx:Button width="20%" label="Delete" click="onDelClick( event )"/>
+	
+</mx:HBox>

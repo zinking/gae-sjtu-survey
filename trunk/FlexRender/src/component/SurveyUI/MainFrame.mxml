@@ -33,17 +33,18 @@
 			private function arrangeUserUI( type:int ):void{
 				switch( type ){
 					case UserData.ADMIN:
-					leftbox.removeChild( anonymousLogin );
+					//leftbox.removeChild( anonymousLogin );
 	 				modelLocator.controlpanel_status = ControlPanelEvent.MANAGE_SURVEY;
 	 				cpanel.currentState = 'admin';
 	 				break;
 	 				case UserData.USER:
-	 				leftbox.removeChild(anonymousLogin);
+	 				//leftbox.removeChild(anonymousLogin);
 	 				modelLocator.controlpanel_status = ControlPanelEvent.VIEW_SURVEY;
 	 				cpanel.currentState = 'user';
 	 				break;
 	 				case UserData.ANONYMOUS:
 	 				leftbox.removeChild(cpanel);
+	 				//leftbox.removeChild(anonymousLogin);
 	 				modelLocator.controlpanel_status = ControlPanelEvent.VIEW_SURVEY;
 	 				break;
 	 				default:
@@ -86,7 +87,6 @@
 	<mx:HBox id="body" height="70%">
 		<mx:Spacer width="5%"/>
 		<mx:VBox id="leftbox" width="20%" >
-			<User:AccountRender id="anonymousLogin" />
 			<User:ControlPanel  id="cpanel" />
 		</mx:VBox>
 		
@@ -100,7 +100,7 @@
 	
 	<mx:Box id="footer" height="15%">
 			<mx:Label text="Design by WangZhen ChenYao ZhangYanLei LinQinQin and ZhangZhiYong " 
-		horizontalCenter="0" color="#00FFFF" bottom="40"/>
+					horizontalCenter="0" color="#00FFFF" bottom="40"/>
 	</mx:Box>
 
 	</mx:Box>	

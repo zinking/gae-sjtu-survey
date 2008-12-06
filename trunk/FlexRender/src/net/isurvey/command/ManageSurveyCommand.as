@@ -4,6 +4,9 @@ package net.isurvey.command
 	import com.adobe.cairngorm.control.CairngormEvent;
 	import com.adobe.cairngorm.control.CairngormEventDispatcher;
 	
+	import component.SurveyUI.Module.ManageSurveyModule;
+	import component.SurveyUI.Module.SurveyRenderModule;
+	
 	import mx.controls.Alert;
 	import mx.modules.ModuleLoader;
 	import mx.rpc.IResponder;
@@ -47,7 +50,13 @@ package net.isurvey.command
 					
 				case ManageSurveyEvent.SEARCH_SURVEY:
 					delegate.searchSurveyHeads( md.search_survey_description );
-					break;		
+					break;
+				case ManageSurveyEvent.CHECK_SURVEY:
+					delegate.checkSurveyDescription( evt.surveydescripton );
+					break;	
+				case ManageSurveyEvent.DEFAULT_SURVEY:
+					delegate.getDefaultSurvey();
+					break;	
 			}
 
 
@@ -65,7 +74,19 @@ package net.isurvey.command
 				case ManageSurveyEvent.GET_SURVEY:
 					var surveydata:SurveyData = new SurveyData();
 					surveydata.parseData( evt.result.Survey );
-					currentevent.surveyrender.renderSurvey( surveydata );
+					var hasvote:Boolean = evt.result.HasVoted;
+					currentevent.surveyrender.renderSurvey( surveydata,hasvote );
+					break;
+				case ManageSurveyEvent.CHECK_SURVEY:
+					var sr:ManageSurveyModule = md.managesurveymodule;
+					if ( evt.result.Result ){//ALREADY EXITST
+						sr.isDescritpionValid = false;
+						sr.setInfo("Survey Already Exists");
+					}
+					else{
+						sr.isDescritpionValid = true;
+						sr.setInfo("Survey Available");
+					}
 					break;
 					
 				case ManageSurveyEvent.DELETE_SURVEY:
@@ -93,6 +114,15 @@ package net.isurvey.command
 				case ManageSurveyEvent.SEARCH_SURVEY:
 					var headlist:* = evt.result.HeadList;
 					md.totalpagenumber = evt.result.Count;
+					md.surveyheadlist = headlist;
+					loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
+					break;	
+					
+				case ManageSurveyEvent.DEFAULT_SURVEY:
+					var headlist:* = evt.result.HeadList;
+					md.currentpagemode = ManageSurveyEvent.DEFAULT_SURVEY;
+					md.totalpagenumber 		= 1;
+					md.currentpagenumber 	= 1;
 					md.surveyheadlist = headlist;
 					loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
 					break;				

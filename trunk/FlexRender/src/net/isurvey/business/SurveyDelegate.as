@@ -9,31 +9,40 @@ package net.isurvey.business
 	
 	
 	public class SurveyDelegate{
-		private var modelLocator:SurveyModelLocator = SurveyModelLocator.getInstance();
+		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
 		
 		public function SurveyDelegate( responder : IResponder ){
 			this.service = ServiceLocator.getInstance().getRemoteObject( "surveyGateway" );
 	      	this.responder = responder;	
 		}
 		
+		public function getDefaultSurvey():void{
+			var call : Object = service.getDefaultSurvey( );
+			call.addResponder( responder );
+		}
+		
 		public function getSurveyHeadList():void{
-			var pagesize:int = modelLocator.pagesize;
-			var offset:int = ( modelLocator.currentpagenumber-1 ) * pagesize;
+			var pagesize:int = md.pagesize;
+			var offset:int = ( md.currentpagenumber-1 ) * pagesize;
 			var call : Object = service.getAllSurveyHead( offset , pagesize);
+			call.addResponder( responder );
+		}
+		public function checkSurveyDescription( des:String ):void{
+			var call : Object = service.checkSurveyDescription( des );
 			call.addResponder( responder );
 		}
 		
 		public function getSurveyHistoryHeadList():void{
-			var pagesize:int = modelLocator.pagesize;
-			var offset:int = ( modelLocator.currentpagenumber-1 ) * pagesize;
-			var username:String = modelLocator.user.name;	
+			var pagesize:int = md.pagesize;
+			var offset:int = ( md.currentpagenumber-1 ) * pagesize;
+			var username:String = md.user.name;	
 			var call : Object = service.getUserHistorySurveyHeads( username,offset , pagesize);
 			call.addResponder( responder );		
 		}
 		
 		public function searchSurveyHeads( des:String ):void{
-			var pagesize:int = modelLocator.pagesize;
-			var offset:int = ( modelLocator.currentpagenumber-1 ) * pagesize;
+			var pagesize:int = md.pagesize;
+			var offset:int = ( md.currentpagenumber-1 ) * pagesize;
 			var call : Object = service.searchSurveyHeads( des, offset , pagesize);
 			call.addResponder( responder );	
 		}
@@ -44,7 +53,8 @@ package net.isurvey.business
 		}
 		
 		public function getSurvey( des:String ):void{
-			var call:Object = service.getQuery( des );
+			var usrname:String = md.user.name;
+			var call:Object = service.getQuery( des , usrname );
 			call.addResponder( responder );
 		}
 		
@@ -53,7 +63,7 @@ package net.isurvey.business
 			call.addResponder( responder );
 		}
 		public function updateVote( vd:SurveyData ):void{
-			var username:String = modelLocator.user.name; 
+			var username:String = md.user.name; 
 			var call:Object = service.updateQueryVote( vd,username );
 			call.addResponder( responder );
 		}

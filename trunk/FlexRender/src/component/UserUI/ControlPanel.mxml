@@ -3,11 +3,13 @@
 	 creationComplete="init()">
 <mx:Script >
 	<![CDATA[
+		import mx.events.CloseEvent;
 		import net.isurvey.event.*;
 		import net.isurvey.model.*;
 		import com.adobe.cairngorm.control.CairngormEventDispatcher;
 		import com.adobe.cairngorm.control.CairngormEvent;
 		import mx.modules.ModuleLoader;
+		import mx.controls.Alert;
 		import net.isurvey.business.*;
 		import util.Localizator;   
                
@@ -27,7 +29,20 @@
 			CairngormEventDispatcher.getInstance().dispatchEvent( evt );
 		}
 		
+		private function alertListener(eventObj:CloseEvent):void {
+                if (eventObj.detail == Alert.OK) {
+                	var evt:ManageSurveyEvent = new ManageSurveyEvent( ManageSurveyEvent.DELETE_SURVEY);
+                   	evt.surveydescripton = md.surveyrendermodule.acSurveyList.selectedChild.label;
+					CairngormEventDispatcher.getInstance().dispatchEvent( evt );
+                }
+        }
+		
 		private function onManageSurveyClick( evt:ManageSurveyEvent ):void{
+			if ( evt.surveytype == ManageSurveyEvent.DELETE_SURVEY ){				
+				Alert.show("Are you sure to Delete A Survey?", "Delete", Alert.OK | Alert.CANCEL, 
+						this, alertListener, null,  Alert.OK );
+				return;
+			}
 			evt.surveydescripton = md.surveyrendermodule.acSurveyList.selectedChild.label;
 			CairngormEventDispatcher.getInstance().dispatchEvent( evt );
 		}

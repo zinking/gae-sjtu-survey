@@ -15,6 +15,8 @@ package net.isurvey.model
 		public var questioncount:int;
 		public var pollcount:int;
 		
+		public var defaultsurvey:Boolean;
+		
 		
 		public function SurveyData(){
 			questionlist = new ArrayCollection();
