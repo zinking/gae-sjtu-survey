@@ -58,7 +58,33 @@ class User(db.Model):
         
 #--------------------------------------------------------------------------------------------    
 #-------------------------------------------------------------------------------------------- 
-#--------------------------------------------------------------------------------------------          
+#--------------------------------------------------------------------------------------------
+class DefaultSurvey(db.Model): 
+    description  = db.StringProperty( required = True);
+    
+    @staticmethod
+    def GetDefaultSurvey():
+        return DefaultSurvey.all().fetch(1);
+    
+    @staticmethod
+    def AddDefaultSurvey( des ): 
+        DefaultSurvey.ClearDefaultSurvey();
+        newDefault = DefaultSurvey(
+                                   description = des
+                                   );
+        newDefault.put();
+        
+    @staticmethod
+    def DeleteDefault( des ):
+        q = DefaultSurvey.gql("WHERE description = :1", des );
+        if ( q.count() > 0 ): DefaultSurvey.ClearDefaultSurvey();
+    
+    @staticmethod
+    def ClearDefaultSurvey():
+        q = DefaultSurvey.all();
+        list = q.fetch( q.count() )
+        for  item in list :
+            item.delete();     
 
 class QueryPaper(db.Model):
     description  = db.StringProperty( required = True);#Primary Key Unique
@@ -78,6 +104,8 @@ class QueryPaper(db.Model):
                                createtime = queryData.createdate,
                                expiretime = queryData.expiredate);
         newquery.put();
+        
+        if ( queryData.defaultsurvey ): DefaultSurvey.AddDefaultSurvey( queryData.description );
         
         for i in range(len( queryData.questionlist )) :
             problemData = queryData.questionlist[i];
@@ -116,6 +144,11 @@ class QueryPaper(db.Model):
         AllQuerys = QueryPaper.all();
         headlist = AllQuerys.fetch(pagesize,offset);
         return headlist;
+    
+    @staticmethod
+    def checkSurveyDescription( description ):
+         q = QueryPaper.gql("WHERE description = :1", description );
+         return q.count() > 0;
     
     @staticmethod
     def searchSurvey(critia,pagesize,offset):
@@ -280,6 +313,15 @@ class ProblemOption(db.Model):
 class UserSurveyHistory( db.Model ):
     username = db.StringProperty(required = True );
     surveydescription = db.StringProperty(required = True );
+    
+    @staticmethod
+    def hasHistory( username, description ):
+        q = UserSurveyHistory.gql("WHERE username = :1 AND surveydescription = :2 "
+                                  ,username ,description ); 
+        if ( q.count() > 0 ):
+             return True;
+        else:
+            return False;
     
     @staticmethod
     def getUserSurvey( username, offset , pagesize ):
