@@ -2,8 +2,14 @@
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:render="component.Render.*"
 	xmlns:Render="component.SurveyUI.Render.*"
+	xmlns:effects="org.efflex.*"
 	layout="absolute" width="600" height="800"
+	 removedEffect="flipPapervision3D"
 	 >
+	 	 
+	<effects:FlipPapervision3D id="flipPapervision3D"
+        duration="300" constrain="false" direction="up"/>
+        
 	<mx:Script>
 		<![CDATA[
 		import mx.events.ValidationResultEvent;
@@ -14,29 +20,75 @@
 		import net.isurvey.model.*;
 		import com.adobe.cairngorm.control.CairngormEventDispatcher;
 		import com.adobe.cairngorm.control.CairngormEvent;
-		import util.Localizator;  
-	
+		import util.*;  
+		 
 		private var surveydata:SurveyData = new SurveyData();
 		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
 		
-		[Bindable] 
-		private var localizator : Localizator = Localizator.getInstance();		
+		private var isValidSurvey:Boolean = false;
+		public  var isDescritpionValid:Boolean = false;
+		
+		[Bindable]
+		private var localizator : Localizator = Localizator.getInstance();	
+		
 		public function init():void{
 			acQuestionList.removeAllChildren();
 			var sr:SurveyRender = md.surveyrendermodule.acSurveyList.selectedChild as SurveyRender;
 			this.renderSurveyData( sr.getSurveyVoteData() );
+			validateSurvey( new Event("VALIDATE") );//VALIDATE				
 		}
 		
-		private function validateCreateDate():Boolean{
+
+		
+		public function onModifySurvey( event:Event ) :void{
+			setCurrentSurvey();
+						
+			var modify_evt:ManageSurveyEvent = new ManageSurveyEvent( ManageSurveyEvent.MODIFY_SURVEY );
+			modify_evt.surveydata = surveydata;	 			
+			CairngormEventDispatcher.getInstance().dispatchEvent( modify_evt );
+		}
+		
+		public function renderSurveyData( surveydata:SurveyData ):void{
+			txtSurveyDescription.text = surveydata.description  ;	
+			txtSurveyDescription.enabled = false;//SURVEY的主题不能被修改，因为它是作为主键唯一标识主题的
+			dtCreateDate.selectedDate = surveydata.createdate  ;
+			dtEndDate.selectedDate = surveydata.expiredate  ;
+			acQuestionList.removeAllChildren();
+			
+			for each ( var item:QuestionData in surveydata.questionlist ){
+				var cq:CreateQuestion = new CreateQuestion();
+				cq.questiondata = item;
+				cq.percentWidth = 100;
+				cq.label = item.description;
+				cq.addEventListener( CreateQuestion.QUESTION_MODIFIED ,onQuestionModified);
+				acQuestionList.addChild( cq );				
+				
+			}
+		}				
+		
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////校验SURVEY 信息并相应设置出错信息////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//检查1 检查问卷头信息是否正确
+		private function validateHeaderInfo():Boolean{
+			var sdvr:ValidationResultEvent = vdSurveyDescription.validate();
+			return (sdvr.type == ValidationResultEvent.VALID)
+		}
+		
+		//检查1 发布时间检查
+		private function validateDateInfo():Boolean{
 			//先判断发布时间对不对，即不能再今天的前几天发布
 			var date:Date = new Date();
-			if ( dtCreateDate.selectedDate <  date ){
+			if ( Util.equalDate( dtCreateDate.selectedDate,date) ) dtCreateDate.errorString = "";
+			else if ( dtCreateDate.selectedDate <  date ){
 				dtCreateDate.selectedDate =null;
 				dtCreateDate.errorString = localizator.getText('manage_module_er_releasetime');
 				return false;
 			} 
 			else dtCreateDate.errorString = "";
-			
+						
 			if ( dtCreateDate.selectedDate > dtEndDate.selectedDate ){
 				dtEndDate.selectedDate = null;
 				dtEndDate.errorString = localizator.getText('manage_module_er_deadline');
@@ -46,35 +98,91 @@
 			return true;
 		}
 		
-		public function validate( event:Event ):void{
-			
-			if ( ! validateCreateDate() ) return;
+		//检查2 检查所有的问题
+		private function validateAllQuestions():Boolean{
+			if ( acQuestionList.getChildren().length < 1 ){
+				return false;
+			}
+			for each ( var item:CreateQuestion in acQuestionList.getChildren() ){
+				if ( !item.isValidQuestion ){				
+					return false;
+				}
+			}
+			return true;		
+		}
+		
+		private function validateDelButtonAvailable():Boolean{
+			var numOfQuestions:int = acQuestionList.getChildren().length;
+			if ( numOfQuestions >= 1 ) return true;
+			return false;		
+		}
+		
+		private function validateCurrentQuestion():Boolean{
+			if ( acQuestionList.getChildren().length > 1 ){
+				var cq:CreateQuestion = acQuestionList.selectedChild as CreateQuestion; 
+				return cq.isValidQuestion;
+			}
+			else return false;
+		}
+		
+		//检查3 问卷描述检查
+		public function validateSurvey( event:Event ):void{
+			var isValidHeader:Boolean 	= validateHeaderInfo();
+			var isValidDate:Boolean 	= validateDateInfo();
+			var isValdiQuestion:Boolean = validateAllQuestions();
+			isValidSurvey = isValidHeader && isValidDate && isValdiQuestion ;
+			 
+			if (  !isValidSurvey ){//SURVEY的正确性控制是否可以提交
+				disableButton(true,btnSubmitSurvey,localizator.getText('manage_module_b_cas'));
+			}
+			else{
+				disableButton(false,btnSubmitSurvey);
+			}
 						
-			var sdvr:ValidationResultEvent = vdSurveyDescription.validate();
-			if (  sdvr.type == ValidationResultEvent.VALID  ) 	
-				 disableButton(false,btnAddQuestion);
-			else 	
-			disableButton( true,btnAddQuestion,localizator.getText('manage_module_b_validate'));
+			var isCurrentQuestionValid:Boolean = validateCurrentQuestion();
+			var isAddButtonAvailable:Boolean = /* isCurrentQuestionValid && */ isValidHeader;
+			if (  !isAddButtonAvailable ){//SURVEY的正确性控制是否可以提交
+				disableButton(true,btnAddQuestion,localizator.getText('manage_module_b_cas'));
+			}
+			else{
+				disableButton(false,btnAddQuestion);
+			}
 			
-		}		
+			var isDelButtonAvailable:Boolean = validateDelButtonAvailable();
+			if (  !isDelButtonAvailable ){//SURVEY的正确性控制是否可以提交
+				disableButton(true,btnDelQuestion,localizator.getText('manage_module_b_cas'));
+			}
+			else{
+				disableButton(false,btnDelQuestion);
+			}		
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////		
+		
 		/*
 		 * TODO:
 		 * 允许用户在编辑各个问题的时候自由的切换，但是如果当前编辑的问题没有完成或者有校验错误的时候
 		 × 不允许用户继续添加新的问题
 		 */
 		public function onAddQuestion( event:Event ) :void{
+			
 			var cq:CreateQuestion = new CreateQuestion();
 			cq.percentWidth = 100;
 			acQuestionList.addChild( cq );
 			//----------------test
 			acQuestionList.selectedIndex = acQuestionList.selectedIndex + 1;
-			cq.addEventListener("ENABLE_ADD_QUESTION",enableAddQuestion);
-			disableButton(true,btnAddQuestion,localizator.getText('manage_module_b_validate'));		
+			cq.addEventListener( CreateQuestion.QUESTION_MODIFIED ,onQuestionModified);
+			validateSurvey(event);//VALIDATE
+
 		}
 		
-		//-------------------------------
-		public function enableAddQuestion( event:Event ):void{
-			disableButton(false,btnAddQuestion);
+		//-------处理问卷的子问题正确提交的情况
+		public function onQuestionModified( event:Event ):void{
+			validateSurvey(event);//VALIDATE	
 		}
 		
 		private function disableButton( b:Boolean, button:Button, errmsg:String = ""):void{
@@ -96,42 +204,28 @@
 			surveydata.username = md.user.name;//TODO:ADD HERE TO GET 
 		}
 		
-		public function onModifySurvey( event:Event ) :void{
+		public function onSubmitSurvey( event:Event ) :void{
 			setCurrentSurvey();
-						
-			var modify_evt:ManageSurveyEvent = new ManageSurveyEvent( ManageSurveyEvent.MODIFY_SURVEY );
-			modify_evt.surveydata = surveydata;	 			
-			CairngormEventDispatcher.getInstance().dispatchEvent( modify_evt );
+			var evt:ManageSurveyEvent = new ManageSurveyEvent( ManageSurveyEvent.ADD_SURVEY );
+			evt.surveydata = surveydata;	 			
+			CairngormEventDispatcher.getInstance().dispatchEvent( evt );
 		}
 		
-		public function renderSurveyData( surveydata:SurveyData ):void{
-			txtSurveyDescription.text = surveydata.description  ;
-			//txtSurveyName.text = surveydata.description;//TODO:remove this
-			
-			txtSurveyDescription.enabled = false;//SURVEY的主题不能被修改，因为它是作为主键唯一标识主题的
-			//txtSurveyName.enabled = false;
-			
-			dtCreateDate.selectedDate = surveydata.createdate  ;
-			dtEndDate.selectedDate = surveydata.expiredate  ;
-			acQuestionList.removeAllChildren();
-			
-			for each ( var item:QuestionData in surveydata.questionlist ){
-				var cq:CreateQuestion = new CreateQuestion();
-				cq.questiondata = item;
-				cq.percentWidth = 100;
-				cq.label = item.description;
-				acQuestionList.addChild( cq );				
-				
-			}
+		private function onDelQuestion( event:Event):void{
+			var currentQR:CreateQuestion = acQuestionList.selectedChild as CreateQuestion;
+			acQuestionList.removeChild( currentQR );
+			validateSurvey(event);//VALIDATE
 		}
-				
+		
+		
+			
 		]]>
 	</mx:Script>
 	
-<!--	<mx:StringValidator id="vdSurveyName" source="{txtSurveyName}" property="text"
-		 maxLength="20" minLength="5"/>-->
+
 	<mx:StringValidator id="vdSurveyDescription" source="{txtSurveyDescription}" property="text"
-		 maxLength="60" minLength="4"/>
+		 maxLength="{SurveyModelLocator.max_description_length}" 
+		 minLength="{SurveyModelLocator.min_descritpion_length}"/>
 	
 <mx:Canvas  width="100%" height="100%" 
 	xmlns:Survey="component.SurveyUI.*"
@@ -141,53 +235,67 @@
 		<mx:Spacer width="10"/>
 		<mx:Image source="@Embed(source='images/1.gif')" />
 		<mx:Spacer width="120"/>
-		<mx:Label text="{localizator.getText('manage_module_l_survey')}" fontSize="20" fontWeight="bold" textAlign="center" width="100" color="#FFFFFF"/>
+		<mx:Label  fontSize="20" fontWeight="bold" textAlign="center" width="100" color="#FFFFFF"
+			text="{localizator.getText('manage_module_l_survey')}"/>
 	</mx:ApplicationControlBar>
 	
 		<mx:Form width="100%" left="3" top="3">
-<!--		<mx:FormItem label="{localizator.getText('manage_module_fi_surveydecription')}" width="100%" fontSize="14" required="true">
-			<mx:TextInput id="txtSurveyName" 
-				 change="validate(event)"
-				width="100%" height="100%"/>
-		</mx:FormItem>-->
-		<mx:FormItem label="{localizator.getText('manage_module_fi_surveydecription')}" width="100%" fontSize="14" required="true">
-			<mx:TextArea id="txtSurveyDescription" 
-				 change="validate(event)"
-				width="100%" height="100%"/>
+		<mx:FormItem  width="100%" fontSize="14" required="true"
+			label="{localizator.getText('manage_module_fi_surveydecription')}">
+			<mx:HBox>
+				<mx:TextArea id="txtSurveyDescription" 
+					change="validateSurvey(event)"
+					width="100%" height="100%"
+					/>
+			</mx:HBox>
+
 		</mx:FormItem>
 		<mx:HBox width="100%">
-			<mx:FormItem label="{localizator.getText('manage_module_fi_releasetime')}" width="50%" fontSize="14" required="true">
+			<mx:FormItem  width="50%" fontSize="14" required="true" 
+				label="{localizator.getText('manage_module_fi_releasetime')}">
 				<mx:DateField id="dtCreateDate" width="100%" height="100%"
-				 change="validate(event)"/>
+				 change="validateSurvey(event)"/>
 			</mx:FormItem>
-			<mx:FormItem label="{localizator.getText('manage_module_fi_deadline')}" fontSize="14" width="50%" required="true">
+			<mx:FormItem  fontSize="14" width="50%" required="true"
+				label="{localizator.getText('manage_module_fi_deadline')}">
 				<mx:DateField id="dtEndDate" width="50%" height="100%"
-					change="validate(event)"/>
+					change="validateSurvey(event)"/>
 			</mx:FormItem>
 		</mx:HBox>
-		<mx:FormItem label="{localizator.getText('manage_module_fi_defaultsurvey')}" width="100%" fontSize="14" required="true">
+		<mx:FormItem  width="100%" fontSize="14" required="true"
+			label="{localizator.getText('manage_module_fi_defaultsurvey')}">
 			<mx:HBox width="100%" height="100%">
 				<mx:Spacer width="20%"/>
-				<mx:RadioButton x="0" y="-2" label="{localizator.getText('manage_module_rb_yes')}" selected="true" enabled="false"/>
-				<mx:RadioButton x="70" y="-2" label="{localizator.getText('manage_module_rb_no')}" selected="true" enabled="false"/>
+				<mx:RadioButton x="0" y="-2"  selected="true" enabled="false"
+					label="{localizator.getText('manage_module_rb_yes')}"/>
+				<mx:RadioButton x="70" y="-2"  selected="true" enabled="false"
+					label="{localizator.getText('manage_module_rb_no')}"/>
 			</mx:HBox>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:ApplicationControlBar width="100%" dock="true">
 		<mx:Button id="btnAddQuestion" 
-			 click="onAddQuestion(event)"
-			label="{localizator.getText('manage_module_b_addquestion')}" enabled="false"  errorString="{localizator.getText('manage_module_b_validate')}"/>
+			click="onAddQuestion(event)"
+			enabled="false"  
+			label="{localizator.getText('manage_module_b_addquestion')}" 
+			errorString="{localizator.getText('manage_module_b_validate')}"/>
+			
+		<mx:Button id="btnDelQuestion" 
+			click="onDelQuestion(event)"
+			enabled="false"  
+			label="Delete Question"/>
 	</mx:ApplicationControlBar>
 	<mx:Accordion id = "acQuestionList"		 
 		width="100%" horizontalCenter="0" top="70">
-		<Render:CreateQuestion label="Theme1" width="100%"/>
-		<Render:CreateQuestion label="Theme1" width="100%"/>
+		<Render:CreateQuestion label="theme1" width="100%"/>
+		<Render:CreateQuestion label="theme1" width="100%"/>
 
 	</mx:Accordion>
 	
 	<mx:ApplicationControlBar width="100%">
-		<mx:Button id="btnSubmitSurvey" 
-			 click="onModifySurvey(event)"
+		<mx:Button 
+			id="btnSubmitSurvey" 
+			click="onModifySurvey(event)"
 			label="{localizator.getText('update_module_b_updatesurvey')}" enabled="true" />
 	</mx:ApplicationControlBar>
 </mx:VBox>

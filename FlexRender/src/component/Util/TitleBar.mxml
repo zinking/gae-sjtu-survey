@@ -20,13 +20,19 @@
 			
 			public function setWelcomeTitle():void{
 				var currentUser:UserData = md.user;
-				var welcometitle:String = localizator.getText('titlebar_module_t_welcome')+UserData.getType(currentUser.type) +" "
+				var welcometitle:String = localizator.getText('titlebar_module_t_welcome')
+										+UserData.getType(currentUser.type) +" "
 							+ currentUser.name;
 				wtitle.text = welcometitle;
 	 			}
 	 			
 	 		private function onLogout(event:Event):void{
 				var evt:LogOutEvent = new LogOutEvent( );	
+				CairngormEventDispatcher.getInstance().dispatchEvent( evt );
+			}
+			
+			private function onDefaultSurvey( event:Event):void{
+				var evt:ManageSurveyEvent = new ManageSurveyEvent( ManageSurveyEvent.DEFAULT_SURVEY );	
 				CairngormEventDispatcher.getInstance().dispatchEvent( evt );
 			}
 			
@@ -48,19 +54,29 @@
 			fontWeight="bold" color="#FFFFFF" width="150" textAlign="center"/>
 		<mx:Spacer width="4.5%"/>
 		<mx:VRule width="1" height="50"/>
-		<mx:Spacer width="20%"/>
-		<mx:LinkButton label="{localizator.getText('titlebar_module_t_home')}" width="5%" textAlign="center"/>
-		<mx:LinkButton label="{localizator.getText('titlebar_module_t_logout')}" width="5%" textAlign="center"
-			 click="onLogout(event)"/>
-		<mx:LinkButton label="{localizator.getText('titlebar_module_t_help')}" width="5%" textAlign="center"/>
+		<mx:Spacer width="15%"/>
+		<mx:LinkButton label="Default Survey" 
+			width="5%" textAlign="center"
+			click="onDefaultSurvey(event)"/>
+		<mx:LinkButton 
+			label="{localizator.getText('titlebar_module_t_home')}" 
+			width="5%" textAlign="center"/>
+		<mx:LinkButton 
+			label="{localizator.getText('titlebar_module_t_logout')}" 
+			width="5%" textAlign="center"
+			click="onLogout(event)"/>
+		<mx:LinkButton 
+			label="{localizator.getText('titlebar_module_t_help')}" 
+			width="5%" textAlign="center"/>
 		<mx:Spacer width="20%"/>
 		
-		<mx:TextInput id="txtSearch" text="{localizator.getText('titlebar_module_t_searchsurvey')}" 
-			 focusIn="{txtSearch.text=''}" 
-			/>
-		<mx:LinkButton label="{localizator.getText('titlebar_module_t_searchsurvey')}" width="5%" textAlign="center"
-			 click="onSearchSurvey(event)"
-			/>
+		<mx:TextInput id="txtSearch" 
+			text="{localizator.getText('titlebar_module_t_searchsurvey')}" 
+			focusIn="{txtSearch.text=''}" />
+		<mx:LinkButton 
+			label="{localizator.getText('titlebar_module_t_searchsurvey')}" 
+			width="5%" textAlign="center"
+			click="onSearchSurvey(event)"/>
 
 	</mx:ApplicationControlBar>
 		<mx:StringValidator id="vdSearchName" source="{txtSearch}" property="text"

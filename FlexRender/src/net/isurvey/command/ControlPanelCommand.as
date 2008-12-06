@@ -68,7 +68,7 @@ package net.isurvey.command
 						if ( md.currentpagemode != ControlPanelEvent.VIEW_HISTORY )//页模式之间跳转，那么从第一页开始
 							md.currentpagenumber = 1;					
 						delegate.getSurveyHistoryHeadList();
-						md.currentpagemode = ControlPanelEvent.VIEW_SURVEY;
+						md.currentpagemode = ControlPanelEvent.VIEW_HISTORY;
 
 					break;
 					
@@ -127,7 +127,7 @@ package net.isurvey.command
 						if ( evt.result.UpdateResult ) Alert.show("投票成功");
 						//TODO:目前还处在测试投票系统是否正常工作的过程中，在实现了同一个用户不能两次投票之后就可以把下面这行去掉
 						//因为控制面板规定不能重复发出的相同的命令
-						currentEvent.operation_type = ControlPanelEvent.VIEW_SURVEY;
+						//currentEvent.operation_type = ControlPanelEvent.VIEW_SURVEY;
 					break;
 					
 					case ControlPanelEvent.VIEW_HISTORY:

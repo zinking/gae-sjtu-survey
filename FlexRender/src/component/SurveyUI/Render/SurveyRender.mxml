@@ -33,6 +33,7 @@
 
 <mx:Script>
 	<![CDATA[
+		import mx.collections.ArrayCollection;
 		
 		import component.SurveyUI.Render.*;
 		import net.isurvey.event.*;
@@ -40,11 +41,34 @@
 		import com.adobe.cairngorm.control.CairngormEventDispatcher;
 		import com.adobe.cairngorm.control.CairngormEvent;
 		import util.Localizator; 
-		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
+		
+		public static const SURVEY_NORMAL:int = 0;
+		public static const SURVEY_UNPUBLISHED:int = 2;
+		public static const SURVEY_EXPIRED:int = 1;
+		public static const SURVEY_VOTED:int = 0;
+		
+		
+		
 		[Bindable] 
-		private var localizator : Localizator = Localizator.getInstance();   
+		private var localizator : Localizator = Localizator.getInstance();  
+		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
+		
+		
+		private var SurveyState:ArrayCollection = new ArrayCollection(
+                [{img:"images/Survey_Edit.png", alpha:0.4},
+                 {img:"images/Survey_Expired.jpg", alpha:0.3},
+                 {img:"images/UnStartedSurvey.jpg", alpha:0.3}]);
+                 
+        private function setSurveyStateImage( s:int ):void{
+        		survey_img.source = SurveyState[s].img;
+        		survey_img.alpha  = SurveyState[s].alpha;       	
+        }
+            
+		 
 		public function init():void{
 			acQuestionList.removeAllChildren();
+			this.percentWidth = 100;
+			this.percentHeight = 100;
 		}
 		
 		public function renderSurveyHead( surveyhead:Object ):void{
@@ -82,22 +106,30 @@
 		
 		public function checkVoteAvailability():void{
 			var currentdate:Date = new Date();
+			if ( currentdate < dtCreate.selectedDate ){
+				md.controlpanel.disableVote( true,"UnPublished Vote" );
+				//NEED I18N
+				setSurveyStateImage( SURVEY_UNPUBLISHED );
+				return;
+			}
 			if ( currentdate >  dtExpire.selectedDate ){
 				md.controlpanel.disableVote( true,localizator.getText('surveyr_module_cp_expired') );
+				setSurveyStateImage( SURVEY_EXPIRED );
 				return;
 			}
 			
-			if ( !checkValidVote() )md.controlpanel.disableVote( true,localizator.getText('surveyr_module_cp_notcomplete'));
+			if ( !checkValidVote() ){
+				md.controlpanel.disableVote( true,localizator.getText('surveyr_module_cp_notcomplete'));
+				//need some PIC?
+			}
 			else md.controlpanel.disableVote(false);
 		}
 		
-		public function renderSurvey( sdata:SurveyData):void{
+		public function renderSurvey( sdata:SurveyData,hasVoted:Boolean = false ):void{
 			currentState = "";
 			dtCreate.selectedDate = sdata.createdate;
 			dtExpire.selectedDate = sdata.expiredate;
-			//TODO：目前有一个小BUG好久还没调好
-			
-			
+					
 			txtSurvey.text = sdata.description;
 			lblUser.text = localizator.getText('surveyr_module_fi_sponser')+sdata.username;
 			acQuestionList.removeAllChildren();
@@ -111,8 +143,11 @@
 	 			acQuestionList.addChild( qr );
 	 		}
 	 		
-	 		
-	 		checkVoteAvailability();
+	 		if ( hasVoted ){
+	 			setSurveyStateImage( SURVEY_VOTED );
+	 			md.controlpanel.disableVote( true,"Already Voted" );
+	 		}
+	 		else checkVoteAvailability();
 		}
 		
 		private function ValidateVotable( event:Event ):void{
@@ -135,4 +170,6 @@
 	<Render:QuestionRender/>
 	</mx:Accordion>
 	<mx:Label x="40.5" y="12" text="QueryDescritpion" width="320" height="29" id="txtSurvey"/>
+	<mx:Image id="survey_img" x="0" y="0" width="100%" height="100%" 
+		alpha="0.5"  scaleContent="true" maintainAspectRatio="false"/>
 </mx:Canvas>

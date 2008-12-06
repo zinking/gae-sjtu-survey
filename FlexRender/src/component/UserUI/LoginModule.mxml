@@ -96,7 +96,9 @@
 	
 	<!-- 客户端校验器部分-->
 	<mx:StringValidator id="vu" source="{username}"
-		property="text" minLength="2" maxLength="12"/>					
+		property="text" 
+		minLength="{SurveyModelLocator.min_userinfo_length}" 
+		maxLength="{SurveyModelLocator.max_userinfo_length}"/>					
     <mx:StringValidator id="vp" source="{password}"	
     	property="text" minLength="4" maxLength="12"/>
     	

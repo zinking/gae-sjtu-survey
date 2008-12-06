@@ -12,11 +12,13 @@ package net.isurvey.event
 		
 		public static const MANAGESURVEY_EVENT:String = "managesurvey";
 		
-		public static const ADD_SURVEY:int = 100;
-		public static const GET_SURVEY:int = 101;
-		public static const DELETE_SURVEY:int = 102;
-		public static const MODIFY_SURVEY:int = 103;
-		public static const SEARCH_SURVEY:int = 104;
+		public static const ADD_SURVEY:int 		= 100;
+		public static const GET_SURVEY:int 		= 101;
+		public static const DELETE_SURVEY:int 	= 102;
+		public static const MODIFY_SURVEY:int 	= 103;
+		public static const SEARCH_SURVEY:int 	= 104;
+		public static const CHECK_SURVEY:int 	= 105;
+		public static const DEFAULT_SURVEY:int 	= 106;
 		
 		public var surveytype:int 
 		public var surveydata:SurveyData;
