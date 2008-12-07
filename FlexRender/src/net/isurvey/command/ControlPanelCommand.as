@@ -17,9 +17,12 @@ package net.isurvey.command
 	import net.isurvey.model.SurveyModelLocator;
 
 	/*FIEXED潜在的问题ADMIN在显示SURVEY与ADDSURVEY模块之间来回切换的时候，会造成数据加载时的空对象问题*/
-	
+	import util.Localizator;   
+               
+       	
 	public class ControlPanelCommand implements ICommand,IResponder{
-
+		[Bindable]   
+       	private var localizator : Localizator = Localizator.getInstance(); 
 		private var currentEvent:ControlPanelEvent;
 		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
 		private var cpl:ControlPanel = md.controlpanel;
@@ -124,7 +127,7 @@ package net.isurvey.command
 					break;
 					
 					case ControlPanelEvent.VOTE_SURVEY:
-						if ( evt.result.UpdateResult ) Alert.show("投票成功");
+						if ( evt.result.UpdateResult ) Alert.show(localizator.getText('control_panel_alert_votesuc'));
 						//TODO:目前还处在测试投票系统是否正常工作的过程中，在实现了同一个用户不能两次投票之后就可以把下面这行去掉
 						//因为控制面板规定不能重复发出的相同的命令
 						//currentEvent.operation_type = ControlPanelEvent.VIEW_SURVEY;
@@ -153,7 +156,7 @@ package net.isurvey.command
 		public function fault( event : Object ) : void
 		{
 			var faultEvent : FaultEvent = FaultEvent( event );
-			Alert.show( "在处理SURVEY信息的时候服务端发生了错误" );
+			Alert.show( localizator.getText('control_panel_alert_wrong') );
 			trace(faultEvent.fault.faultDetail);
 			trace(faultEvent.fault.faultString);			
 		}

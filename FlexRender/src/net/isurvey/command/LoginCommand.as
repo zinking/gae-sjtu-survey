@@ -11,8 +11,12 @@ package net.isurvey.command
 	import net.isurvey.business.UserDelegate;
 	import net.isurvey.event.LoginEvent;
 	import net.isurvey.model.*;
-	
+	import util.Localizator;   
+               
+       	
 	public class LoginCommand implements ICommand, IResponder{
+		[Bindable]   
+       	private var localizator : Localizator = Localizator.getInstance(); 
 		private var user:UserData;
 		
 		private var mainLoader:ModuleLoader = 
@@ -41,10 +45,10 @@ package net.isurvey.command
 			
 			var usr:* = evt.result.User ;
 			if ( !evt.result.AuthResult ){
-				Alert.show("Login failed");
+				Alert.show(localizator.getText('login_command_alert_fail'));
 				return;
 			}
-			Alert.show("Login Successful");
+			Alert.show(localizator.getText('login_command_alert_successful'));
 			trace("Login Successful");
 			modelLocator.user = user;
 			loadMainFrame();
@@ -60,7 +64,7 @@ package net.isurvey.command
 		public function fault( event : Object ) : void
 		{
 			var faultEvent : FaultEvent = FaultEvent( event );
-			Alert.show( "Sever Cannot be achieved at the moment" );
+			Alert.show( localizator.getText('login_command_alert_server'));
 			trace(faultEvent.fault.faultDetail);
 			trace(faultEvent.fault.faultString);
 		}

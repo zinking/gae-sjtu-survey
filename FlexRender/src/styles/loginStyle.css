@@ -1,0 +1,63 @@
+Module {
+   backgroundColor: #ffffff;
+   backgroundGradientColors: #0099ff, #ffffff;
+}
+
+Button {
+   cornerRadius: 8;
+   textRollOverColor: #00ffff;
+   textSelectedColor: #ff0033;
+   borderColor: #ffff00;
+   fontSize: 12;
+   fontWeight: bold;
+}
+
+
+HScrollBar {
+   cornerRadius: 0;
+   trackColors: #ffffff, #e7e7e7;
+   themeColor: #0099ff;
+   borderColor: #ffff00;
+}
+
+Panel {
+   borderColor: #0099ff;
+   borderAlpha: 0.3;
+   cornerRadius: 10;
+   backgroundAlpha: 0.7;
+   highlightAlphas: 0, 0;
+   headerColors: #0066ff, #ffffff;
+   footerColors: #0066ff, #ffffff;
+   titleStyleName: "mypanelTitle";
+}
+
+.mypanelTitle {
+   fontSize: 12;
+   height: 30
+}
+
+RadioButton {
+   borderColor: #ffff00;
+   textSelectedColor: #ff0033;
+   textRollOverColor: #00ffff;
+   fontSize: 12;
+}
+
+
+TextArea {
+   fontSize: 12;
+   backgroundAlpha: 0.7;
+   borderColor: #ffff00;
+   cornerRadius: 10;
+}
+
+TextInput {
+   borderColor: #ffff00;
+}
+
+VScrollBar {
+   cornerRadius: 0;
+   trackColors: #ffffff, #e7e7e7;
+   borderColor: #ffff00;
+}
+

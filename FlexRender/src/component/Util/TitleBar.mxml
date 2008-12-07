@@ -55,7 +55,7 @@
 		<mx:Spacer width="4.5%"/>
 		<mx:VRule width="1" height="50"/>
 		<mx:Spacer width="15%"/>
-		<mx:LinkButton label="Default Survey" 
+		<mx:LinkButton label="{localizator.getText('titlebar_module_t_defaute')}" 
 			width="5%" textAlign="center"
 			click="onDefaultSurvey(event)"/>
 		<mx:LinkButton 

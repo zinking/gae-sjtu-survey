@@ -16,12 +16,13 @@ package net.isurvey.command
 	import net.isurvey.event.ControlPanelEvent;
 	import net.isurvey.event.ManageSurveyEvent;
 	import net.isurvey.model.*;
-	
+	import util.Localizator;   
 	public class ManageSurveyCommand implements ICommand, IResponder{
 		private var survey:SurveyData;
 		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
 		private var bodyLoader:ModuleLoader = SurveyModelLocator.getInstance().bodyloader;
-				
+		[Bindable]   
+       	private var localizator : Localizator = Localizator.getInstance(); 		
 		private var currentevent:ManageSurveyEvent;
 		
 		public function ManageSurveyCommand(){
@@ -65,10 +66,11 @@ package net.isurvey.command
 		public function result( event : Object ) : void{
 			var evt:ResultEvent= event as ResultEvent;
 			var r:Boolean;//Result
+			var headlist:*;
 			switch( currentevent.surveytype ){
 				case ManageSurveyEvent.ADD_SURVEY:
 					 r = evt.result.AddResult;
-					if ( r ) Alert.show("提交问卷成功");
+					if ( r ) Alert.show(localizator.getText('manage_command_alert_sec'));
 					switch2ViewSurvey();
 					break;	
 				case ManageSurveyEvent.GET_SURVEY:
@@ -79,13 +81,13 @@ package net.isurvey.command
 					break;
 				case ManageSurveyEvent.CHECK_SURVEY:
 					var sr:ManageSurveyModule = md.managesurveymodule;
-					if ( evt.result.Result ){//ALREADY EXITST
+					if ( ! evt.result.Result ){//ALREADY EXITST
 						sr.isDescritpionValid = false;
-						sr.setInfo("Survey Already Exists");
+						sr.setInfo(localizator.getText('manage_command_alert_exist'));
 					}
 					else{
 						sr.isDescritpionValid = true;
-						sr.setInfo("Survey Available");
+						sr.setInfo(localizator.getText('manage_command_alert_available'));
 					}
 					break;
 					
@@ -93,7 +95,7 @@ package net.isurvey.command
 					 r = evt.result.DeleteResult;
 					if( r ){
 						md.surveyrendermodule.deleteSelectedSurvey();
-						Alert.show("删除成功");
+						Alert.show(localizator.getText('manage_command_alert_delete'));
 					}
 					switch2ViewSurvey();
 					break;	
@@ -107,19 +109,19 @@ package net.isurvey.command
 						return;
 					}
 					var addresult:Boolean =  evt.result.AddResult;
-					if ( addresult ) Alert.show("修改问卷成功");
+					if ( addresult ) Alert.show(localizator.getText('manage_command_alert_modify'));
 					switch2ViewSurvey();
 					break;	
 					
 				case ManageSurveyEvent.SEARCH_SURVEY:
-					var headlist:* = evt.result.HeadList;
+					headlist = evt.result.HeadList;
 					md.totalpagenumber = evt.result.Count;
 					md.surveyheadlist = headlist;
 					loadModule( SurveyModelLocator.VIEWSURVEY_MODULE );
 					break;	
 					
 				case ManageSurveyEvent.DEFAULT_SURVEY:
-					var headlist:* = evt.result.HeadList;
+					headlist = evt.result.HeadList;
 					md.currentpagemode = ManageSurveyEvent.DEFAULT_SURVEY;
 					md.totalpagenumber 		= 1;
 					md.currentpagenumber 	= 1;
@@ -137,7 +139,7 @@ package net.isurvey.command
 		public function fault( event : Object ) : void
 		{
 			var faultEvent : FaultEvent = FaultEvent( event );
-			Alert.show( "管理问卷时服务端出现错误。" );
+			Alert.show( localizator.getText('manage_command_alert_error') );
 			trace(faultEvent.fault.faultDetail);
 			trace(faultEvent.fault.faultString);
 		}

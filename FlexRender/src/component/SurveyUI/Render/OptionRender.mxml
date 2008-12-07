@@ -5,6 +5,10 @@
 		<![CDATA[
 			import mx.events.ValidationResultEvent;
 			import net.isurvey.model.*;
+			import util.Localizator;   
+               
+       	[Bindable]   
+       	private var localizator : Localizator = Localizator.getInstance();   
 			
 			public static const OPTION_MODIFIED:String ="option_modified";
 			public static const OPTION_DELETED:String ="option_deleted";
@@ -37,10 +41,15 @@
 	<mx:StringValidator id="vdOptionDescription"  source="{txtOption}" property="text"
 		maxLength="{SurveyModelLocator.max_description_length}" 
 		minLength="{SurveyModelLocator.min_descritpion_length}"
-		/>
+		tooLongError="{localizator.getText('manage_module_b_long')}"
+		tooShortError="{localizator.getText('manage_module_b_short')}"
+		requiredFieldError="{localizator.getText('login_module_b_rfe')}"/>
+		
 	 <mx:TextInput  id="txtOption" text="{text}" width="70%"
 	 	 change="onOptionChange()"/>	
 	 <mx:Spacer width="10%"/>
-	 <mx:Button width="20%" label="Delete" click="onDelClick( event )"/>
+	 <mx:Button width="20%" 
+	 	label="{localizator.getText('option_module_b_delete')}" 
+	 	click="onDelClick( event )"/>
 	
 </mx:HBox>

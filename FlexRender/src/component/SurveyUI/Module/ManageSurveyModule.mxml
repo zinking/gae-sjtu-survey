@@ -21,6 +21,8 @@
 		import com.adobe.cairngorm.control.CairngormEventDispatcher;
 		import com.adobe.cairngorm.control.CairngormEvent;
 		import util.*;  
+		import util.Localizator;   
+                 
 		 
 		private var surveydata:SurveyData = new SurveyData();
 		private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
@@ -212,7 +214,10 @@
 
 	<mx:StringValidator id="vdSurveyDescription" source="{txtSurveyDescription}" property="text"
 		 maxLength="{SurveyModelLocator.max_description_length}" 
-		 minLength="{SurveyModelLocator.min_descritpion_length}"/>
+		 minLength="{SurveyModelLocator.min_descritpion_length}"
+		 tooLongError="{localizator.getText('manage_module_b_long')}"
+		 tooShortError="{localizator.getText('manage_module_b_short')}"
+		 requiredFieldError="{localizator.getText('login_module_b_rfe')}"/>
 	
 <mx:Canvas  width="100%" height="100%" 
 	xmlns:Survey="component.SurveyUI.*"
@@ -228,8 +233,8 @@
 	
 		<mx:Form width="100%" left="3" top="3">
 		<mx:FormItem  width="100%" fontSize="14" required="true"
-			label="{localizator.getText('manage_module_fi_surveydecription')}">
-			<mx:HBox>
+			label="{localizator.getText('manage_module_fi_surveydecription')}" horizontalAlign="left">
+			<mx:HBox width="100%">
 				<mx:TextArea id="txtSurveyDescription" 
 					change="validateSurvey(event)"
 					width="80%" height="100%"
@@ -271,7 +276,7 @@
 		<mx:Button id="btnDelQuestion" 
 			click="onDelQuestion(event)"
 			enabled="false"  
-			label="Delete Question" 
+			label="{localizator.getText('manage_module_b_deletequestion')}" 
 			/>
 	</mx:ApplicationControlBar>
 	<mx:Accordion id = "acQuestionList"		 
