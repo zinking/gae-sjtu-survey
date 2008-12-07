@@ -39,7 +39,7 @@
 		
 		private function onManageSurveyClick( evt:ManageSurveyEvent ):void{
 			if ( evt.surveytype == ManageSurveyEvent.DELETE_SURVEY ){				
-				Alert.show("Are you sure to Delete A Survey?", "Delete", Alert.OK | Alert.CANCEL, 
+				Alert.show(localizator.getText('control_module_lb_sure'), localizator.getText('control_panel_lb_delete'), Alert.OK | Alert.CANCEL, 
 						this, alertListener, null,  Alert.OK );
 				return;
 			}

@@ -55,13 +55,18 @@
 		
 		
 		private var SurveyState:ArrayCollection = new ArrayCollection(
-                [{img:"images/Survey_Edit.png", alpha:0.4},
-                 {img:"images/Survey_Expired.jpg", alpha:0.3},
-                 {img:"images/UnStartedSurvey.jpg", alpha:0.3}]);
+                [{img:"images/Survey_Edit.png", alpha:0.6},
+                 {img:"images/Survey_Expired.jpg", alpha:0.5},
+                 {img:"images/UnStartedSurvey.jpg", alpha:0.5}]);
                  
         private function setSurveyStateImage( s:int ):void{
         		survey_img.source = SurveyState[s].img;
-        		survey_img.alpha  = SurveyState[s].alpha;       	
+        		survey_img.alpha  = SurveyState[s].alpha; 
+        		switch( s ){
+        			case SURVEY_VOTED:
+        				this.enabled = false;
+        			break;
+        		}      	
         }
             
 		 
@@ -72,7 +77,7 @@
 		}
 		
 		public function renderSurveyHead( surveyhead:Object ):void{
-			this.currentState = "Collapse";
+			currentState = "Collapse";
 			label = surveyhead.description;
 		}
 		
@@ -157,19 +162,30 @@
 		
 	]]>
 </mx:Script>
-
-	<mx:Label   text="{localizator.getText('manage_module_fi_releasetime')}"  x="26.5" bottom="10" id="label2"/>
-	<mx:DateField id="dtCreate"  editable="false"  enabled="false" x="79" bottom="10"/>
-	<mx:Label   text="{localizator.getText('manage_module_fi_deadline')}"  x="207.5" y="49" id="label1"/>
-	<mx:DateField id="dtExpire"  editable="false" 
-		enabled="false" x="270.5" y="47"/>
-	<mx:Label id="lblUser" x="257" text="{localizator.getText('surveyr_module_fi_sponser')}" bottom="10"/>
+	<mx:Image id="survey_img" x="0" y="0" width="100%" height="100%" 
+		alpha="0.5"  scaleContent="true" maintainAspectRatio="false"/>
+	<mx:HBox  right="10" top="45">
+		<mx:Label   
+			text="{localizator.getText('manage_module_fi_releasetime')}" 
+			id="label2" />
+		<mx:Spacer width="1%" height="100%"/>
+	    <mx:DateField id="dtCreate"  editable="false"  enabled="false" />
+	</mx:HBox>
+	<mx:HBox left="10" width="327" bottom="10">
+		<mx:Label   
+			text="{localizator.getText('manage_module_fi_deadline')}" 
+			id="label1" />
+		<mx:Spacer width="1%" height="100%"/>
+	    <mx:DateField id="dtExpire"  editable="false" enabled="false" />
+	    <mx:Spacer width="15%" height="100%"/>
+	    <mx:Label id="lblUser" 
+	    	text="{localizator.getText('surveyr_module_fi_sponser')}" />
+	</mx:HBox>
 	
 	<mx:Accordion id="acQuestionList" x="36.5" y="78" width="80%" height="60%">
 	<Render:QuestionRender/>
 	<Render:QuestionRender/>
 	</mx:Accordion>
 	<mx:Label x="40.5" y="12" text="QueryDescritpion" width="320" height="29" id="txtSurvey"/>
-	<mx:Image id="survey_img" x="0" y="0" width="100%" height="100%" 
-		alpha="0.5"  scaleContent="true" maintainAspectRatio="false"/>
+	
 </mx:Canvas>

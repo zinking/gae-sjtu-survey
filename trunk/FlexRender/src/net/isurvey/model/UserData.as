@@ -5,6 +5,7 @@ package net.isurvey.model
 		public var name:String;
 		public var password:String;
 		public var type:int;
+		public var email:String;
 		
 		public static const ANONYMOUS:int = 1;
 		public static const ADMIN:int = 2;
@@ -32,6 +33,7 @@ package net.isurvey.model
 		public function parseData( result:*):void{
 			name = result.name as String;
 			password = result.password as String;
+			email = result.email as String;
 		}
 
 	}

@@ -18,7 +18,7 @@ Accordion {
 }
 
 Button {
-   cornerRadius: 10;
+   cornerRadius: 8;
    textRollOverColor: #00ffff;
    textSelectedColor: #ff0033;
    borderColor: #ffff00;

@@ -8,8 +8,6 @@
 			import com.adobe.cairngorm.control.CairngormEvent;
 			import net.isurvey.event.RegisterEvent;
 			import net.isurvey.model.*;
-			import mx.rpc.*;
-			import mx.rpc.events.*;
 			import mx.controls.*;
 			import mx.events.ValidationResultEvent;
 			import util.Localizator;   
@@ -21,7 +19,8 @@
 		private function getUser():UserData{
 			var user:UserData = new UserData();
 			user.name = username.text;
-			user.password = password.text;			
+			user.password = password.text;	
+			user.email = txtMail.text;		
 			return user;	
 		}
 		
@@ -77,25 +76,34 @@
 				]]>
 	</mx:Script>
 	
-	<mx:Style source="styles/style5.css"/>
+	<mx:Style source="styles/registerStyle.css"/>
 
 
 <!-- 客户端校验器部分-->
 	<mx:StringValidator id="validUsr" source="{username}"
 		property="text" 
-		minLength="{SurveyModelLocator.min_userinfo_length}" 
-		maxLength="{SurveyModelLocator.max_userinfo_length}"/>					
+				minLength="{SurveyModelLocator.min_userinfo_length}" 
+		maxLength="{SurveyModelLocator.max_userinfo_length}"
+		 tooLongError="{localizator.getText('login_module_b_long')}"
+		 tooShortError="{localizator.getText('login_module_b_short')}"
+		 requiredFieldError="{localizator.getText('login_module_b_rfe')}"/>					
     <mx:StringValidator id="validPassword" source="{password}"	
     	property="text" 
-    	minLength="{SurveyModelLocator.min_userinfo_length}" 
-		maxLength="{SurveyModelLocator.max_userinfo_length}"/>
+    			minLength="{SurveyModelLocator.min_userinfo_length}" 
+		maxLength="{SurveyModelLocator.max_userinfo_length}"
+		 tooLongError="{localizator.getText('login_module_b_long')}"
+		 tooShortError="{localizator.getText('login_module_b_short')}"
+		 requiredFieldError="{localizator.getText('login_module_b_rfe')}"/>
     <mx:StringValidator id="validSamePassword" source="{samepassword}"	
     	property="text" 
-    	minLength="{SurveyModelLocator.min_userinfo_length}" 
-		maxLength="{SurveyModelLocator.max_userinfo_length}"/>
+    		minLength="{SurveyModelLocator.min_userinfo_length}" 
+		maxLength="{SurveyModelLocator.max_userinfo_length}"
+		 tooLongError="{localizator.getText('login_module_b_long')}"
+		 tooShortError="{localizator.getText('login_module_b_short')}"
+		 requiredFieldError="{localizator.getText('login_module_b_rfe')}"/>
     	
-  <mx:Panel width="700" height="600" horizontalCenter="0" top="80">
-  	<mx:Form width="100%" height="100%" >
+  <mx:Panel width="700" height="400" horizontalCenter="0" top="120">
+  	<mx:Form width="100%" height="100%"  horizontalCenter="0" verticalCenter="0">
 		<mx:FormItem label="{localizator.getText('register_module_fi_entername')}" horizontalAlign="left">
 		<mx:HBox>
 			<mx:TextInput id="username" 
@@ -125,7 +133,7 @@
 		</mx:FormItem>
 		
 		<mx:FormItem label="{localizator.getText('register_module_fi_mail')}">
-			<mx:TextInput/>
+			<mx:TextInput id="txtMail"/>
 		</mx:FormItem>
 		
 		<mx:FormItem>

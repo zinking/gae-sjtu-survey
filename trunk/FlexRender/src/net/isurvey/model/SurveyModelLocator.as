@@ -72,7 +72,7 @@ package net.isurvey.model
       	
       	public static const min_descritpion_length:int = 1;
       	public static const max_description_length:int = 50;
-      	public static const min_userinfo_length:int = 3;
+      	public static const min_userinfo_length:int = 2;
       	public static const max_userinfo_length:int = 15;      	
       	     	
       	public static const LOGIN_MODULE:String 		= "component/UserUI/LoginModule.swf";

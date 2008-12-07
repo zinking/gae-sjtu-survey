@@ -158,10 +158,16 @@
 
 	<mx:StringValidator id="vdProblemDescription"  source="{txtQuestionDescription}" property="text"
 		maxLength="{SurveyModelLocator.max_description_length}" 
-		minLength="{SurveyModelLocator.min_descritpion_length}"/>
+		minLength="{SurveyModelLocator.min_descritpion_length}"
+		tooLongError="{localizator.getText('manage_module_b_long')}"
+		 tooShortError="{localizator.getText('manage_module_b_short')}"
+		 requiredFieldError="{localizator.getText('login_module_b_rfe')}"/>
 	<mx:StringValidator id="vdOptionDescription"  source="{txtOptionDescription}" property="text"
 		maxLength="{SurveyModelLocator.max_description_length}" 
-		minLength="{SurveyModelLocator.min_descritpion_length}"/>
+		minLength="{SurveyModelLocator.min_descritpion_length}"
+		tooLongError="{localizator.getText('manage_module_b_long')}"
+		tooShortError="{localizator.getText('manage_module_b_short')}"
+		requiredFieldError="{localizator.getText('login_module_b_rfe')}"/>
 	<mx:StringValidator />
 	<mx:VDividedBox width="95%" height="95%" left="10" top="10" verticalGap="10" liveDragging="false">
    		<mx:Form height="194" width="100%" >

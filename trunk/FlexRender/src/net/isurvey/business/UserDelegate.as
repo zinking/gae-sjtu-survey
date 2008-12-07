@@ -25,6 +25,11 @@ package net.isurvey.business
 			call.addResponder( responder );
 	   }
 	   
+	   public function sendPasswordEmail( username:String ):void{
+	   		var call : Object = service.sendPasswordEmail( username );
+			call.addResponder( responder );  
+	   }
+	   
 	   public function checkUserAvailable( username:String ):void{
 	   		var call : Object = service.checkUserAvailable( username );
 			call.addResponder( responder );   	

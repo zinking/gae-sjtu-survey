@@ -2,8 +2,8 @@
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:effects="org.efflex.*"
 	xmlns:viewStackEffects="org.efflex.viewStackEffects.*"
-	layout="absolute" width="100%" height="100%"
-	>
+	xmlns:URender="component.UserUI.*"
+	layout="absolute" width="100%" height="100%">
 	
 			
 	  <effects:TileFade id="tileFadeOut"
@@ -26,6 +26,8 @@
                
        	[Bindable]   
        	private var localizator : Localizator = Localizator.getInstance();   
+       	
+       	private var md:SurveyModelLocator = SurveyModelLocator.getInstance();
                
        	private function changeLanguage(language:String):void {   
                 localizator.language = language;   
@@ -43,16 +45,9 @@
 		}
 		
 		private function onRegisterUser(event:Event):void{
-			loadModule( SurveyModelLocator.REGISTERUSER_MODULE );
-			
+			md.mainframeLoad( SurveyModelLocator.REGISTERUSER_MODULE );			
 		}
 		
-		private function loadModule( moduleurl:String):void{
-			var md:SurveyModelLocator = SurveyModelLocator.getInstance();
-			md.mainloader.unloadModule();
-			md.mainloader.url = moduleurl;
-	 		md.mainloader.loadModule();
-		}
 			
 			
 		private function login(event:Event):void
@@ -71,39 +66,52 @@
 			CairngormEventDispatcher.getInstance().dispatchEvent( evt );			
 		}
 		
+		private function onForgetPassword( event:Event):void{
+			pnFP.visible = !pnFP.visible;
+			if ( pnFP.visible ){
+				pnFP.addEventListener( ForgetPassword.GET_PASSWORD, onGetPassword);
+			}
+			else
+			pnFP.removeEventListener( ForgetPassword.GET_PASSWORD, onGetPassword);
+		}
 		
-		
+		private function onGetPassword( event:Event ):void{
+			pnFP.visible = false;
+		}
 				
 		private function validate(event:Event):void
 		{
 			var vru:ValidationResultEvent = vu.validate();
 			var vrp:ValidationResultEvent = vp.validate();
 			
-			if ( vru.type == ValidationResultEvent.VALID 
-					&& vrp.type == ValidationResultEvent.VALID ){ 
-				submit.enabled = true;
-			}
-			else{
-				submit.enabled = false;
-			}
+			submit.enabled = ( 
+				vru.type == ValidationResultEvent.VALID && 
+				vrp.type == ValidationResultEvent.VALID );
 		}
-			
-			
+					
 		]]>
 	</mx:Script>
 
-	<mx:Style source="styles/style5.css"/>
+	<mx:Style source="styles/loginStyle.css"/>
 	
 	<!-- 客户端校验器部分-->
 	<mx:StringValidator id="vu" source="{username}"
 		property="text" 
 		minLength="{SurveyModelLocator.min_userinfo_length}" 
-		maxLength="{SurveyModelLocator.max_userinfo_length}"/>					
+		maxLength="{SurveyModelLocator.max_userinfo_length}"
+		 tooLongError="{localizator.getText('login_module_b_long')}"
+		 tooShortError="{localizator.getText('login_module_b_short')}"
+		 requiredFieldError="{localizator.getText('login_module_b_rfe')}"/>					
     <mx:StringValidator id="vp" source="{password}"	
-    	property="text" minLength="4" maxLength="12"/>
+    	property="text"
+    	minLength="{SurveyModelLocator.min_userinfo_length}" 
+		maxLength="{SurveyModelLocator.max_userinfo_length}"
+		 tooLongError="{localizator.getText('login_module_b_long')}"
+		 tooShortError="{localizator.getText('login_module_b_short')}"
+		 requiredFieldError="{localizator.getText('login_module_b_rfe')}"/>
     	
 	<mx:Canvas width="700" height="600" horizontalCenter="0" top="80">
-		<mx:Image source="@Embed(source='images/5.JPG')" scaleContent="true" 
+		<mx:Image source="@Embed(source='images/login.JPG')" scaleContent="true" 
 			horizontalCenter="0" width="560" height="401" top="0"/>
 		
 		<mx:Label horizontalCenter="-136" verticalCenter="-71" text="Online Survey"  
@@ -117,14 +125,14 @@
 				textAlign="center" fontSize="12" fontWeight="bold"/>
 			<mx:Spacer width="1%" height="100%"/>
 			<mx:TextInput id="username" width="120" height="20"
-				change="validate(event)" text="wang"/>
+				change="validate(event)"/>
 			<mx:Spacer width="1%" height="100%"/>
 			<mx:Label 
 				text="{localizator.getText('login_module_b_password')}" 
 				textAlign="center" fontSize="12" fontWeight="bold"/>
 			<mx:Spacer width="1%" height="100%"/>
 			<mx:TextInput id="password" width="120" height="20" 
-			    change="validate(event)" displayAsPassword="true" text="123456"/>
+			    change="validate(event)" displayAsPassword="true"/>
 			<mx:Spacer width="5%" height="100%"/>
 			
 			<mx:VBox height="100%">
@@ -136,10 +144,13 @@
 		</mx:HBox>
 		
 		<mx:HBox height="10%" width="100%" horizontalCenter="0" verticalCenter="230">
-		    <mx:Spacer width="15%" height="100%"/>		
-		    <mx:Button id="submit" enabled="true"
+		    <mx:Spacer width="8%" height="100%"/>		
+		    <mx:Button id="submit" enabled="false"
 			    click="login(event)"
 			    label="{localizator.getText('login_module_b_login')}" />
+			<mx:Spacer width="8%" height="100%"/>
+			<mx:Button label="{localizator.getText('login_module_b_forget')}" 
+				click="onForgetPassword(event)"/>
 			<mx:Spacer width="8%" height="100%"/>
 		    <mx:Button  click="onRegisterUser(event)"
 			    label="{localizator.getText('login_module_b_register')}" />
@@ -147,6 +158,8 @@
 		    <mx:Button click="anonymouslogin(event)"
 			    label="{localizator.getText('login_module_b_anonymous')}" />
 		</mx:HBox>
+		<URender:ForgetPassword id="pnFP" x="150" y="57" visible="false">
+		</URender:ForgetPassword>
 		
 	</mx:Canvas>
 	<mx:Button label="{localizator.getText('login_module_b_english')}" 

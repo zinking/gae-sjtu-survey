@@ -10,10 +10,11 @@ package net.isurvey.command
 	import net.isurvey.business.UserDelegate;
 	import net.isurvey.event.RegisterEvent;
 	import net.isurvey.model.*;
-	
+	import util.Localizator;   
 	public class RegisterCommand implements ICommand, IResponder{
 		private var user:UserData;
-		
+		[Bindable]   
+       	private var localizator : Localizator = Localizator.getInstance(); 
 		private var md:SurveyModelLocator;
 		private var current_event:RegisterEvent;
 		
@@ -33,6 +34,12 @@ package net.isurvey.command
 				case RegisterEvent.REGISTER_USER:
 					delegate.addUser( user );
 				break;
+				
+				case RegisterEvent.GET_PASSWORD:
+					var username:String = evt.user.name;
+					delegate.sendPasswordEmail( username );
+				break;
+				
 			}
 			
 			
@@ -45,20 +52,30 @@ package net.isurvey.command
 			switch ( current_event.register_type ){
 				case RegisterEvent.CHECKUSER_AVAILBLE:
 					if ( evt.result.HasUsername ){  
-						current_event.register_module.setWarningInfo("该用户已经存在");
+						current_event.register_module.setWarningInfo(localizator.getText('register_command_alert_exist'));
 						current_event.register_module.isValidUsername = false;
 					}
 					else{
-						current_event.register_module.setWarningInfo("用户名有效");
+						current_event.register_module.setWarningInfo(localizator.getText('register_command_alert_available'));
 						current_event.register_module.isValidUsername = true;
 					}
 				break;
 				
 				case RegisterEvent.REGISTER_USER:
 					if ( evt.result.AddResult ){
-						Alert.show("注册成功，返回登陆界面");
+						Alert.show(localizator.getText('register_command_alert_registersu'));
 						md = SurveyModelLocator.getInstance();
 						md.mainframeLoad( SurveyModelLocator.LOGIN_MODULE );
+					}
+				break;
+				
+				case RegisterEvent.GET_PASSWORD:
+					if ( evt.result.GetResult ){
+						Alert.show(localizator.getText('register_command_alert_password'));
+						current_event.forgetpassword.onGetSuccess();
+					}
+					else{
+						Alert.show(localizator.getText('register_command_alert_check'));
 					}
 				break;
 			}
@@ -68,7 +85,7 @@ package net.isurvey.command
 		public function fault( event : Object ) : void
 		{
 			var faultEvent : FaultEvent = FaultEvent( event );
-			Alert.show( "Sever Cannot be achieved at the moment" );
+			Alert.show(localizator.getText('login_command_alert_server') );
 			trace(faultEvent.fault.faultDetail);
 			trace(faultEvent.fault.faultString);
 		}
