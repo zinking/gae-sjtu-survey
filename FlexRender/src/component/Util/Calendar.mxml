@@ -12,7 +12,9 @@
 		<mx:Spacer width="5%"/>
 		<mx:Image source="@Embed(source='images/1.gif')" />
 		<mx:Spacer width="5%"/>
-		<mx:Label text="{localizator.getText('calendar_module_l_calendar')}" fontSize="20" fontWeight="bold" 
+		<mx:Label 
+			text="{localizator.getText('calendar_module_l_calendar')}" 
+			fontSize="20" fontWeight="bold" 
 			textAlign="center" width="100" color="#FFFFFF"/>
 	</mx:ApplicationControlBar>
 	<mx:DateChooser horizontalCenter="0" width="95%" height="68%" verticalCenter="30"/>

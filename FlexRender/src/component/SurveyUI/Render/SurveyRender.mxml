@@ -110,7 +110,7 @@
 		public function checkVoteAvailability():void{
 			var currentdate:Date = new Date();
 			if ( currentdate < dtCreate.selectedDate ){
-				md.controlpanel.disableVote( true,"UnPublished Vote" );
+				md.controlpanel.disableVote( true,localizator.getText('surveyr_module_md_UnPublished') );
 				//NEED I18N
 				setSurveyStateImage( SURVEY_UNPUBLISHED );
 				return;
@@ -124,7 +124,7 @@
 			}
 			
 			if  ( current_state == SURVEY_VOTED){
-        		md.controlpanel.disableVote(true,"你已经参加了该投票");
+        		md.controlpanel.disableVote(true,localizator.getText('surveyr_module_cp_voted'));
         		return;
         	} 
 			
@@ -155,7 +155,7 @@
 	 		
 	 		if ( hasVoted ){
 	 			setSurveyStateImage( SURVEY_VOTED );
-	 			md.controlpanel.disableVote( true,"Already Voted" );
+	 			md.controlpanel.disableVote( true,localizator.getText('surveyr_module_cp_voted') );
 	 		}
 	 		else checkVoteAvailability();
 		}

@@ -14,7 +14,8 @@
 		    <mx:Spacer width="5%"/>
 		    <mx:Image source="@Embed(source='images/1.gif')"/>
 		    <mx:Spacer width="5%"/>
-		    <mx:Label text="{localizator.getText('update_module_l_recently_updated')}" fontSize="20" fontWeight="bold" textAlign="center" width="100" color="#FFFFFF"/>
+		    <mx:Label text="{localizator.getText('update_module_l_recently_updated')}" 
+		    	fontSize="20" fontWeight="bold" textAlign="center" width="100" color="#FFFFFF"/>
 	    </mx:ApplicationControlBar>
 	</mx:VBox>
 </mx:Canvas>
