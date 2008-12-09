@@ -5,19 +5,22 @@ class User(db.Model):
     name = db.StringProperty(required = True);#UNIQUE
     password = db.StringProperty(default = "#123" );
     type = db.StringProperty(default = "USER" );
+    email = db.StringProperty(default = "USER_EMAIL" );
     
     @staticmethod
     def getUser(name ):
          q = db.GqlQuery("SELECT * FROM User WHERE name = :1 ",
                     name );
+         if ( q.count() == 0 ): return None; 
          results = q.fetch(1);
          return results[0];
      
      
     @staticmethod
-    def submitUser( username,password ):
+    def submitUser( username,password , email = "USER"):
          newuser = User( name = username,
-                         password = password );
+                         password = password,
+                         email = email );
          newuser.put();
          
     @staticmethod
@@ -148,7 +151,7 @@ class QueryPaper(db.Model):
     @staticmethod
     def checkSurveyDescription( description ):
          q = QueryPaper.gql("WHERE description = :1", description );
-         return q.count() > 0;
+         return not( q.count() > 0 );
     
     @staticmethod
     def searchSurvey(critia,pagesize,offset):
