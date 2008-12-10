@@ -118,7 +118,7 @@
 			fontFamily="Verdana" fontSize="42" fontWeight="bold" fontStyle="normal" color="#FFFFFF"/>
 		<mx:Label horizontalCenter="225" verticalCenter="75" text="Team 8" color="#FFFFFF" fontSize="20" fontWeight="bold"/>
 		
-		<mx:HBox width="50%" horizontalCenter="0" top="545">
+		<mx:HBox width="50%" horizontalCenter="0" top="530">
 		    <mx:Spacer width="12%" height="100%"/>
 			<mx:Label 
 				text="{localizator.getText('login_module_b_username')}" 
@@ -143,7 +143,7 @@
 			</mx:VBox>
 		</mx:HBox>
 		
-		<mx:HBox width="50%" horizontalCenter="0" top="620">
+		<mx:HBox width="50%" horizontalCenter="0" top="600">
 		    <mx:Spacer width="11%" height="100%"/>		
 		    <mx:Button id="submit" enabled="false"
 			    click="login(event)"
