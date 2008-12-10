@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="1000" height="50"
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
 	 creationComplete="setWelcomeTitle()">
 
 	<mx:Script>
@@ -10,7 +10,7 @@
 			import com.adobe.cairngorm.control.CairngormEventDispatcher;
 			import com.adobe.cairngorm.control.CairngormEvent;
 			import util.Localizator;   
-			
+			import mx.controls.Alert;			
 
        		[Bindable]   
        		private var localizator:Localizator = Localizator.getInstance();
@@ -48,11 +48,11 @@
 		]]>
 	</mx:Script>
 	
-	<mx:ApplicationControlBar width="100%" height="50" horizontalCenter="0" verticalCenter="0">
-		<mx:Spacer width="4.5%"/>
+	<mx:ApplicationControlBar  horizontalCenter="0" verticalCenter="0">
+		<mx:Spacer width="4%"/>
 		<mx:Text id="wtitle" text="欢迎，用户名" fontSize="12" 
 			fontWeight="bold" color="#FFFFFF" width="150" textAlign="center"/>
-		<mx:Spacer width="4.5%"/>
+		<mx:Spacer width="4%"/>
 		<mx:VRule width="1" height="50"/>
 		<mx:Spacer width="15%"/>
 		<mx:LinkButton label="{localizator.getText('titlebar_module_t_defaute')}" 
@@ -60,14 +60,17 @@
 			click="onDefaultSurvey(event)"/>
 		<mx:LinkButton 
 			label="{localizator.getText('titlebar_module_t_home')}" 
-			width="5%" textAlign="center" fontSize="20" color="#FFFFFF"/>
+			width="5%" textAlign="center" fontSize="20" color="#FFFFFF"
+			click="{Alert.show('Under Construction...')}"/>
 		<mx:LinkButton 
 			label="{localizator.getText('titlebar_module_t_logout')}" 
 			width="5%" textAlign="center"
 			click="onLogout(event)" fontSize="20" color="#FFFFFF"/>
 		<mx:LinkButton 
 			label="{localizator.getText('titlebar_module_t_help')}" 
-			width="5%" textAlign="center" fontSize="20" color="#FFFFFF"/>
+			width="5%" textAlign="center" fontSize="20" color="#FFFFFF"
+			click="navigateToURL(new URLRequest(SurveyModelLocator.HELP_URL), 'HELP')"
+			/>
 		<mx:Spacer width="20%"/>
 		
 		<mx:TextInput id="txtSearch" 

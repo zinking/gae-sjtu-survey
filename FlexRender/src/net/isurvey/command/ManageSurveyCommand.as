@@ -37,7 +37,7 @@ package net.isurvey.command
 					delegate.addSurvey( evt.surveydata );
 					break;	
 				case ManageSurveyEvent.GET_SURVEY:
-					delegate.getSurvey( currentevent.surveyrender.label );
+					delegate.getSurvey( currentevent.surveyrender.survey_description );
 					break;	
 					
 				case ManageSurveyEvent.DELETE_SURVEY:

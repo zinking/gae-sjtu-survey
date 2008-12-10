@@ -48,6 +48,9 @@
 		public static const SURVEY_VOTED:int = 0;
 		
 		
+		public var survey_description:String;
+		
+		
 		
 		[Bindable] 
 		private var localizator : Localizator = Localizator.getInstance();  
@@ -76,7 +79,12 @@
 		
 		public function renderSurveyHead( surveyhead:Object ):void{
 			currentState = "Collapse";
-			label = surveyhead.description;
+			var des:String = surveyhead.description;
+			survey_description = des;
+			var allowedLen:int = 15;
+			des.length <= allowedLen ? label = des : label= ( des.substr(0,allowedLen-3)+'...');
+			label = des.substr(0,10 );
+			
 		}
 		
 		public function retrieveSurveyBody():void{
@@ -148,7 +156,12 @@
 	 			var qr:QuestionRender = new QuestionRender();
 	 			qr.questiondata = new QuestionData();
 	 			qr.questiondata.parseData(item);
-	 			qr.label = item.description;
+	 			
+	 			var allowedLen:int = 15;
+	 			var des:String = item.description;
+				des.length <= allowedLen ? qr.label = des : qr.label= ( des.substr(0,allowedLen-3)+'...');
+	 			
+	 			//qr.label = item.description;
 	 			qr.addEventListener("VOTE_EVENT",ValidateVotable);
 	 			acQuestionList.addChild( qr );
 	 		}

@@ -110,28 +110,28 @@
 		 tooShortError="{localizator.getText('login_module_b_short')}"
 		 requiredFieldError="{localizator.getText('login_module_b_rfe')}"/>
     	
-	<mx:Canvas width="700" height="600" horizontalCenter="0" top="80">
+	<mx:Canvas width="100%" height="100%" horizontalCenter="0" verticalCenter="0">
 		<mx:Image source="@Embed(source='images/login.JPG')" scaleContent="true" 
-			horizontalCenter="0" width="560" height="401" top="0"/>
+			horizontalCenter="0" width="560" height="401" top="115"/>
 		
-		<mx:Label horizontalCenter="-136" verticalCenter="-71" text="Online Survey"  
-			fontFamily="Verdana" fontSize="36" fontWeight="bold" fontStyle="normal" color="#FFFFFF"/>
-		<mx:Label horizontalCenter="244" verticalCenter="70" text="Team 8" color="#FFFFFF" fontSize="15" fontWeight="bold"/>
+		<mx:Label horizontalCenter="-110" verticalCenter="-120" text="Online Survey"  
+			fontFamily="Verdana" fontSize="42" fontWeight="bold" fontStyle="normal" color="#FFFFFF"/>
+		<mx:Label horizontalCenter="225" verticalCenter="75" text="Team 8" color="#FFFFFF" fontSize="20" fontWeight="bold"/>
 		
-		<mx:HBox height="10%" width="100%" horizontalCenter="0" verticalCenter="150" >
-		    <mx:Spacer width="10%" height="100%"/>
+		<mx:HBox width="50%" horizontalCenter="0" top="545">
+		    <mx:Spacer width="12%" height="100%"/>
 			<mx:Label 
 				text="{localizator.getText('login_module_b_username')}" 
 				textAlign="center" fontSize="12" fontWeight="bold"/>
 			<mx:Spacer width="1%" height="100%"/>
-			<mx:TextInput id="username" width="120" height="20"
+			<mx:TextInput id="username" width="120" height="25"
 				change="validate(event)"/>
 			<mx:Spacer width="1%" height="100%"/>
 			<mx:Label 
 				text="{localizator.getText('login_module_b_password')}" 
 				textAlign="center" fontSize="12" fontWeight="bold"/>
 			<mx:Spacer width="1%" height="100%"/>
-			<mx:TextInput id="password" width="120" height="20" 
+			<mx:TextInput id="password" width="120" height="25" 
 			    change="validate(event)" displayAsPassword="true"/>
 			<mx:Spacer width="5%" height="100%"/>
 			
@@ -143,18 +143,18 @@
 			</mx:VBox>
 		</mx:HBox>
 		
-		<mx:HBox height="10%" width="100%" horizontalCenter="0" verticalCenter="230">
-		    <mx:Spacer width="8%" height="100%"/>		
+		<mx:HBox width="50%" horizontalCenter="0" top="620">
+		    <mx:Spacer width="11%" height="100%"/>		
 		    <mx:Button id="submit" enabled="false"
 			    click="login(event)"
 			    label="{localizator.getText('login_module_b_login')}" />
-			<mx:Spacer width="8%" height="100%"/>
+			<mx:Spacer width="5%" height="100%"/>
 			<mx:Button label="{localizator.getText('login_module_b_forget')}" 
 				click="onForgetPassword(event)"/>
-			<mx:Spacer width="8%" height="100%"/>
+			<mx:Spacer width="5%" height="100%"/>
 		    <mx:Button  click="onRegisterUser(event)"
 			    label="{localizator.getText('login_module_b_register')}" />
-			<mx:Spacer width="8%" height="100%"/>
+			<mx:Spacer width="5%" height="100%"/>
 		    <mx:Button click="anonymouslogin(event)"
 			    label="{localizator.getText('login_module_b_anonymous')}" />
 		</mx:HBox>
