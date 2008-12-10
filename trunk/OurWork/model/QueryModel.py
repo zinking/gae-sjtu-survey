@@ -329,7 +329,8 @@ class UserSurveyHistory( db.Model ):
     @staticmethod
     def getUserSurvey( username, offset , pagesize ):
         q = UserSurveyHistory.gql("WHERE username = :1 ", username  ); 
-        totalcount = q.count()/pagesize + 1;
+        #totalcount = q.count()/pagesize + 1;
+        totalcount = q.count();
         historylist = q.fetch(  pagesize , offset );
         pagecount = PAGE.getPageCount( totalcount, pagesize );
         return {
