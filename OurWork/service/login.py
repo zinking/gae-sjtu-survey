@@ -16,7 +16,7 @@ def userAuthenticate(request,user ):
     
 def adminAuthenticate( request,user ):
     
-    #u = User(name="wang",password="123456",type="ADMIN");
+    #u = User(name="yao",password="123456",type="ADMIN");
     #u.put();  
     result = User.hasAdmin(user.name, user.password) 
     return {
