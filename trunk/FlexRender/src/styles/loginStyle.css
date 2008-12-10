@@ -22,9 +22,9 @@ HScrollBar {
 
 Panel {
    borderColor: #0099ff;
-   borderAlpha: 0.3;
+   borderAlpha: 1;
    cornerRadius: 10;
-   backgroundAlpha: 0.7;
+   backgroundAlpha: 1;
    highlightAlphas: 0, 0;
    headerColors: #0066ff, #ffffff;
    footerColors: #0066ff, #ffffff;
@@ -33,7 +33,7 @@ Panel {
 
 .mypanelTitle {
    fontSize: 12;
-   height: 30
+   height: 60
 }
 
 RadioButton {

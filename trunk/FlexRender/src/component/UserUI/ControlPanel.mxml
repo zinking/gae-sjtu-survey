@@ -129,6 +129,7 @@
 		<mx:State name="user">
 			<mx:AddChild position="lastChild">
 				<mx:LinkButton label="{localizator.getText('control_module_lb_personaldata')}" 
+					click="{Alert.show('Under Construction...')}"
 					horizontalCenter="-6" top="208" width="50%"/>
 			</mx:AddChild>
 			<mx:AddChild position="lastChild">

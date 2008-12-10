@@ -82,6 +82,8 @@ package net.isurvey.model
       	public static const MANAGESURVEY_MODULE:String	= "component/SurveyUI/Module/ManageSurveyModule.swf";
       	public static const UPDATESURVEY_MODULE:String	= "component/SurveyUI/Module/UpdateSurveyModule.swf";
       	public static const REGISTERUSER_MODULE:String	= "component/UserUI/RegisterModule.swf";
+      	
+      	public static const HELP_URL:String = "http://code.google.com/p/gae-sjtu-survey/wiki/Help1";
 		
 	}
 }

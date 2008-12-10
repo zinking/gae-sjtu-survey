@@ -5,7 +5,7 @@ Module {
 
 Accordion {
    backgroundAlpha: 0.7;
-   headerHeight:30;
+   headerHeight:20;
    borderColor: #0099ff;
    textRollOverColor: #00ffff;
    textSelectedColor: #ff0066;
@@ -96,29 +96,6 @@ RadioButton {
    textSelectedColor: #ff0033;
    textRollOverColor: #00ffff;
    fontSize: 12;
-}
-
-TabNavigator {
-   cornerRadius: 0;
-   backgroundAlpha: 0.7;
-   borderColor: #ffff00;
-   tabStyleName: "myTabs";
-   firstTabStyleName: "myTabs";
-   lastTabStyleName: "myTabs";
-   selectedTabTextStyleName: "mySelectedTabs";
-}
-
-.myTabs {
-   cornerRadius: 10;
-   backgroundAlpha: 0.7;
-   borderColor: #ffff00;
-   textRollOverColor: #00ffff;
-   fontSize: 12;
-
-}
-
-.mySelectedTabs {
-   textRollOverColor: #ff0033;
 }
 
 TextArea {
