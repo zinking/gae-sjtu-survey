@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	 label="  本科学校经历对您的影响">
+	
+	<mx:DataGrid  editable="true" sortableColumns="false" 
+		width="90%" height="90%" horizontalCenter="0" verticalCenter="0" fontSize="12">
+	 	<mx:dataProvider>
+         	<mx:ArrayCollection>
+            	<mx:source>
+            		<mx:Object AffectionSource=""/>
+            		<mx:Object AffectionSource=""/>
+            		<mx:Object AffectionSource=""/>
+            		<mx:Object AffectionSource=""/>
+            		<mx:Object AffectionSource=""/>
+            		<mx:Object AffectionSource=""/>
+            		<mx:Object AffectionSource=""/>
+            		<mx:Object AffectionSource=""/>
+            		<mx:Object AffectionSource=""/>
+            		<mx:Object AffectionSource=""/>
+            		<mx:Object AffectionSource=""/>
+            		<mx:Object AffectionSource=""/>
+               		
+            	</mx:source>
+         </mx:ArrayCollection>
+      </mx:dataProvider>
+      
+      <mx:columns>
+            
+     
+            <mx:DataGridColumn dataField="AffectionSource" editorDataField="txtSource" 
+            	headerText="本校本科经历对您成长的影响" editable="true" 
+            	itemEditor="item.ItemAffectionSource"
+                dataTipField="可以文字表述，也可以多选，最好将影响大者排前"
+            	rendererIsEditor="false" width="700">
+            </mx:DataGridColumn>
+      </mx:columns>
+            
+	</mx:DataGrid>
+	<mx:Text text="可以文字表述，也可以多选，最好将影响大者排前" fontSize="12" right="100" top="10"/>
+	
+</mx:Canvas>

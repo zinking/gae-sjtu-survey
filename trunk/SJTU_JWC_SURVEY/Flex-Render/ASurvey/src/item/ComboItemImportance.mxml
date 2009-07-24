@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ComboBox xmlns:mx="http://www.adobe.com/2006/mxml"
+	 change="onComboChange(event)" dataProvider="{acImportance}" selectedIndex="0">
+	 <mx:ArrayCollection id="acImportance">
+ 		<mx:Object label="A 很重要" 	/>
+ 		<mx:Object label="B 比较重要" />
+ 		<mx:Object label="C 一般重要" />
+ 		<mx:Object label="D 不太重要" />
+ 		<mx:Object label="E 不重要" 	/>
+	</mx:ArrayCollection>
+	<mx:Script>
+		<![CDATA[
+			public var label:String = "";
+			private function onComboChange(event:Event):void{
+				label = this.selectedItem.label; 
+			}
+			
+		]]>
+	</mx:Script>
+</mx:ComboBox>

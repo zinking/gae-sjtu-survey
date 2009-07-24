@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	 label="二，请对下表所列的各项本科生的能力和素质培养目标进行评价">
+	 
+	 <mx:Script>
+	 	<![CDATA[
+	 		import mx.collections.ArrayCollection;
+	 	
+	 		public  function getData():*{
+	 			return dgEvaluate.dataProvider;
+	 		}
+	 		
+	 	]]>
+	 </mx:Script>
+
+	
+
+
+	
+	
+	<mx:DataGrid  id="dgEvaluate" editable="true" sortableColumns="false" 
+		width="100%" height="100%" horizontalCenter="0" verticalCenter="0" fontSize="12" textAlign="center">
+	 	<mx:dataProvider>
+         	<mx:ArrayCollection>
+            	<mx:source>
+            		<mx:Object ID="1" Category="能力" Content="清晰思考和用语言文字准确表达的能力"  
+               			Importance="" SelfEvaluate="" AffectionSource="" />
+            		<mx:Object ID="2" Category="能力" Content="发现，分析和解决问题的能力"  
+               			Importance="" SelfEvaluate="" AffectionSource="" />
+            		<mx:Object ID="3" Category="能力" Content="批判性思考和创造性工作的能力"  
+               			Importance="" SelfEvaluate="" AffectionSource="" />
+            		<mx:Object ID="4" Category="能力" Content="与不同类型的人合作共事的能力"  
+               			Importance="" SelfEvaluate="" AffectionSource="" />
+            		<mx:Object ID="5" Category="能力" Content="对文学艺术作品的初步审美能力"  
+               			Importance="" SelfEvaluate="" AffectionSource="" />
+            		<mx:Object ID="6" Category="能力" Content="至少一种外语的应用能力"  
+               			Importance="" SelfEvaluate="" AffectionSource="" />
+            		<mx:Object ID="7" Category="能力" Content="终生学习的能力"  
+               			Importance="" SelfEvaluate="" AffectionSource="" />
+               		<mx:Object ID="8" Category="能力" Content="组织管理能力"  
+               			Importance="" SelfEvaluate="" AffectionSource="" />
+               		<mx:Object ID="9" Category="素质" Content="志存高远"  
+               			Importance="" SelfEvaluate="" AffectionSource="" />
+               		<mx:Object ID="10" Category="素质" Content="意志坚强"  
+               			Importance="" SelfEvaluate="" AffectionSource="" />
+               		<mx:Object ID="11" Category="素质" Content="刻苦务实"  
+               			Importance="" SelfEvaluate="" AffectionSource="" />
+               		<mx:Object ID="12" Category="素质" Content="精勤进取"  
+               			Importance="" SelfEvaluate="" AffectionSource="" />
+               		<mx:Object ID="13" Category="素质" Content="身心和谐"  
+               			Importance="" SelfEvaluate="" AffectionSource="" />
+               		<mx:Object ID="14" Category="素质" Content="视野开阔"  
+               			Importance="" SelfEvaluate="" AffectionSource="" />
+               		<mx:Object ID="15" Category="素质" Content="思维敏捷"  
+               			Importance="" SelfEvaluate="" AffectionSource="" />
+               		<mx:Object ID="16" Category="素质" Content="乐于创新"  
+               			Importance="" SelfEvaluate="" AffectionSource="" />
+               		
+            	</mx:source>
+         </mx:ArrayCollection>
+      </mx:dataProvider>
+      
+      <mx:columns>
+            <mx:DataGridColumn dataField="ID" headerText="序号" width="40"/>
+            <mx:DataGridColumn dataField="Category" headerText="类别" width="50"/>
+            <mx:DataGridColumn dataField="Content"  headerText="评价内容" width="160"
+            	 editable="false"/>
+            <mx:DataGridColumn dataField="Importance" 
+            	headerText="重要性" 
+            	itemEditor="item.ComboItemImportance"
+            	editorDataField="label"
+            	editable="true" rendererIsEditor="false" width="80">
+            </mx:DataGridColumn>
+            
+            <mx:DataGridColumn dataField="SelfEvaluate" editorDataField="label" 
+            	headerText="自我现状评估" 
+            	itemEditor="item.ComboItemSelfEvaluate"
+            	editable="true" rendererIsEditor="false" width="70">
+            </mx:DataGridColumn>
+            
+            <mx:DataGridColumn dataField="AffectionSource" editorDataField="txtSource" 
+            	headerText="本校本科经历对您成长的影响" editable="true" 
+            	itemEditor="item.ItemAffectionSource"
+                dataTipField="可以文字表述，也可以多选，最好将影响大者排前"
+            	rendererIsEditor="false" width="400">
+            </mx:DataGridColumn>
+     
+      </mx:columns>
+            
+	</mx:DataGrid>
+	
+
+	
+</mx:Canvas>

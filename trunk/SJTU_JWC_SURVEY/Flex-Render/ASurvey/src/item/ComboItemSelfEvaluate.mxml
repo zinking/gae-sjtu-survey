@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ComboBox xmlns:mx="http://www.adobe.com/2006/mxml"
+	 change="onComboChange(event)" dataProvider="{acSelfEvaluate}" selectedIndex="0">
+	 <mx:ArrayCollection id="acSelfEvaluate">
+ 		<mx:Object label="A 很强" 	/>
+ 		<mx:Object label="B 比较强" />
+ 		<mx:Object label="C 一般" />
+ 		<mx:Object label="D 有一些" />
+ 		<mx:Object label="E 不具备" 	/>
+  	</mx:ArrayCollection>
+	<mx:Script>
+		<![CDATA[
+			public var label:String = "";
+			private function onComboChange(event:Event):void{
+				label = this.selectedItem.label; 
+			}
+			
+		]]>
+	</mx:Script>
+</mx:ComboBox>

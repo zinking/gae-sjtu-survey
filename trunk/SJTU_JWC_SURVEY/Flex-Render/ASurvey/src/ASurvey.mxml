@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	xmlns:comp="*" creationComplete="init()">
+	<mx:Style source="style.css"/>
+	<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" horizontalCenter="0" verticalCenter="0">
+	
+	<mx:Script>
+		<![CDATA[
+		
+		private function init():void{
+			vf.addEventListener( Verify.ENTER_EVENT ,onEnterSurvey);
+			us.addEventListener( UserSurvey.FINISH_SURVEY ,onFinishedSurvey);
+		}
+		
+		private function onEnterSurvey(event:Event):void{
+			vs.selectedIndex = 1;
+			us.mydata.username = vf.username;
+			us.mydata.classid = vf.classid;
+		}
+		
+		private function onFinishedSurvey(event:Event):void{
+			vs.selectedIndex = 0;
+		}
+			
+		]]>
+	</mx:Script>
+	
+	
+	<mx:ViewStack id="vs" selectedIndex="0" width="100%" height="100%" horizontalCenter="0" verticalCenter="0">
+		<comp:Verify id="vf"/>
+		<comp:UserSurvey id="us"/>
+	</mx:ViewStack>
+	
+	</mx:Canvas>
+	
+</mx:Application>

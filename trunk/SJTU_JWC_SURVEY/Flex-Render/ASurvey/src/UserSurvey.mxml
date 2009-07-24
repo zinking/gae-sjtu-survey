@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%"  
+	xmlns:Custom="*"    height="100%">
+
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+		
+		 import mx.rpc.AsyncToken;  
+         import mx.rpc.AsyncResponder;  
+         import mx.rpc.events.FaultEvent;  
+         import mx.rpc.events.ResultEvent; 
+         
+        public static const FINISH_SURVEY:String = "finish_survey";
+		
+		public var mydata:Object = new Object();
+		public function getData():void{
+			mydata.userinfo = ui.getUserinfo();
+			mydata.selfevaluate = ue.getData();
+			mydata.suggestion1 = txtU1.getSuggestion();
+			mydata.suggestion2 = txtU2.getSuggestion(); 
+		}
+		
+		public function onSubmit(event:Event ):void{
+			
+			getData();
+			
+			var token:AsyncToken=surveyGateway.AddQuery(mydata);  
+			token.addResponder(new AsyncResponder(AfterAddSurvey,faultHandler)); 
+		}
+		
+		private function AfterAddSurvey(event:ResultEvent , token:Object=null ):void{
+			if ( event.result.AddResult ){
+				mx.controls.Alert.show("感谢您的参与，谢谢","添加成功");
+				dispatchEvent( new Event( FINISH_SURVEY ) );
+			}
+		}
+		
+		private function faultHandler( event:FaultEvent, token:Object=null):void{
+			mx.controls.Alert.show("出现了错误，请重新尝试","ERROR");
+		}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="surveyGateway" destination="qSurvey" showBusyCursor="true"/>
+	
+	<mx:VBox width="95%" height="95%" horizontalCenter="0" verticalCenter="0">
+		
+	<mx:Accordion width="100%" height="90%" 
+		 selectedIndex="3">
+		 <Custom:UserInfo id="ui"/>
+		 <Custom:UserEvaluate id="ue"/>
+		 <Custom:UserSuggestion id="txtU2" label="三，除表列项目外，您对本科生所应具备的能力和素质还有什么补充？"/>
+		<Custom:UserSuggestion id="txtU1" label="四，您对母校本科人才培养工作的其他建议，意见"/>
+	</mx:Accordion>
+	
+	<mx:Button  label="提交" width="100" id="btnSubmit" click="onSubmit(event)"/>
+	
+	</mx:VBox>
+
+	
+</mx:Canvas>
