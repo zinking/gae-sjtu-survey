@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300">
+	<mx:VBox height="95%" width="95%" horizontalCenter="0" verticalCenter="0">
+		<mx:TextArea width="100%" borderStyle="solid"/>
+		<mx:TextArea width="100%"/>
+		<mx:TextArea width="100%"/>
+		<mx:TextArea width="100%"/>
+	</mx:VBox>
+	
+</mx:Canvas>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services-config>
+	<services>
+		<service id="loginService" class="flex.messaging.services.RemotingService" 
+		messageTypes="flex.messaging.messages.RemotingMessage">
+		<destination id="iSurvey">
+			<channels>
+				<channel ref="uSChannel"/>
+			</channels>
+			<properties>
+				<source>*</source>
+			</properties>
+		</destination>
+		</service>
+		
+		<service id="queryService" class="flex.messaging.services.RemotingService" 
+		messageTypes="flex.messaging.messages.RemotingMessage">
+		<destination id="qSurvey">
+			<channels>
+				<channel ref="qsChannel"/>
+			</channels>
+			<properties>
+				<source>*</source>
+			</properties>
+		</destination>
+		</service>
+		
+	</services>
+
+	<channels>
+		<channel-definition id="uSChannel" class="mx.messaging.channels.AMFChannel">
+			<endpoint uri="http://127.0.0.1:8080/service/login/" 
+				class="flex.messaging.endpoints.AMFEndpoint"/>
+		</channel-definition>
+		
+		<channel-definition id="qsChannel" class="mx.messaging.channels.AMFChannel">
+			<endpoint uri="http://127.0.0.1:8080/service/survey/" 
+				class="flex.messaging.endpoints.AMFEndpoint"/>
+		</channel-definition>
+	</channels>
+</services-config>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" height="98%" width="98%">
+	<mx:Script>
+      <![CDATA[
+      	import mx.collections.ArrayCollection;           
+        
+        [Bindable]                        
+        public var txtSource:String="";
+        
+        private var specialcase:Boolean = false;
+        
+        private function onAddSource(event:Event):void{
+        	txtSource += cmbSource.selectedItem.data + cmbDegree.selectedItem.data +" ";
+        	if ( specialcase ) txtSource = "E";
+        }  
+        
+        private function onTextLoseFocus(event:Event):void{
+        	txtSource = tiSource.text;
+        } 
+        
+        private function onSourceChange(event:Event):void{
+        	cmbSource.visible = true;
+        	specialcase = false;
+        	if ( cmbDegree.selectedItem.data== "E" ){
+        		cmbSource.visible = false;
+        		specialcase = true;
+        	}
+        	
+        	
+        } 
+      ]]>
+     </mx:Script>
+     
+     	<mx:ComboBox id="cmbDegree" width="25%" 
+     		 change="onSourceChange(event)" fontWeight="normal" fontSize="12">
+			<mx:ArrayCollection>
+     			<mx:Object label="A 影响很大" 	data="A"/>
+     			<mx:Object label="B 影响较大" data="B"/>
+     			<mx:Object label="C 有影响" data="C"/>
+     			<mx:Object label="D 影响较小" data="D"/>
+     			<mx:Object label="E 没影响" 	data="E"/>
+ 		 	</mx:ArrayCollection>
+  		</mx:ComboBox>
+	
+		<mx:ComboBox id="cmbSource" width="30%" selectedIndex="13" fontWeight="normal" fontSize="12">
+			<mx:ArrayCollection>
+     			<mx:Object label="1 理论教学" data="1"/>
+     			<mx:Object label="2 实验教学" data="2"/>
+     			<mx:Object label="3 校外实习" data="3"/>
+     			<mx:Object label="4 毕业设计" data="4"/>
+     			<mx:Object label="5 社团活动" data="5"	/>
+     			<mx:Object label="6 学生干部经历" 	data="6"/>
+     			<mx:Object label="7 教师影响" 	data="7"/>
+     			<mx:Object label="8 同学影响" 	data="8"/>
+     			<mx:Object label="9 境外交流" 	data="9"/>
+     			<mx:Object label="10 学科竞赛" 	data="10"/>
+     			<mx:Object label="11 科研活动" 	data="11"/>
+     			<mx:Object label="12 社会实践活动" data="12"	/>
+     			<mx:Object label="13 校园文化熏陶" data="13"	/>
+     			<mx:Object label="14 其他" data="14"	/>
+ 		 	</mx:ArrayCollection>
+  		</mx:ComboBox>
+  		
+  		<mx:TextInput id="tiSource"  text="{txtSource}"
+  			 focusOut="onTextLoseFocus(event)"
+  			 change="onTextLoseFocus(event)" width="25%" fontSize="12"/>
+  		
+  		<mx:Button id="btnAdd" width="10%" click="onAddSource(event)" label="+" fontSize="12"/>
+		<!--<mx:Button id="btnClear" width="25"/>-->
+		
+	</mx:HBox>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"
+	 label="一，您的个人信息">
+
+<mx:Script>
+	<![CDATA[
+	import mx.events.ItemClickEvent;
+	
+	public function getUserinfo():Object{
+		var userinfo:Object = new Object();
+		userinfo.startBYear = dfBStartYear.selectedDate;
+		userinfo.startGYear = dfGStartYear.selectedDate;
+		userinfo.lastBYear 	= nsBLast.value;
+		userinfo.lastGYear	= nsGLast.value;
+		userinfo.bMajor 	= tiBMajor.text;
+		userinfo.gMajor 	= tiGMajor.text;
+		userinfo.experience = txtExperience.text;
+		userinfo.hasForeignStudy 	= ( gp1.selection.value == 'yes' );
+		userinfo.adEduStartYear 	= dfAdEduStartYear.value;
+		userinfo.adEduLast 			= nsAdEduLastYear.value;
+		userinfo.adEduSchool		= txtAdEduSchool.text;
+		userinfo.level				= cmbLevel.value;
+		userinfo.duty 				= cmbDuty.value;
+		
+		return userinfo;	
+	}
+	
+	private  function onAddExperience( event:Event ):void{
+		txtExperience.text += cmbCategory.selectedItem.data + nsYear.value+" " ;
+	}
+	
+	              
+    private function handleAddEdu(event:ItemClickEvent):void {
+    	switch ( event.currentTarget.selectedValue ){
+    		case "yes":
+    			hbAddtionalEdu.visible = true;
+    		break;
+    		case "no":
+    			hbAddtionalEdu.visible = false;
+    		break;
+    	}
+    }
+		
+	]]>
+</mx:Script>
+
+
+	<mx:VBox  width="95%" height="95%" horizontalCenter="0" verticalCenter="0">
+		<mx:HBox width="100%" horizontalAlign="center" height="10%">
+			<mx:Text text="您的个人信息" width="150" height="100%" textAlign="center" fontWeight="bold" fontSize="15"/>
+		</mx:HBox>
+		
+		<mx:HBox width="100%" horizontalAlign="left" height="10%">
+			<mx:Text text="1.您在本校的学习时段：本科" textAlign="left" fontSize="12"/>
+			<mx:DateField id="dfBStartYear"
+				yearNavigationEnabled="true"/>
+			<mx:NumericStepper id="nsBLast"/>
+			<mx:Text text="年，和/或研究生" textAlign="center" fontSize="12"/>
+			<mx:DateField id="dfGStartYear"
+				yearNavigationEnabled="true"/>
+			<mx:NumericStepper id="nsGLast"/>
+			<mx:Text text="年" textAlign="center" fontSize="12"/>
+		</mx:HBox>
+		
+		<mx:HBox width="100%" height="10%">
+			<mx:Text text="您所在的专业：本科" id="txtBMajor" width="20%" height="20" textAlign="center" fontSize="12"/>
+			<mx:TextInput id="tiBMajor" width="30%"/>	
+			<mx:Text text="和/或 二级学科，研究生" id="txtGMajor" width="20%" height="20" textAlign="center" fontSize="12"/>
+			<mx:TextInput id="tiGMajor" width="30%"/>
+		</mx:HBox>
+		
+		<mx:HRule width="100%"/> 
+		
+		<mx:HBox width="100%" horizontalAlign="left" height="10%">
+			<mx:Text text="2.您所工作过的行业和时序 例如：C 3年，按时间填写" width="35%" height="20" textAlign="left" fontSize="12"/>
+			<mx:TextInput id="txtExperience" width="65%" editable="false"/>	
+		</mx:HBox>
+		<mx:HBox width="100%" horizontalAlign="right" height="10%">
+			<mx:ComboBox id="cmbCategory" fontSize="12">
+				<mx:ArrayCollection>
+         			<mx:Object label="A 农林牧渔业" 	data="A"/>
+         			<mx:Object label="B 能源及矿产业" 	data="B"/>
+         			<mx:Object label="C 制造业" 		data="C"/>
+         			<mx:Object label="D 建筑及房地产业" data="D"/>
+         			<mx:Object label="E 金融业" 		data="E"/>
+         			<mx:Object label="F 教育科研及文娱" 		data="F"/>
+         			<mx:Object label="G 社会服务业" 		data="G"/>
+         			<mx:Object label="H 医疗卫生及社会保障业" 		data="H"/>
+         			<mx:Object label="I 信息产业" 		data="I"/>
+         			<mx:Object label="J 公共管理社会组织" 		data="J"/>
+         			<mx:Object label="K 交通运输仓储邮政业" 		data="K"/>
+         			<mx:Object label="L 其他行业" 		data="L"/>
+     		 	</mx:ArrayCollection>
+     		 </mx:ComboBox>
+			<mx:NumericStepper id="nsYear"/>
+			<mx:Button id="btnAddExperience" label="添加" click="onAddExperience(event)"/>
+		</mx:HBox>
+		
+		<mx:HRule width="100%"/> 
+		
+		<mx:HBox width="100%" height="10%">
+			<mx:Text text="3.除本校外，您是否在国内外其他高校学习过半年以上" 
+					width="35%" height="20" textAlign="left"  fontSize="12"/>
+			<mx:RadioButtonGroup id="gp1"  itemClick="handleAddEdu(event);" selection="{rdyes}"/>
+			<mx:RadioButton id="rdyes" label="是" value="yes" groupName="gp1"/>
+			<mx:RadioButton id="rdno" label="否" value="no" groupName="gp1"/>
+		</mx:HBox>
+		
+		<mx:HBox id="hbAddtionalEdu" visible="true" height="10%" width="100%">
+			<mx:Text text="学习时段" width="140" height="20" textAlign="center" fontSize="12"/>
+			<mx:DateField id="dfAdEduStartYear" 
+				yearNavigationEnabled="true"/>
+			<mx:NumericStepper id="nsAdEduLastYear"/>
+			<mx:Text  text="所在学校" width="80" height="20" textAlign="center" fontSize="12"/>
+			<mx:TextInput id="txtAdEduSchool"  width="205"/>	
+		</mx:HBox>
+		
+		<mx:HRule width="100%"/> 
+		
+		<mx:HBox width="100%" height="10%">
+			<mx:Text text="4您现在的职称：" width="20%" height="20" textAlign="left" fontSize="12"/>
+			<mx:ComboBox id="cmbLevel" fontSize="12">
+				<mx:ArrayCollection>
+         			<mx:Object label="高级" 		data="高级"/>
+         			<mx:Object label="副高级" 	data="副高级"/>
+         			<mx:Object label="中级" 	data="中级"/>
+         			<mx:Object label="初级" 		data="初级"/>
+         			<mx:Object label="其他" 		data="其他"/>
+     		 	</mx:ArrayCollection>
+     		 </mx:ComboBox>
+		</mx:HBox>
+		
+		<mx:HRule width="100%"/> 
+		
+		<mx:HBox width="100%" height="10%">
+			<mx:Text text="5您现在的职务：" width="20%" height="20" textAlign="left" fontSize="12"/>
+			<mx:ComboBox id="cmbDuty" fontSize="12">
+				<mx:ArrayCollection>
+         			<mx:Object label="科级以下" 		/>
+         			<mx:Object label="科级" 	/>
+         			<mx:Object label="处级" 		/>
+         			<mx:Object label="局级" 		/>
+         			<mx:Object label="基层" 		/>
+         			<mx:Object label="中层" 		/>
+         			<mx:Object label="高层" 		/>
+         			<mx:Object label="团队一般成员" 		/>
+         			<mx:Object label="团队骨干" 		/>
+         			<mx:Object label="团队领导" 		/>
+         			<mx:Object label="其他" 		/>
+     		 	</mx:ArrayCollection>
+     		 </mx:ComboBox>
+		</mx:HBox>
+		
+		
+		
+	
+			
+		
+		
+		
+	</mx:VBox>
+	
+</mx:Canvas>

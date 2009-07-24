@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:ns1="*">
+	<ns1:UserInfo x="0" y="0">
+	</ns1:UserInfo>
+	
+</mx:Application>
